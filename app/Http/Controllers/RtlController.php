@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class DashboardController extends Controller
+class RtlController extends Controller
 {
     /**
-     * Display the dashboard.
+     * Display the RTL page.
      */
     public function index()
     {
-        return view('dashboard');
+        return view('pages.rtl');
     }
 }

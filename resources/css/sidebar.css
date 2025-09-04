@@ -1,0 +1,324 @@
+/* Sidebar Toggle Styles */
+.sidebar-collapsed {
+    max-width: 4rem !important;
+    width: 4rem !important;
+}
+
+.sidebar-collapsed .sidebar-text {
+    opacity: 0;
+    visibility: hidden;
+    width: 0;
+    margin-left: 0;
+    transform: translateX(-10px);
+}
+
+/* Keep logo visible when collapsed */
+.sidebar-collapsed .sidebar-logo-img {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+/* Toggle button container positioning */
+.sidebar-toggle-container {
+    position: absolute;
+    top: 4px;
+    right: 16px;
+    z-index: 10;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* When sidebar is collapsed, move toggle to center */
+.sidebar-collapsed .sidebar-toggle-container {
+    position: absolute;
+    top: 4px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+}
+
+/* Toggle button styles - with consistent outline color */
+.sidebar-toggle-btn {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    z-index: 10;
+    font-size: 12px;
+    border: 1.5px solid #16a34a !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+/* Keep toggle button visible when collapsed - consistent styling */
+.sidebar-collapsed .sidebar-toggle-btn {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    border: 1.5px solid #16a34a !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 2px 4px 0 rgba(22, 163, 74, 0.1),
+        0 1px 2px 0 rgba(22, 163, 74, 0.06);
+}
+
+/* Hover effect for collapsed state - consistent with expanded */
+.sidebar-collapsed .sidebar-toggle-btn:hover {
+    border-color: #15803d !important;
+    background-color: #f0fdf4 !important;
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2);
+}
+
+/* Hide expand button when collapsed (we'll use the main toggle button instead) */
+.sidebar-collapsed #expand-button {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none;
+}
+
+/* Arrow icon rotation animation */
+.arrow-icon {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-collapsed .arrow-icon {
+    transform: rotate(180deg);
+}
+
+/* Ensure logo container centers properly when collapsed */
+.sidebar-collapsed .flex.items-center.justify-center {
+    justify-content: center;
+}
+
+/* Arrow icon hover effect */
+#sidebar-toggle:hover .arrow-icon {
+    color: #16a34a;
+}
+
+/* Active state animation */
+#sidebar-toggle:active {
+    transform: scale(0.9);
+}
+
+/* Responsive adjustments for toggle button */
+@media (max-width: 1279px) {
+    .sidebar-toggle-btn {
+        display: none;
+    }
+}
+
+/* Ensure consistent spacing in sidebar header */
+.sidebar-collapsed .px-8 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+/* Transition improvements */
+.sidebar-text {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-logo-img {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Main content adjustment */
+.main-content-collapsed {
+    margin-left: 5rem !important;
+}
+
+/* Responsive adjustments for xl screens and above */
+@media (min-width: 1280px) {
+    .main-content-collapsed {
+        margin-left: 5rem !important;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1279px) {
+    .sidebar-collapsed {
+        transform: translateX(-100%) !important;
+    }
+
+    .main-content-collapsed {
+        margin-left: 0 !important;
+    }
+
+    /* Ensure toggle button is always visible */
+    .sidebar-toggle-btn {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+
+    /* Hide expand button on mobile */
+    #expand-button {
+        display: none !important;
+    }
+}
+
+/* Desktop - show toggle button */
+@media (min-width: 1280px) {
+    .sidebar-toggle-btn {
+        display: flex !important;
+    }
+}
+
+/* Mobile sidebar improvements */
+@media (max-width: 768px) {
+    #sidenav-main {
+        margin-left: 0;
+        width: 80%;
+        max-width: 280px;
+    }
+
+    .sidebar-expanded {
+        transform: translateX(0) !important;
+    }
+}
+
+/* Toggle button hover effects - consistent across states */
+.sidebar-toggle-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2);
+    border-color: #15803d !important;
+    background-color: #f0fdf4 !important;
+}
+
+.sidebar-toggle-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-toggle-btn:focus {
+    outline: 2px solid #16a34a;
+    outline-offset: 2px;
+    border-color: #16a34a !important;
+}
+
+#expand-button button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Smooth transitions for all elements */
+.sidebar-toggle-btn,
+#expand-button,
+.hamburger-icon,
+.hamburger-line {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Improved hamburger animation */
+.sidebar-toggle-btn:hover .hamburger-line {
+    background-color: #16a34a;
+}
+
+/* Menu item adjustments for collapsed state */
+.sidebar-collapsed .py-2\.7 {
+    justify-content: center;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+}
+
+.sidebar-collapsed .mr-2 {
+    margin-right: 0;
+}
+
+/* Help section adjustment */
+.sidebar-collapsed .mx-4 {
+    margin-left: 0;
+    margin-right: 0;
+    text-align: center;
+}
+
+.sidebar-collapsed .mx-4 h6,
+.sidebar-collapsed .mx-4 span {
+    display: none;
+}
+
+/* Focus states for accessibility */
+.sidebar-toggle-btn:focus,
+#expand-button button:focus {
+    outline: 2px solid #10b981;
+    outline-offset: 2px;
+}
+
+/* Tooltip for collapsed sidebar */
+.sidebar-tooltip {
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #1f2937;
+    color: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    margin-left: 0.5rem;
+    pointer-events: none;
+}
+
+.sidebar-tooltip::before {
+    content: "";
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 5px solid transparent;
+    border-right-color: #1f2937;
+}
+
+.sidebar-collapsed li:hover .sidebar-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Smooth animations for better UX */
+#sidenav-main {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#main-content {
+    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Main content adjustment */
+.main-content-collapsed {
+    margin-left: 5rem !important;
+}
+
+/* Mobile overlay */
+#sidebar-overlay {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#sidebar-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Smooth animations for better UX */
+#sidenav-main {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#main-content {
+    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover effects for toggle button */
+#sidebar-toggle:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Active state for toggle button */
+#sidebar-toggle:active {
+    transform: scale(0.95);
+}

@@ -45,22 +45,4 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-    // Relationships
-    public function transactions()
-    {
-        return $this->hasMany(Transaction::class);
-    }
-
-    public function inventoryMovements()
-    {
-        return $this->hasMany(InventoryMovement::class);
-    }
-}space App\Models;
-
-use Illuminate\Database\Eloquent\Model;
-
-class User extends Model
-{
-    //
 }
