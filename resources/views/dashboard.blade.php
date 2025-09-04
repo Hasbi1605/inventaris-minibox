@@ -103,12 +103,14 @@
     </div>
 </div>
 
-<!-- Row 2 - Charts -->
-<div class="flex flex-wrap -mx-3 mb-6 items-start">
-    <!-- Left Column -->
-    <div class="w-full max-w-full px-3 mb-6 lg:mb-6 lg:w-7/12 lg:flex-none flex flex-col">
-        <!-- Grafik Pendapatan Harian Chart -->
-        <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border mb-6" style="min-height: 280px;">
+<!-- Main Content - Restructured with flex-col -->
+<div class="flex flex-col gap-6">
+    <!-- Top Row -->
+    <div class="grid grid-cols-[7fr_5fr] gap-6 auto-rows-fr">
+        <!-- Top-Left Column -->
+        <div class="flex flex-col gap-6">
+            <!-- Grafik Pendapatan Harian Chart -->
+            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border">
                 <div class="p-4 pb-3 mb-0 bg-white border-b border-gray-100 rounded-t-2xl">
                     <div class="flex items-center justify-between mb-2">
                         <h6 class="mb-0 font-bold text-slate-800">Grafik Pendapatan Harian</h6>
@@ -129,7 +131,7 @@
             </div>
             
             <!-- Pengeluaran Bulan Ini Card -->
-            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border h-full border-l-4 border-l-red-500" style="min-height: 400px;">
+            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border border-l-4 border-l-red-500">
                 <div class="p-4 pb-3 mb-0 bg-white border-b border-gray-100 rounded-t-2xl">
                     <div class="flex items-center justify-between mb-2">
                         <h6 class="mb-0 font-bold text-slate-800">Pengeluaran Bulan Ini</h6>
@@ -155,7 +157,6 @@
                                 </p>
                             </div>
                         </div>
-
                     </div>
                     
                     <!-- Breakdown pengeluaran -->
@@ -230,152 +231,12 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Performa Cabang (Bulan Ini) Card -->
-            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border h-full border-l-4 border-l-blue-500 mt-6" style="min-height: 400px;">
-                <div class="p-4 pb-3 mb-0 bg-white border-b border-gray-100 rounded-t-2xl">
-                    <div class="flex items-center justify-between mb-2">
-                        <h6 class="mb-0 font-bold text-slate-800">Performa Cabang (Bulan Ini)</h6>
-                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            September 2025
-                        </span>
-                    </div>
-                    <p class="text-sm leading-normal text-slate-500 mb-0">
-                        <i class="fa fa-chart-line text-blue-500 mr-1"></i>
-                        <span class="font-semibold">Perbandingan performa antar cabang</span>
-                    </p>
-                </div>
-                <div class="flex-auto p-4">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm align-middle">
-                            <thead class="align-bottom">
-                                <tr class="border-b border-gray-200">
-                                    <th class="pb-3 pl-2 pr-4 text-left font-semibold text-slate-700">Nama Cabang</th>
-                                    <th class="pb-3 px-4 text-center font-semibold text-slate-700">Total Pendapatan</th>
-                                    <th class="pb-3 px-4 text-center font-semibold text-slate-700">Jumlah Transaksi</th>
-                                    <th class="pb-3 px-4 text-center font-semibold text-slate-700">Rata-rata per Transaksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100">
-                                <!-- Cabang Utama -->
-                                <tr class="hover:bg-gray-50 transition-colors duration-200">
-                                    <td class="py-3 pl-2 pr-4">
-                                        <div class="flex items-center">
-                                            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold bg-blue-100 text-blue-800 mr-3">
-                                                1
-                                            </span>
-                                            <div>
-                                                <div class="font-medium text-slate-800">Cabang Utama</div>
-                                                <div class="text-xs text-slate-500">Jl. Sudirman No. 123</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="py-3 px-4 text-center">
-                                        <span class="font-medium text-slate-800">Rp 15.800.000</span>
-                                    </td>
-                                    <td class="py-3 px-4 text-center">
-                                        <span class="font-medium text-slate-700">425</span>
-                                    </td>
-                                    <td class="py-3 px-4 text-center">
-                                        <span class="font-medium text-green-600">Rp 37.176</span>
-                                    </td>
-                                </tr>
-                                
-                                <!-- Cabang Timur -->
-                                <tr class="hover:bg-gray-50 transition-colors duration-200">
-                                    <td class="py-3 pl-2 pr-4">
-                                        <div class="flex items-center">
-                                            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold bg-green-100 text-green-800 mr-3">
-                                                2
-                                            </span>
-                                            <div>
-                                                <div class="font-medium text-slate-800">Cabang Timur</div>
-                                                <div class="text-xs text-slate-500">Jl. Ahmad Yani No. 45</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="py-3 px-4 text-center">
-                                        <span class="font-medium text-slate-800">Rp 9.500.000</span>
-                                    </td>
-                                    <td class="py-3 px-4 text-center">
-                                        <span class="font-medium text-slate-700">300</span>
-                                    </td>
-                                    <td class="py-3 px-4 text-center">
-                                        <span class="font-medium text-green-600">Rp 31.667</span>
-                                    </td>
-                                </tr>
-                                
-                                <!-- Cabang Barat -->
-                                <tr class="hover:bg-gray-50 transition-colors duration-200">
-                                    <td class="py-3 pl-2 pr-4">
-                                        <div class="flex items-center">
-                                            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold bg-purple-100 text-purple-800 mr-3">
-                                                3
-                                            </span>
-                                            <div>
-                                                <div class="font-medium text-slate-800">Cabang Barat</div>
-                                                <div class="text-xs text-slate-500">Jl. Gatot Subroto No. 78</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="py-3 px-4 text-center">
-                                        <span class="font-medium text-slate-800">Rp 7.200.000</span>
-                                    </td>
-                                    <td class="py-3 px-4 text-center">
-                                        <span class="font-medium text-slate-700">220</span>
-                                    </td>
-                                    <td class="py-3 px-4 text-center">
-                                        <span class="font-medium text-green-600">Rp 32.727</span>
-                                    </td>
-                                </tr>
-                                
-                                <!-- Cabang Selatan -->
-                                <tr class="hover:bg-gray-50 transition-colors duration-200">
-                                    <td class="py-3 pl-2 pr-4">
-                                        <div class="flex items-center">
-                                            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold bg-orange-100 text-orange-800 mr-3">
-                                                4
-                                            </span>
-                                            <div>
-                                                <div class="font-medium text-slate-800">Cabang Selatan</div>
-                                                <div class="text-xs text-slate-500">Jl. Diponegoro No. 56</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="py-3 px-4 text-center">
-                                        <span class="font-medium text-slate-800">Rp 5.300.000</span>
-                                    </td>
-                                    <td class="py-3 px-4 text-center">
-                                        <span class="font-medium text-slate-700">180</span>
-                                    </td>
-                                    <td class="py-3 px-4 text-center">
-                                        <span class="font-medium text-green-600">Rp 29.444</span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                            <tfoot class="border-t-2 border-slate-200">
-                                <tr class="bg-slate-50">
-                                    <td class="py-3 pl-2 pr-4 font-bold text-slate-800">
-                                        Total Semua Cabang
-                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-slate-200 text-slate-600 ml-2">
-                                            4 Cabang
-                                        </span>
-                                    </td>
-                                    <td class="py-3 px-4 text-center font-bold text-slate-800">Rp 37.800.000</td>
-                                    <td class="py-3 px-4 text-center font-bold text-slate-800">1.125</td>
-                                    <td class="py-3 px-4 text-center font-bold text-green-600">Rp 33.600</td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                </div>
-            </div>
         </div>
-        
-        <!-- Right Column -->
-        <div class="w-full max-w-full px-3 mb-6 lg:mb-6 lg:w-5/12 lg:flex-none flex flex-col">
+
+        <!-- Top-Right Column -->
+        <div class="flex flex-col">
             <!-- Layanan Terlaris Card -->
-            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border h-full" style="min-height: 400px;">
+            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border h-full">
                 <!-- Header -->
                 <div class="p-4 pb-3 mb-0 bg-white border-b border-gray-100 rounded-t-2xl">
                     <div class="flex items-center justify-between mb-2">
@@ -393,67 +254,39 @@
                 <!-- Content -->
                 <div class="flex-auto p-4" id="services-content">
                     <!-- Data Available State -->
-                    <div id="services-data" class="h-full flex flex-col justify-between">
-                        <!-- Chart Section - Upper area -->
-                        <div class="flex justify-center items-start pt-8">
-                            <div class="relative" style="width: 240px; height: 340px;">
-                                <canvas id="chart-services" class="chart-canvas" width="280" height="260"></canvas>
-                                <!-- Center Value -->
-                                <div class="absolute inset-0 flex flex-col items-center justify-top pt-21">
-                                    <div class="text-center">
-                                        <span class="block text-xs font-medium text-slate-500 mb-1">Teratas</span>
-                                        <span class="block text-base font-bold text-slate-800">Potong Rambut</span>
-                                        <span class="block text-2xl font-bold text-blue-600">65%</span>
+                    <div id="services-data" class="h-full flex flex-col items-center justify-start pt-12">
+                        <!-- Chart Section -->
+                        <div class="flex items-center justify-center mb-10">
+                            <div class="relative w-full max-w-[240px]">
+                                <div class="aspect-square relative">
+                                    <canvas id="chart-services" class="w-full h-full"></canvas>
+                                    <!-- Center Value -->
+                                    <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                        <div class="text-center">
+                                            <span class="block text-xs font-medium text-slate-500 mb-1">Teratas</span>
+                                            <span id="top-service-name" class="block text-sm font-bold text-slate-800">Potong Rambut</span>
+                                            <span id="top-service-percentage" class="block text-xl font-bold text-blue-600">65%</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Legend Section - Bottom area -->
-                        <div class="space-y-3 mt-auto pb-4">
-                            <div class="flex items-center justify-between p-3 rounded-lg bg-blue-50 border-l-4 border-blue-500">
-                                <div class="flex items-center">
-                                    <div class="w-4 h-4 rounded-full bg-blue-500 mr-3 flex-shrink-0"></div>
-                                    <span class="text-sm font-medium text-slate-700">Potong Rambut</span>
-                                </div>
-                                <span class="text-sm font-bold text-slate-800">65%</span>
-                            </div>
-                            
-                            <div class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200">
-                                <div class="flex items-center">
-                                    <div class="w-4 h-4 rounded-full bg-green-500 mr-3 flex-shrink-0"></div>
-                                    <span class="text-sm font-medium text-slate-700">Shaving</span>
-                                </div>
-                                <span class="text-sm font-bold text-slate-800">20%</span>
-                            </div>
-                            
-                            <div class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200">
-                                <div class="flex items-center">
-                                    <div class="w-4 h-4 rounded-full bg-purple-500 mr-3 flex-shrink-0"></div>
-                                    <span class="text-sm font-medium text-slate-700">Creambath</span>
-                                </div>
-                                <span class="text-sm font-bold text-slate-800">10%</span>
-                            </div>
-                            
-                            <div class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200">
-                                <div class="flex items-center">
-                                    <div class="w-4 h-4 rounded-full bg-orange-500 mr-3 flex-shrink-0"></div>
-                                    <span class="text-sm font-medium text-slate-700">Lainnya</span>
-                                </div>
-                                <span class="text-sm font-bold text-slate-800">5%</span>
-                            </div>
+                        <!-- Legend Section -->
+                        <div id="services-legend" class="space-y-3 w-full px-4">
+                            <!-- Legend items will be generated by JavaScript -->
                         </div>
                     </div>
 
                     <!-- Empty State (hidden by default) -->
-                    <div id="services-empty" class="hidden h-full flex flex-col items-center justify-center text-center py-8">
+                    <div id="services-empty" class="hidden h-full flex flex-col items-center justify-center text-center">
                         <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                             <i class="fa fa-chart-pie text-2xl text-gray-400"></i>
                         </div>
                         <h3 class="text-lg font-medium text-slate-700 mb-2">Belum Ada Transaksi</h3>
                         <p class="text-sm text-slate-500 max-w-xs">
-                            Belum ada transaksi layanan yang tercatat untuk bulan ini. 
-                            Data akan muncul setelah ada transaksi.
+                            Belum ada transaksi bulan ini. 
+                            Data akan muncul setelah ada transaksi layanan.
                         </p>
                         <div class="mt-4">
                             <span class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-medium bg-gray-100 text-gray-600">
@@ -464,138 +297,279 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- Aktivitas Transaksi Terakhir Card -->
-            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border h-full mt-6" style="min-height: 400px;">
-                <!-- Header -->
-                <div class="p-4 pb-3 mb-0 bg-white border-b border-gray-100 rounded-t-2xl">
-                    <div class="flex items-center justify-between mb-2">
-                        <h6 class="mb-0 font-bold text-slate-800">Aktivitas Transaksi Terakhir</h6>
-                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            Real-time
-                        </span>
-                    </div>
-                    <p class="text-sm leading-normal text-slate-500 mb-0">
-                        <i class="fa fa-clock text-blue-500 mr-1"></i>
-                        5 transaksi terbaru dalam sistem
-                    </p>
-                </div>
+        </div>
+    </div>
 
-                <!-- Content -->
-                <div class="flex-auto p-4" id="transaction-content">
-                    <!-- Data Available State -->
-                    <div id="transaction-data" class="h-100">
-                        <!-- Timeline -->
-                        <div class="space-y-6">
-                            <!-- Transaction Item 1 -->
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0 mr-4">
-                                    <span class="inline-flex items-center justify-center w-3 h-3 rounded-full bg-green-500"></span>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <div class="text-sm font-medium text-slate-800 mb-1">
-                                        <span class="font-bold text-green-600">+Rp 35.000</span> - Potong Rambut + Shaving
+    <!-- Bottom Row -->
+    <div class="grid grid-cols-[7fr_5fr] gap-6 auto-rows-fr">
+        <!-- Performa Cabang (Bulan Ini) Card -->
+        <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border h-full border-l-4 border-l-blue-500">
+            <div class="p-4 pb-3 mb-0 bg-white border-b border-gray-100 rounded-t-2xl">
+                <div class="flex items-center justify-between mb-2">
+                    <h6 class="mb-0 font-bold text-slate-800">Performa Cabang (Bulan Ini)</h6>
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        September 2025
+                    </span>
+                </div>
+                <p class="text-sm leading-normal text-slate-500 mb-0">
+                    <i class="fa fa-chart-line text-blue-500 mr-1"></i>
+                    <span class="font-semibold">Perbandingan performa antar cabang</span>
+                </p>
+            </div>
+            <div class="flex-auto overflow-x-auto p-4">
+                <table class="w-full text-sm align-middle">
+                        <thead class="align-bottom">
+                            <tr class="border-b border-gray-200">
+                                <th class="pb-3 pl-2 pr-4 text-left font-semibold text-slate-700">Nama Cabang</th>
+                                <th class="pb-3 px-4 text-center font-semibold text-slate-700">Total Pendapatan</th>
+                                <th class="pb-3 px-4 text-center font-semibold text-slate-700">Jumlah Transaksi</th>
+                                <th class="pb-3 px-4 text-center font-semibold text-slate-700">Rata-rata per Transaksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <!-- Cabang Utama -->
+                            <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                <td class="py-3 pl-2 pr-4">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold bg-blue-100 text-blue-800 mr-3">
+                                            1
+                                        </span>
+                                        <div>
+                                            <div class="font-medium text-slate-800">Cabang Utama</div>
+                                            <div class="text-xs text-slate-500">Jl. Sudirman No. 123</div>
+                                        </div>
                                     </div>
-                                    <div class="text-xs text-slate-500">
-                                        <i class="fa fa-calendar mr-1"></i>
-                                        4 Sep 2025, 14:30 WIB
-                                    </div>
-                                </div>
-                            </div>
+                                </td>
+                                <td class="py-3 px-4 text-center">
+                                    <span class="font-medium text-slate-800">Rp 15.800.000</span>
+                                </td>
+                                <td class="py-3 px-4 text-center">
+                                    <span class="font-medium text-slate-700">425</span>
+                                </td>
+                                <td class="py-3 px-4 text-center">
+                                    <span class="font-medium text-green-600">Rp 37.176</span>
+                                </td>
+                            </tr>
                             
-                            <!-- Transaction Item 2 -->
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0 mr-4">
-                                    <span class="inline-flex items-center justify-center w-3 h-3 rounded-full bg-green-500"></span>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <div class="text-sm font-medium text-slate-800 mb-1">
-                                        <span class="font-bold text-green-600">+Rp 25.000</span> - Potong Rambut
+                            <!-- Cabang Timur -->
+                            <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                <td class="py-3 pl-2 pr-4">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold bg-green-100 text-green-800 mr-3">
+                                            2
+                                        </span>
+                                        <div>
+                                            <div class="font-medium text-slate-800">Cabang Timur</div>
+                                            <div class="text-xs text-slate-500">Jl. Ahmad Yani No. 45</div>
+                                        </div>
                                     </div>
-                                    <div class="text-xs text-slate-500">
-                                        <i class="fa fa-calendar mr-1"></i>
-                                        4 Sep 2025, 13:45 WIB
-                                    </div>
-                                </div>
-                            </div>
+                                </td>
+                                <td class="py-3 px-4 text-center">
+                                    <span class="font-medium text-slate-800">Rp 9.500.000</span>
+                                </td>
+                                <td class="py-3 px-4 text-center">
+                                    <span class="font-medium text-slate-700">300</span>
+                                </td>
+                                <td class="py-3 px-4 text-center">
+                                    <span class="font-medium text-green-600">Rp 31.667</span>
+                                </td>
+                            </tr>
                             
-                            <!-- Transaction Item 3 -->
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0 mr-4">
-                                    <span class="inline-flex items-center justify-center w-3 h-3 rounded-full bg-red-500"></span>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <div class="text-sm font-medium text-slate-800 mb-1">
-                                        <span class="font-bold text-red-600">-Rp 150.000</span> - Pembelian Shampo & Kondisioner
+                            <!-- Cabang Barat -->
+                            <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                <td class="py-3 pl-2 pr-4">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold bg-purple-100 text-purple-800 mr-3">
+                                            3
+                                        </span>
+                                        <div>
+                                            <div class="font-medium text-slate-800">Cabang Barat</div>
+                                            <div class="text-xs text-slate-500">Jl. Gatot Subroto No. 78</div>
+                                        </div>
                                     </div>
-                                    <div class="text-xs text-slate-500">
-                                        <i class="fa fa-calendar mr-1"></i>
-                                        4 Sep 2025, 12:20 WIB
-                                    </div>
-                                </div>
-                            </div>
+                                </td>
+                                <td class="py-3 px-4 text-center">
+                                    <span class="font-medium text-slate-800">Rp 7.200.000</span>
+                                </td>
+                                <td class="py-3 px-4 text-center">
+                                    <span class="font-medium text-slate-700">220</span>
+                                </td>
+                                <td class="py-3 px-4 text-center">
+                                    <span class="font-medium text-green-600">Rp 32.727</span>
+                                </td>
+                            </tr>
                             
-                            <!-- Transaction Item 4 -->
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0 mr-4">
-                                    <span class="inline-flex items-center justify-center w-3 h-3 rounded-full bg-green-500"></span>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <div class="text-sm font-medium text-slate-800 mb-1">
-                                        <span class="font-bold text-green-600">+Rp 50.000</span> - Potong Rambut + Creambath
+                            <!-- Cabang Selatan -->
+                            <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                <td class="py-3 pl-2 pr-4">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold bg-orange-100 text-orange-800 mr-3">
+                                            4
+                                        </span>
+                                        <div>
+                                            <div class="font-medium text-slate-800">Cabang Selatan</div>
+                                            <div class="text-xs text-slate-500">Jl. Diponegoro No. 56</div>
+                                        </div>
                                     </div>
-                                    <div class="text-xs text-slate-500">
-                                        <i class="fa fa-calendar mr-1"></i>
-                                        4 Sep 2025, 11:15 WIB
-                                    </div>
-                                </div>
+                                </td>
+                                <td class="py-3 px-4 text-center">
+                                    <span class="font-medium text-slate-800">Rp 5.300.000</span>
+                                </td>
+                                <td class="py-3 px-4 text-center">
+                                    <span class="font-medium text-slate-700">180</span>
+                                </td>
+                                <td class="py-3 px-4 text-center">
+                                    <span class="font-medium text-green-600">Rp 29.444</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot class="border-t-2 border-slate-200">
+                            <tr class="bg-slate-50">
+                                <td class="py-3 pl-2 pr-4 font-bold text-slate-800">
+                                    Total Semua Cabang
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-slate-200 text-slate-600 ml-2">
+                                        4 Cabang
+                                    </span>
+                                </td>
+                                <td class="py-3 px-4 text-center font-bold text-slate-800">Rp 37.800.000</td>
+                                <td class="py-3 px-4 text-center font-bold text-slate-800">1.125</td>
+                                <td class="py-3 px-4 text-center font-bold text-green-600">Rp 33.600</td>
+                            </tr>
+                        </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <!-- Aktivitas Transaksi Terakhir Card -->
+        <div class="relative h-full min-h-0 flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border">
+            <!-- Header -->
+            <div class="p-4 pb-3 mb-0 bg-white border-b border-gray-100 rounded-t-2xl">
+                <div class="flex items-center justify-between mb-2">
+                    <h6 class="mb-0 font-bold text-slate-800">Aktivitas Transaksi Terakhir</h6>
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        Real-time
+                    </span>
+                </div>
+                <p class="text-sm leading-normal text-slate-500 mb-0">
+                    <i class="fa fa-clock text-blue-500 mr-1"></i>
+                    5 transaksi terbaru dalam sistem
+                </p>
+            </div>
+
+            <!-- Content -->
+            <div class="flex flex-col flex-auto min-h-0 p-4" id="transaction-content">
+                <!-- Data Available State -->
+                <div id="transaction-data" class="flex flex-col h-full min-h-0">
+                    <!-- Timeline with Scroll -->
+                    <div class="flex-auto min-h-0 overflow-y-auto pr-2 space-y-5">
+                        <!-- Transaction Item 1 -->
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 mr-4">
+                                <span class="inline-flex items-center justify-center w-3 h-3 rounded-full bg-green-500"></span>
                             </div>
-                            
-                            <!-- Transaction Item 5 -->
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0 mr-4">
-                                    <span class="inline-flex items-center justify-center w-3 h-3 rounded-full bg-green-500"></span>
+                            <div class="flex-1 min-w-0">
+                                <div class="text-sm font-medium text-slate-800 mb-1">
+                                    <span class="font-bold text-green-600">+Rp 35.000</span> - Potong Rambut + Shaving
                                 </div>
-                                <div class="flex-1 min-w-0">
-                                    <div class="text-sm font-medium text-slate-800 mb-1">
-                                        <span class="font-bold text-green-600">+Rp 30.000</span> - Potong Rambut + Styling
-                                    </div>
-                                    <div class="text-xs text-slate-500">
-                                        <i class="fa fa-calendar mr-1"></i>
-                                        4 Sep 2025, 10:30 WIB
-                                    </div>
+                                <div class="text-xs text-slate-500">
+                                    <i class="fa fa-calendar mr-1"></i>
+                                    4 Sep 2025, 14:30 WIB
                                 </div>
                             </div>
                         </div>
                         
-                        <!-- Footer Action -->
-                        <div class="mt-6 pt-4 border-t border-gray-100">
-                            <div class="text-center">
-                                <a href="#" class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200">
-                                    <i class="fa fa-list mr-2"></i>
-                                    Lihat Semua Transaksi
-                                    <i class="fa fa-arrow-right ml-2"></i>
-                                </a>
+                        <!-- Transaction Item 2 -->
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 mr-4">
+                                <span class="inline-flex items-center justify-center w-3 h-3 rounded-full bg-green-500"></span>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="text-sm font-medium text-slate-800 mb-1">
+                                    <span class="font-bold text-green-600">+Rp 25.000</span> - Potong Rambut
+                                </div>
+                                <div class="text-xs text-slate-500">
+                                    <i class="fa fa-calendar mr-1"></i>
+                                    4 Sep 2025, 13:45 WIB
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Transaction Item 3 -->
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 mr-4">
+                                <span class="inline-flex items-center justify-center w-3 h-3 rounded-full bg-red-500"></span>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="text-sm font-medium text-slate-800 mb-1">
+                                    <span class="font-bold text-red-600">-Rp 150.000</span> - Pembelian Shampo & Kondisioner
+                                </div>
+                                <div class="text-xs text-slate-500">
+                                    <i class="fa fa-calendar mr-1"></i>
+                                    4 Sep 2025, 12:20 WIB
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Transaction Item 4 -->
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 mr-4">
+                                <span class="inline-flex items-center justify-center w-3 h-3 rounded-full bg-green-500"></span>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="text-sm font-medium text-slate-800 mb-1">
+                                    <span class="font-bold text-green-600">+Rp 50.000</span> - Potong Rambut + Creambath
+                                </div>
+                                <div class="text-xs text-slate-500">
+                                    <i class="fa fa-calendar mr-1"></i>
+                                    4 Sep 2025, 11:15 WIB
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Transaction Item 5 -->
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 mr-4">
+                                <span class="inline-flex items-center justify-center w-3 h-3 rounded-full bg-green-500"></span>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="text-sm font-medium text-slate-800 mb-1">
+                                    <span class="font-bold text-green-600">+Rp 30.000</span> - Potong Rambut + Styling
+                                </div>
+                                <div class="text-xs text-slate-500">
+                                    <i class="fa fa-calendar mr-1"></i>
+                                    4 Sep 2025, 10:30 WIB
+                                </div>
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- Footer Action -->
+                    <div class="mt-auto pt-4 border-t border-gray-100">
+                        <div class="text-center">
+                            <a href="#" class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200">
+                                <i class="fa fa-list mr-2"></i>
+                                Lihat Semua Transaksi
+                                <i class="fa fa-arrow-right ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
 
-                    <!-- Empty State (hidden by default) -->
-                    <div id="transaction-empty" class="hidden h-full flex flex-col items-center justify-center text-center py-8">
-                        <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                            <i class="fa fa-receipt text-2xl text-gray-400"></i>
-                        </div>
-                        <h3 class="text-lg font-medium text-slate-700 mb-2">Belum Ada Transaksi</h3>
-                        <p class="text-sm text-slate-500 max-w-xs">
-                            Belum ada aktivitas transaksi yang tercatat. 
-                            Transaksi akan muncul di sini setelah ada aktivitas.
-                        </p>
-                        <div class="mt-4">
-                            <span class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-medium bg-gray-100 text-gray-600">
-                                <i class="fa fa-clock mr-1"></i>
-                                Menunggu transaksi baru
-                            </span>
-                        </div>
+                <!-- Empty State (hidden by default) -->
+                <div id="transaction-empty" class="hidden h-full flex flex-col items-center justify-center text-center py-8">
+                    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa fa-receipt text-2xl text-gray-400"></i>
+                    </div>
+                    <h3 class="text-lg font-medium text-slate-700 mb-2">Belum Ada Transaksi</h3>
+                    <p class="text-sm text-slate-500 max-w-xs">
+                        Belum ada aktivitas transaksi yang tercatat. 
+                        Transaksi akan muncul di sini setelah ada aktivitas.
+                    </p>
+                    <div class="mt-4">
+                        <span class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-medium bg-gray-100 text-gray-600">
+                            <i class="fa fa-clock mr-1"></i>
+                            Menunggu transaksi baru
+                        </span>
                     </div>
                 </div>
             </div>
@@ -710,22 +684,24 @@ if (hasData) {
     // Sort data by value (descending)
     servicesData.sort((a, b) => b.value - a.value);
     
+    // Create chart
     var servicesChart = new Chart(ctxServices, {
         type: "doughnut",
         data: {
             labels: servicesData.map(item => item.label),
             datasets: [{
                 data: servicesData.map(item => item.value),
-                backgroundColor: servicesData.map(item => item.color + "CC"), // Add transparency
+                backgroundColor: servicesData.map(item => item.color),
                 borderColor: servicesData.map(item => item.color),
-                borderWidth: 2,
-                cutout: "70%",
-                spacing: 2
+                borderWidth: 0,
+                cutout: "72%",
+                spacing: 2,
+                borderRadius: 6
             }]
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     display: false
@@ -756,21 +732,46 @@ if (hasData) {
             },
             elements: {
                 arc: {
-                    borderWidth: 2,
-                    hoverBorderWidth: 3
+                    borderWidth: 0,
+                    hoverBorderWidth: 2
                 }
             }
         }
     });
 
-    // Update center text dynamically
+    // Update center text
     function updateCenterText() {
         var topService = servicesData[0];
-        document.querySelector('#chart-services').parentElement.querySelector('.absolute .text-sm').textContent = topService.label;
-        document.querySelector('#chart-services').parentElement.querySelector('.absolute .text-lg').textContent = topService.value + '%';
+        document.getElementById('top-service-name').textContent = topService.label;
+        document.getElementById('top-service-percentage').textContent = topService.value + '%';
     }
     
     updateCenterText();
+    
+    // Generate custom legend
+    function generateLegend() {
+        var legendContainer = document.getElementById('services-legend');
+        var legendHTML = '';
+        
+        servicesData.forEach(function(item, index) {
+            var isTop = index === 0;
+            var itemClass = isTop ? 'bg-blue-50 border-l-2 border-blue-500' : 'hover:bg-gray-50';
+            
+            legendHTML += `
+                <div class="flex items-center justify-between p-3 rounded text-sm transition-colors duration-200 ${itemClass}">
+                    <div class="flex items-center">
+                        <div class="w-3.5 h-3.5 rounded-full mr-3 flex-shrink-0" style="background-color: ${item.color}"></div>
+                        <span class="font-medium text-slate-700">${item.label}</span>
+                    </div>
+                    <span class="font-bold text-slate-800">${item.value}%</span>
+                </div>
+            `;
+        });
+        
+        legendContainer.innerHTML = legendHTML;
+    }
+    
+    generateLegend();
     
 } else {
     // Show empty state
@@ -807,7 +808,7 @@ var hasTransactionData = transactionData && transactionData.length > 0;
 
 if (hasTransactionData) {
     // Show data state
-    document.getElementById('transaction-data').style.display = 'block';
+    document.getElementById('transaction-data').style.display = 'flex';
     document.getElementById('transaction-empty').style.display = 'none';
 } else {
     // Show empty state
@@ -821,7 +822,7 @@ function toggleTransactionState() {
     var emptyElement = document.getElementById('transaction-empty');
     
     if (dataElement.style.display === 'none') {
-        dataElement.style.display = 'block';
+        dataElement.style.display = 'flex';
         emptyElement.style.display = 'none';
     } else {
         dataElement.style.display = 'none';
@@ -863,14 +864,14 @@ function updateTransactionList(newTransactionData) {
             `;
         });
         
-        // Update the timeline container
-        var timelineContainer = document.querySelector('#transaction-data .space-y-4');
+        // Update the timeline container (now with scrollable wrapper)
+        var timelineContainer = document.querySelector('#transaction-data .flex-auto.max-h-\[min\(50vh\,32rem\)\]');
         if (timelineContainer) {
             timelineContainer.innerHTML = transactionHTML;
         }
         
         // Show data state
-        document.getElementById('transaction-data').style.display = 'block';
+        document.getElementById('transaction-data').style.display = 'flex';
         document.getElementById('transaction-empty').style.display = 'none';
     } else {
         // Show empty state
