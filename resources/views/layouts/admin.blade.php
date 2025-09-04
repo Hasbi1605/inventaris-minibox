@@ -36,14 +36,8 @@
         <!-- Page Content -->
         <div class="w-full px-6 py-6 mx-auto">
             @yield('content')
-            
-            <!-- Footer -->
-            @include('layouts.partials.footer')
         </div>
     </main>
-    
-    <!-- Fixed Plugin -->
-    @include('layouts.partials.configurator')
     
     <!-- Scripts -->
     <script src="https://unpkg.com/@popperjs/core@2"></script>

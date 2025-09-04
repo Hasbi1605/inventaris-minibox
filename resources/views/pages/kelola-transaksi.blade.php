@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'Billing')
-@section('page-title', 'Billing')
+@section('title', 'Kelola Transaksi')
+@section('page-title', 'Kelola Transaksi')
 
 @section('content')
 <div class="flex flex-wrap -mx-3">

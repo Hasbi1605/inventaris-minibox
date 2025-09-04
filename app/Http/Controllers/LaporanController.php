@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ProfileController extends Controller
+class LaporanController extends Controller
 {
     /**
-     * Display the profile page.
+     * Display the laporan page.
      */
     public function index()
     {
-        return view('pages.profile');
+        return view('pages.laporan');
     }
 }

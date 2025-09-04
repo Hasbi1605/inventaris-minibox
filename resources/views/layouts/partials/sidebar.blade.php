@@ -61,14 +61,14 @@
                 </a>
             </li>
 
-            <!-- Tables -->
+            <!-- Kelola Layanan -->
             <li class="mt-0.5 w-full relative">
-                <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('tables') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('tables') }}">
-                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('tables') ? 'bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-2xl' : 'bg-white' }}">
+                <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('kelola-layanan') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('kelola-layanan') }}">
+                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('kelola-layanan') ? 'bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-2xl' : 'bg-white' }}">
                         <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <title>office</title>
                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <g transform="translate(-1869.000000, -293.000000)" fill="{{ request()->routeIs('tables') ? '#FFFFFF' : '#1f2937' }}" fill-rule="nonzero">
+                                <g transform="translate(-1869.000000, -293.000000)" fill="{{ request()->routeIs('kelola-layanan') ? '#FFFFFF' : '#1f2937' }}" fill-rule="nonzero">
                                     <g transform="translate(1716.000000, 291.000000)">
                                         <g id="office" transform="translate(153.000000, 2.000000)">
                                             <path d="M12.25,17.5 L8.75,17.5 L8.75,1.75 C8.75,0.78225 9.53225,0 10.5,0 L31.5,0 C32.46775,0 33.25,0.78225 33.25,1.75 L33.25,12.25 L29.75,12.25 L29.75,3.5 L12.25,3.5 L12.25,17.5 Z"></path>
@@ -80,19 +80,19 @@
                             </g>
                         </svg>
                     </div>
-                    <span class="sidebar-text ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Tables</span>
-                    <div class="sidebar-tooltip">Tables</div>
+                    <span class="sidebar-text ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Kelola Layanan</span>
+                    <div class="sidebar-tooltip">Kelola Layanan</div>
                 </a>
             </li>
 
-            <!-- Billing -->
+            <!-- Kelola Transaksi -->
             <li class="mt-0.5 w-full relative">
-                <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('billing') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('billing') }}">
-                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('billing') ? 'bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-2xl' : 'bg-white' }}">
+                <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('kelola-transaksi') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('kelola-transaksi') }}">
+                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('kelola-transaksi') ? 'bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-2xl' : 'bg-white' }}">
                         <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <title>credit-card</title>
                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <g transform="translate(-2169.000000, -745.000000)" fill="{{ request()->routeIs('billing') ? '#FFFFFF' : '#1f2937' }}" fill-rule="nonzero">
+                                <g transform="translate(-2169.000000, -745.000000)" fill="{{ request()->routeIs('kelola-transaksi') ? '#FFFFFF' : '#1f2937' }}" fill-rule="nonzero">
                                     <g transform="translate(1716.000000, 291.000000)">
                                         <g transform="translate(453.000000, 454.000000)">
                                             <path class="color-background" d="M43,10.7482083 L43,3.58333333 C43,1.60354167 41.3964583,0 39.4166667,0 L3.58333333,0 C1.60354167,0 0,1.60354167 0,3.58333333 L0,10.7482083 L43,10.7482083 Z" opacity="0.593633743"></path>
@@ -103,19 +103,19 @@
                             </g>
                         </svg>
                     </div>
-                    <span class="sidebar-text ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Billing</span>
-                    <div class="sidebar-tooltip">Billing</div>
+                    <span class="sidebar-text ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Kelola Transaksi</span>
+                    <div class="sidebar-tooltip">Kelola Transaksi</div>
                 </a>
             </li>
 
-            <!-- Virtual Reality -->
+            <!-- Kelola Pengeluaran -->
             <li class="mt-0.5 w-full relative">
-                <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('virtual-reality') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('virtual-reality') }}">
-                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('virtual-reality') ? 'bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-2xl' : 'bg-white' }}">
+                <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('kelola-pengeluaran') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('kelola-pengeluaran') }}">
+                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('kelola-pengeluaran') ? 'bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-2xl' : 'bg-white' }}">
                         <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <title>box-3d-50</title>
                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <g transform="translate(-2319.000000, -291.000000)" fill="{{ request()->routeIs('virtual-reality') ? '#FFFFFF' : '#1f2937' }}" fill-rule="nonzero">
+                                <g transform="translate(-2319.000000, -291.000000)" fill="{{ request()->routeIs('kelola-pengeluaran') ? '#FFFFFF' : '#1f2937' }}" fill-rule="nonzero">
                                     <g transform="translate(1716.000000, 291.000000)">
                                         <g transform="translate(603.000000, 0.000000)">
                                             <path d="M22.7597136,19.3090182 L38.8987031,11.2395234 C39.3926816,10.9925342 39.592906,10.3918611 39.3459167,9.89788265 C39.249157,9.70436312 39.0922432,9.5474493 38.8987261,9.45068932 L20.2741875,0.1378125 L20.2741875,0.1378125 C19.905375,-0.04725 19.469625,-0.04725 19.0995,0.1378125 L3.1011696,8.13815822 C2.60720568,8.38517662 2.40701679,8.98586148 2.6540352,9.4798254 C2.75080129,9.67332903 2.90771305,9.83023153 3.10122239,9.9269862 L21.8652864,19.3090182 C22.1468139,19.4497819 22.4781861,19.4497819 22.7597136,19.3090182 Z"></path>
@@ -127,19 +127,19 @@
                             </g>
                         </svg>
                     </div>
-                    <span class="sidebar-text ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Virtual Reality</span>
-                    <div class="sidebar-tooltip">Virtual Reality</div>
+                    <span class="sidebar-text ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Kelola Pengeluaran</span>
+                    <div class="sidebar-tooltip">Kelola Pengeluaran</div>
                 </a>
             </li>
 
-            <!-- RTL -->
+            <!-- Kelola Inventaris -->
             <li class="mt-0.5 w-full relative">
-                <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('rtl') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('rtl') }}">
-                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('rtl') ? 'bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-2xl' : 'bg-white' }}">
+                <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('kelola-inventaris') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('kelola-inventaris') }}">
+                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('kelola-inventaris') ? 'bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-2xl' : 'bg-white' }}">
                         <svg width="12px" height="12px" viewBox="0 0 40 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <title>settings</title>
                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <g transform="translate(-2020.000000, -442.000000)" fill="{{ request()->routeIs('rtl') ? '#FFFFFF' : '#1f2937' }}" fill-rule="nonzero">
+                                <g transform="translate(-2020.000000, -442.000000)" fill="{{ request()->routeIs('kelola-inventaris') ? '#FFFFFF' : '#1f2937' }}" fill-rule="nonzero">
                                     <g transform="translate(1716.000000, 291.000000)">
                                         <g transform="translate(304.000000, 151.000000)">
                                             <polygon class="color-background" opacity="0.596981957" points="18.0883333 15.7316667 11.1783333 8.82166667 13.3333333 6.66666667 6.66666667 0 0 6.66666667 6.66666667 13.3333333 8.82166667 11.1783333 15.315 17.6716667"></polygon>
@@ -151,19 +151,19 @@
                             </g>
                         </svg>
                     </div>
-                    <span class="sidebar-text ml-1 duration-300 opacity-100 pointer-events-none ease-soft">RTL</span>
-                    <div class="sidebar-tooltip">RTL</div>
+                    <span class="sidebar-text ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Kelola Inventaris</span>
+                    <div class="sidebar-tooltip">Kelola Inventaris</div>
                 </a>
             </li>
 
-            <!-- Profile -->
+            <!-- Kelola Cabang -->
             <li class="mt-0.5 w-full relative">
-                <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('profile') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('profile') }}">
-                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('profile') ? 'bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-2xl' : 'bg-white' }}">
+                <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('kelola-cabang') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('kelola-cabang') }}">
+                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('kelola-cabang') ? 'bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-2xl' : 'bg-white' }}">
                         <svg width="12px" height="12px" viewBox="0 0 46 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <title>customer-support</title>
                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <g transform="translate(-1717.000000, -291.000000)" fill="{{ request()->routeIs('profile') ? '#FFFFFF' : '#1f2937' }}" fill-rule="nonzero">
+                                <g transform="translate(-1717.000000, -291.000000)" fill="{{ request()->routeIs('kelola-cabang') ? '#FFFFFF' : '#1f2937' }}" fill-rule="nonzero">
                                     <g transform="translate(1716.000000, 291.000000)">
                                         <g transform="translate(1.000000, 0.000000)">
                                             <path class="color-background opacity-60" d="M45,0 L26,0 C25.447,0 25,0.447 25,1 L25,20 C25,20.379 25.214,20.725 25.553,20.895 C25.694,20.965 25.848,21 26,21 C26.212,21 26.424,20.933 26.6,20.8 L34.333,15 L45,15 C45.553,15 46,14.553 46,14 L46,1 C46,0.447 45.553,0 45,0 Z"></path>
@@ -175,8 +175,34 @@
                             </g>
                         </svg>
                     </div>
-                    <span class="sidebar-text ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Profile</span>
-                    <div class="sidebar-tooltip">Profile</div>
+                    <span class="sidebar-text ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Kelola Cabang</span>
+                    <div class="sidebar-tooltip">Kelola Cabang</div>
+                </a>
+            </li>
+
+            <!-- Laporan -->
+            <li class="mt-0.5 w-full relative">
+                <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('laporan') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('laporan') }}">
+                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('laporan') ? 'bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-2xl' : 'bg-white' }}">
+                        <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <title>chart-bar-32</title>
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g transform="translate(-1869.000000, -293.000000)" fill="{{ request()->routeIs('laporan') ? '#FFFFFF' : '#1f2937' }}" fill-rule="nonzero">
+                                    <g transform="translate(1716.000000, 291.000000)">
+                                        <g transform="translate(153.000000, 2.000000)">
+                                            <path d="M6,9 L6,39 L36,39 L36,9 L6,9 Z M8,11 L34,11 L34,37 L8,37 L8,11 Z"></path>
+                                            <rect x="10" y="16" width="4" height="17"></rect>
+                                            <rect x="16" y="13" width="4" height="20"></rect>
+                                            <rect x="22" y="19" width="4" height="14"></rect>
+                                            <rect x="28" y="10" width="4" height="23"></rect>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                    </div>
+                    <span class="sidebar-text ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Laporan</span>
+                    <div class="sidebar-tooltip">Laporan</div>
                 </a>
             </li>
         </ul>

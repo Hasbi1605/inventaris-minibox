@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'RTL')
-@section('page-title', 'RTL')
+@section('title', 'Kelola Inventaris')
+@section('page-title', 'Kelola Inventaris')
 
 @section('content')
 <div dir="rtl">

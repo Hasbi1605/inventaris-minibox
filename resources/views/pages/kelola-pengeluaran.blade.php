@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'Virtual Reality')
-@section('page-title', 'Virtual Reality')
+@section('title', 'Kelola Pengeluaran')
+@section('page-title', 'Kelola Pengeluaran')
 
 @section('content')
 <div class="min-h-screen bg-cover bg-center relative" style="background-image: url('{{ asset('assets/img/vr-bg.jpg') }}')">
