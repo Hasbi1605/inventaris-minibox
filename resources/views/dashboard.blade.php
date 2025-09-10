@@ -10,17 +10,17 @@
     <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
         <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border h-full">
             <div class="flex-auto p-4">
-                <div class="flex flex-row -mx-3">
-                    <div class="flex-none w-2/3 max-w-full px-3">
+                <div class="flex flex-row items-center justify-between">
+                    <div class="flex-1">
                         <div>
                             <p class="mb-0 font-sans text-sm font-semibold leading-normal">Pendapatan Hari Ini</p>
-                            <h5 class="mb-0 font-bold">
+                            <h5 class="mb-0 font-bold text-lg">
                                 Rp 1.200.000
-                                <span class="text-sm leading-normal font-weight-bolder text-lime-500">+10%</span>
+                                <span class="text-sm leading-normal font-semibold text-lime-500 ml-2">+10%</span>
                             </h5>
                         </div>
                     </div>
-                    <div class="px-3 text-right basis-1/3">
+                    <div class="text-right ml-4">
                         <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400">
                             <i class="ni ni-money-coins text-lg relative top-3.5 text-white"></i>
                         </div>
@@ -34,17 +34,17 @@
     <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
         <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border h-full">
             <div class="flex-auto p-4">
-                <div class="flex flex-row -mx-3">
-                    <div class="flex-none w-2/3 max-w-full px-3">
+                <div class="flex flex-row items-center justify-between">
+                    <div class="flex-1">
                         <div>
-                            <p class="mb-0 font-sans text-sm font-semibold leading-normal">Transaksi Hari Ini</p>
-                            <h5 class="mb-0 font-bold">
+                                                        <p class="mb-0 font-sans text-sm font-semibold leading-normal">Transaksi Hari Ini</p>
+                            <h5 class="mb-0 font-bold text-lg">
                                 35 transaksi
-                                <span class="text-sm leading-normal font-weight-bolder text-lime-500">+3%</span>
+                                <span class="text-sm leading-normal font-semibold text-lime-500 ml-2">+3%</span>
                             </h5>
                         </div>
                     </div>
-                    <div class="px-3 text-right basis-1/3">
+                    <div class="text-right ml-4">
                         <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400">
                             <i class="ni ni-scissors text-lg relative top-3.5 text-white"></i>
                         </div>
@@ -58,17 +58,17 @@
     <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
         <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border h-full">
             <div class="flex-auto p-4">
-                <div class="flex flex-row -mx-3">
-                    <div class="flex-none w-2/3 max-w-full px-3">
+                <div class="flex flex-row items-center justify-between">
+                    <div class="flex-1">
                         <div>
                             <p class="mb-0 font-sans text-sm font-semibold leading-normal">Pendapatan Bulanan</p>
-                            <h5 class="mb-0 font-bold">
+                            <h5 class="mb-0 font-bold text-lg">
                                 Rp 25.300.000
-                                <span class="text-sm leading-normal font-weight-bolder text-lime-500">+8%</span>
+                                <span class="text-sm leading-normal font-semibold text-lime-500 ml-2">+8%</span>
                             </h5>
                         </div>
                     </div>
-                    <div class="px-3 text-right basis-1/3">
+                    <div class="text-right ml-4">
                         <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400">
                             <i class="ni ni-chart-bar-32 text-lg relative top-3.5 text-white"></i>
                         </div>
@@ -82,17 +82,17 @@
     <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
         <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border h-full">
             <div class="flex-auto p-4">
-                <div class="flex flex-row -mx-3">
-                    <div class="flex-none w-2/3 max-w-full px-3">
+                <div class="flex flex-row items-center justify-between">
+                    <div class="flex-1">
                         <div>
                             <p class="mb-0 font-sans text-sm font-semibold leading-normal">Transaksi Bulanan</p>
-                            <h5 class="mb-0 font-bold">
+                            <h5 class="mb-0 font-bold text-lg">
                                 725 transaksi
-                                <span class="text-sm leading-normal font-weight-bolder text-lime-500">+5%</span>
+                                <span class="text-sm leading-normal font-semibold text-lime-500 ml-2">+5%</span>
                             </h5>
                         </div>
                     </div>
-                    <div class="px-3 text-right basis-1/3">
+                    <div class="text-right ml-4">
                         <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400">
                             <i class="ni ni-archive-2 text-lg relative top-3.5 text-white"></i>
                         </div>
@@ -106,9 +106,9 @@
 <!-- Main Content - Restructured with flex-col -->
 <div class="flex flex-col gap-6">
     <!-- Top Row -->
-    <div class="grid grid-cols-[7fr_5fr] gap-6 auto-rows-fr">
+    <div class="grid grid-cols-1 lg:grid-cols-[7fr_5fr] gap-6 min-h-[400px] auto-rows-fr">
         <!-- Top-Left Column -->
-        <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-6 min-h-0">
             <!-- Grafik Pendapatan Harian Chart -->
             <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border">
                 <div class="p-4 pb-3 mb-0 bg-white border-b border-gray-100 rounded-t-2xl">
@@ -234,7 +234,7 @@
         </div>
 
         <!-- Top-Right Column -->
-        <div class="flex flex-col">
+        <div class="flex flex-col min-h-0">
             <!-- Layanan Terlaris Card -->
             <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border h-full">
                 <!-- Header -->
@@ -301,7 +301,7 @@
     </div>
 
     <!-- Bottom Row -->
-    <div class="grid grid-cols-[7fr_5fr] gap-6 auto-rows-fr">
+    <div class="grid grid-cols-1 lg:grid-cols-[7fr_5fr] gap-6 min-h-[500px] auto-rows-fr">
         <!-- Performa Cabang (Bulan Ini) Card -->
         <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border h-full border-l-4 border-l-blue-500">
             <div class="p-4 pb-3 mb-0 bg-white border-b border-gray-100 rounded-t-2xl">
@@ -316,8 +316,9 @@
                     <span class="font-semibold">Perbandingan performa antar cabang</span>
                 </p>
             </div>
-            <div class="flex-auto overflow-x-auto p-4">
-                <table class="w-full text-sm align-middle">
+            <div class="flex-auto p-4">
+                <div class="overflow-x-auto">
+                <table class="w-full text-sm align-middle min-w-[600px]">
                         <thead class="align-bottom">
                             <tr class="border-b border-gray-200">
                                 <th class="pb-3 pl-2 pr-4 text-left font-semibold text-slate-700">Nama Cabang</th>
@@ -437,6 +438,7 @@
                             </tr>
                         </tfoot>
                 </table>
+                </div>
             </div>
         </div>
 
@@ -576,6 +578,7 @@
         </div>
     </div>
 </div>
+</div>
 @endsection
 
 @push('scripts')
@@ -709,7 +712,7 @@ if (hasData) {
                 tooltip: {
                     callbacks: {
                         label: function(context) {
-                            return context.label + ': ' + context.parsed + '%';
+                            return context.label + ': ' + context.parsed + '%'
                         }
                     },
                     backgroundColor: 'rgba(0, 0, 0, 0.8)',

@@ -11,6 +11,6 @@ class LaporanController extends Controller
      */
     public function index()
     {
-        return view('pages.laporan');
+        return view('pages.laporan.index');
     }
 }

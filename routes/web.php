@@ -12,11 +12,24 @@ use App\Http\Controllers\LaporanController;
 Route::get('/', [DashboardController::class, 'index'])->name('home');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-Route::get('/kelola-layanan', [KelolaLayananController::class, 'index'])->name('kelola-layanan');
-Route::get('/kelola-transaksi', [KelolaTransaksiController::class, 'index'])->name('kelola-transaksi');
-Route::get('/kelola-pengeluaran', [KelolaPengeluaranController::class, 'index'])->name('kelola-pengeluaran');
-Route::get('/kelola-inventaris', [KelolaInventarisController::class, 'index'])->name('kelola-inventaris');
-Route::get('/kelola-cabang', [KelolaCabangController::class, 'index'])->name('kelola-cabang');
+
+// Kelola Layanan Routes
+Route::resource('kelola-layanan', KelolaLayananController::class);
+
+// Kelola Transaksi Routes
+Route::resource('kelola-transaksi', KelolaTransaksiController::class);
+
+// Kelola Pengeluaran Routes
+Route::resource('kelola-pengeluaran', KelolaPengeluaranController::class);
+
+// Kelola Inventaris Routes
+Route::resource('kelola-inventaris', KelolaInventarisController::class);
+
+// Kelola Cabang Routes
+Route::resource('kelola-cabang', KelolaCabangController::class);
+Route::patch('/kelola-cabang/{cabang}/toggle-status', [KelolaCabangController::class, 'toggleStatus'])->name('kelola-cabang.toggle-status');
+
+// Laporan Routes
 Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
 
 // Auth routes placeholder
