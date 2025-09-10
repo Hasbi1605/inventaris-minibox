@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}" />
     
     <title>@yield('title', 'Dashboard') - {{ config('app.name', 'Inventaris Barbershop') }}</title>
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Fonts and icons -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
     <!-- Font Awesome Icons -->
@@ -31,7 +31,9 @@
     <!-- Main Content -->
     <main id="main-content" class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-300">
         <!-- Navbar -->
-        @include('layouts.partials.navbar')
+                    @if(request()->routeIs('dashboard'))
+                @include('layouts.partials.navbar')
+            @endif
         
         <!-- Page Content -->
         <div class="w-full px-6 py-6 mx-auto">

@@ -13,7 +13,7 @@
         </div>
         <div class="flex space-x-2">
             <a href="{{ route('kelola-layanan.show', $layanan->id) }}" 
-                class="inline-block px-6 py-3 font-bold text-center text-blue-700 uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-100 to-blue-200 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-600 to-cyan-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
                 <i class="fas fa-eye mr-2"></i>
                 Lihat Detail
             </a>
@@ -127,14 +127,16 @@
                                 <label for="harga" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
                                     Harga <span class="text-red-500">*</span>
                                 </label>
-                                <div class="relative">
-                                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">Rp</span>
+                                <div class="flex">
+                                    <span class="inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-r-0 border-gray-300 rounded-l-lg">
+                                        Rp
+                                    </span>
                                     <input 
                                         type="number" 
                                         name="harga" 
                                         id="harga"
                                         value="{{ old('harga', $layanan->harga) }}"
-                                        class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding pl-8 pr-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('harga') border-red-500 @enderror"
+                                        class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-none rounded-r-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('harga') border-red-500 @enderror"
                                         placeholder="0"
                                         min="0"
                                         step="1000"
@@ -151,19 +153,21 @@
                                 <label for="durasi_estimasi" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
                                     Durasi Estimasi <span class="text-red-500">*</span>
                                 </label>
-                                <div class="relative">
+                                <div class="flex">
                                     <input 
                                         type="number" 
                                         name="durasi_estimasi" 
                                         id="durasi_estimasi"
                                         value="{{ old('durasi_estimasi', $layanan->durasi_estimasi) }}"
-                                        class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 pr-16 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('durasi_estimasi') border-red-500 @enderror"
+                                        class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-none rounded-l-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('durasi_estimasi') border-red-500 @enderror"
                                         placeholder="30"
                                         min="1"
                                         max="480"
                                         required
                                     />
-                                    <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">menit</span>
+                                    <span class="inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-l-0 border-gray-300 rounded-r-lg">
+                                        menit
+                                    </span>
                                 </div>
                                 @error('durasi_estimasi')
                                     <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
@@ -195,7 +199,7 @@
                                 Batal
                             </a>
                             <button type="submit"
-                                class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-600 to-cyan-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                                class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-green-600 to-lime-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
                                 <i class="fas fa-save mr-2"></i>
                                 Perbarui Layanan
                             </button>

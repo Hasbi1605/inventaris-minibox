@@ -13,7 +13,7 @@
         </div>
         <div class="flex space-x-2">
             <a href="{{ route('kelola-layanan.edit', $layanan->id) }}" 
-                class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-600 to-cyan-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-green-600 to-lime-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
                 <i class="fas fa-edit mr-2"></i>
                 Edit Layanan
             </a>
@@ -138,11 +138,11 @@
                             <span class="text-sm font-medium text-slate-600">Kategori Harga</span>
                             <span class="text-sm font-semibold">
                                 @if($layanan->harga < 50000)
-                                    <span class="text-green-600">Ekonomis</span>
+                                    <span class="text-black-600">Ekonomis</span>
                                 @elseif($layanan->harga < 100000)
-                                    <span class="text-blue-600">Standar</span>
+                                    <span class="text-black-600">Standar</span>
                                 @else
-                                    <span class="text-purple-600">Premium</span>
+                                    <span class="text-black-600">Premium</span>
                                 @endif
                             </span>
                         </div>
@@ -173,28 +173,10 @@
                     <div class="space-y-3 mt-4">
                         <!-- Edit Action -->
                         <a href="{{ route('kelola-layanan.edit', $layanan->id) }}" 
-                            class="flex items-center justify-center w-full px-4 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-600 to-cyan-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                            class="flex items-center justify-center w-full px-4 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-green-600 to-lime-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
                             <i class="fas fa-edit mr-2"></i>
                             Edit Layanan
                         </a>
-
-                        <!-- Toggle Status -->
-                        <form action="{{ route('kelola-layanan.update', $layanan->id) }}" method="POST" class="w-full">
-                            @csrf
-                            @method('PUT')
-                            <input type="hidden" name="nama_layanan" value="{{ $layanan->nama_layanan }}">
-                            <input type="hidden" name="deskripsi" value="{{ $layanan->deskripsi }}">
-                            <input type="hidden" name="harga" value="{{ $layanan->harga }}">
-                            <input type="hidden" name="durasi_estimasi" value="{{ $layanan->durasi_estimasi }}">
-                            <input type="hidden" name="kategori" value="{{ $layanan->kategori }}">
-                            <input type="hidden" name="status" value="{{ $layanan->status == 'aktif' ? 'nonaktif' : 'aktif' }}">
-                            
-                            <button type="submit" 
-                                class="flex items-center justify-center w-full px-4 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl {{ $layanan->status == 'aktif' ? 'from-gray-600 to-gray-400' : 'from-green-600 to-lime-400' }} leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
-                                <i class="fas {{ $layanan->status == 'aktif' ? 'fa-pause' : 'fa-play' }} mr-2"></i>
-                                {{ $layanan->status == 'aktif' ? 'Nonaktifkan' : 'Aktifkan' }}
-                            </button>
-                        </form>
 
                         <!-- Delete Action -->
                         <form action="{{ route('kelola-layanan.destroy', $layanan->id) }}" method="POST" 
@@ -203,7 +185,7 @@
                             @csrf
                             @method('DELETE')
                             <button type="submit" 
-                                class="flex items-center justify-center w-full px-4 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-red-600 to-red-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                                class="flex items-center justify-center w-full px-4 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-red-600 to-yellow-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
                                 <i class="fas fa-trash mr-2"></i>
                                 Hapus Layanan
                             </button>

@@ -53,8 +53,8 @@
                             </div>
                         </div>
                         <div class="text-right ml-4">
-                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400">
-                                <i class="fas fa-cut text-lg relative top-3.5 text-white"></i>
+                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400 flex items-center justify-center shadow-soft-md">
+                                <i class="fas fa-cut text-lg text-white"></i>
                             </div>
                         </div>
                     </div>
@@ -74,8 +74,8 @@
                             </div>
                         </div>
                         <div class="text-right ml-4">
-                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-blue-600 to-cyan-400">
-                                <i class="fas fa-check-circle text-lg relative top-3.5 text-white"></i>
+                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400 flex items-center justify-center shadow-soft-md">
+                                <i class="fas fa-check-circle text-lg text-white"></i>
                             </div>
                         </div>
                     </div>
@@ -95,8 +95,8 @@
                             </div>
                         </div>
                         <div class="text-right ml-4">
-                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-600 to-pink-400">
-                                <i class="fas fa-money-bill-wave text-lg relative top-3.5 text-white"></i>
+                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400 flex items-center justify-center shadow-soft-md">
+                                <i class="fas fa-money-bill-wave text-lg text-white"></i>
                             </div>
                         </div>
                     </div>
@@ -116,8 +116,8 @@
                             </div>
                         </div>
                         <div class="text-right ml-4">
-                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-orange-600 to-yellow-400">
-                                <i class="fas fa-clock text-lg relative top-3.5 text-white"></i>
+                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400 flex items-center justify-center shadow-soft-md">
+                                <i class="fas fa-clock text-lg text-white"></i>
                             </div>
                         </div>
                     </div>
@@ -174,17 +174,29 @@
                                         </span>
                                     </td>
                                     <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                        <div class="flex justify-center items-center space-x-2">
-                                            <a href="{{ route('kelola-layanan.show', $item->id) }}" class="text-xs font-semibold leading-tight text-slate-400 hover:text-blue-600">
+                                        <div class="flex justify-center items-center space-x-3">
+                                            <!-- Tombol Lihat -->
+                                            <a href="{{ route('kelola-layanan.show', $item->id) }}" 
+                                               class="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-white bg-gradient-to-tl from-blue-600 to-cyan-400 rounded-lg hover:scale-102 hover:shadow-soft-xs transition-all duration-200 shadow-soft-md"
+                                               title="Lihat Detail">
                                                 <i class="fas fa-eye"></i>
                                             </a>
-                                            <a href="{{ route('kelola-layanan.edit', $item->id) }}" class="text-xs font-semibold leading-tight text-slate-400 hover:text-yellow-600">
+                                            
+                                            <!-- Tombol Edit -->
+                                            <a href="{{ route('kelola-layanan.edit', $item->id) }}" 
+                                               class="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-white bg-gradient-to-tl from-green-600 to-lime-400 rounded-lg hover:scale-102 hover:shadow-soft-xs transition-all duration-200 shadow-soft-md"
+                                               title="Edit Layanan">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <form action="{{ route('kelola-layanan.destroy', $item->id) }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus layanan ini?')">
+                                            
+                                            <!-- Tombol Hapus -->
+                                            <form action="{{ route('kelola-layanan.destroy', $item->id) }}" method="POST" class="inline-block"
+                                                  onsubmit="return confirm('Apakah Anda yakin ingin menghapus layanan {{ $item->nama_layanan }}?')">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="text-xs font-semibold leading-tight text-slate-400 hover:text-red-600">
+                                                <button type="submit" 
+                                                        class="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-white bg-gradient-to-tl from-red-600 to-yellow-400 rounded-lg hover:scale-102 hover:shadow-soft-xs transition-all duration-200 shadow-soft-md"
+                                                        title="Hapus Layanan">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </form>
