@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Pengeluaran;
+use App\Models\Kategori;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Carbon\Carbon;
@@ -88,11 +89,11 @@ class PengeluaranService
     {
         try {
             $pengeluaran = Pengeluaran::create([
-                'deskripsi' => $data['deskripsi'],
+                'nama_pengeluaran' => $data['deskripsi'],
                 'kategori' => $data['kategori'],
                 'jumlah' => $data['jumlah'],
                 'tanggal_pengeluaran' => $data['tanggal_pengeluaran'],
-                'catatan' => $data['catatan'] ?? null,
+                'deskripsi' => $data['catatan'] ?? null,
             ]);
 
             Log::info('Pengeluaran created successfully', ['id' => $pengeluaran->id]);
@@ -116,11 +117,11 @@ class PengeluaranService
             $pengeluaran = Pengeluaran::findOrFail($id);
 
             $pengeluaran->update([
-                'deskripsi' => $data['deskripsi'],
+                'nama_pengeluaran' => $data['deskripsi'],
                 'kategori' => $data['kategori'],
                 'jumlah' => $data['jumlah'],
                 'tanggal_pengeluaran' => $data['tanggal_pengeluaran'],
-                'catatan' => $data['catatan'] ?? null,
+                'deskripsi' => $data['catatan'] ?? null,
             ]);
 
             Log::info('Pengeluaran updated successfully', ['id' => $pengeluaran->id]);
@@ -241,10 +242,11 @@ class PengeluaranService
     public function getAvailableCategories(): Collection
     {
         try {
-            return Pengeluaran::select('kategori')
-                ->distinct()
-                ->orderBy('kategori')
-                ->pluck('kategori');
+            return Kategori::pengeluaran()
+                ->aktif()
+                ->orderBy('urutan')
+                ->get()
+                ->pluck('nama_kategori', 'id');
         } catch (\Exception $e) {
             Log::error('Error getting available categories: ' . $e->getMessage());
             return collect([]);

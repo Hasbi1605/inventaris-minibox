@@ -20,11 +20,13 @@ class KelolaLayananController extends Controller
     /**
      * Display a listing of the layanan.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $layanan = $this->layananService->getAllLayanan();
+        $filters = $request->only(['search', 'kategori', 'status']);
+        $layanan = $this->layananService->getAllLayanan($filters);
         $statistics = $this->layananService->getLayananStatistics();
-        return view('pages.kelola-layanan.index', compact('layanan', 'statistics'));
+        $categories = $this->layananService->getAvailableCategories();
+        return view('pages.kelola-layanan.index', compact('layanan', 'statistics', 'categories', 'filters'));
     }
 
     /**

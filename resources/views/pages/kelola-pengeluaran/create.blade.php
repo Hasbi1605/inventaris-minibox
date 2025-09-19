@@ -1,126 +1,173 @@
 @extends('layouts.admin')
 
 @section('title', 'Tambah Pengeluaran')
+@section('page-title', 'Tambah Pengeluaran')
 
 @section('content')
-<div class="flex flex-wrap -mx-3">
-    <div class="flex-none w-full max-w-full px-3">
-        <!-- Header -->
-        <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
-            <div class="p-6 pb-0 mb-0 bg-white rounded-t-2xl">
-                <div class="flex justify-between items-center">
-                    <h6 class="mb-0 text-slate-700">Tambah Pengeluaran Baru</h6>
-                    <a href="{{ route('kelola-pengeluaran.index') }}" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent border-0 rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102">
-                        <i class="fas fa-arrow-left mr-2"></i>Kembali
-                    </a>
-                </div>
+<div class="w-full max-w-full min-h-screen">
+    <!-- Page Header -->
+    <div class="flex flex-wrap items-center justify-between mb-6">
+        <div>
+            <h4 class="mb-0 font-bold text-slate-700">Tambah Pengeluaran</h4>
+            <p class="mb-0 text-sm text-slate-500">Tambahkan catatan pengeluaran baru</p>
+        </div>
+        <div>
+            <a href="{{ route('kelola-pengeluaran.index') }}" 
+                class="inline-block px-6 py-3 font-bold text-center text-slate-700 uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-gray-100 to-gray-200 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Kembali
+            </a>
+        </div>
+    </div>
+
+    <!-- Alert Messages -->
+    @if(session('error'))
+        <div class="relative p-4 mb-4 text-red-700 bg-red-100 border border-red-300 rounded-lg" role="alert">
+            <div class="flex items-center">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                <span class="font-medium">{{ session('error') }}</span>
             </div>
         </div>
+    @endif
 
-        <!-- Form -->
-        <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
-            <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
-                <h6 class="mb-0 text-slate-700">Informasi Pengeluaran</h6>
-            </div>
-            <div class="flex-auto p-6">
-                <form action="{{ route('kelola-pengeluaran.store') }}" method="POST">
-                    @csrf
-                    <div class="flex flex-wrap -mx-3">
-                        <!-- Deskripsi -->
-                        <div class="w-full max-w-full px-3 mb-4">
-                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Deskripsi Pengeluaran <span class="text-red-500">*</span></label>
-                            <input type="text" name="deskripsi" value="{{ old('deskripsi') }}" placeholder="Contoh: Pembelian peralatan barbershop" class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('deskripsi') border-red-300 @enderror" required>
-                            @error('deskripsi')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Kategori -->
-                        <div class="w-full max-w-full px-3 mb-4 md:w-1/2 md:flex-none">
-                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Kategori <span class="text-red-500">*</span></label>
-                            <select name="kategori" class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('kategori') border-red-300 @enderror" required>
-                                <option value="">-- Pilih Kategori --</option>
-                                @foreach($categories as $key => $value)
-                                <option value="{{ $key }}" {{ old('kategori') == $key ? 'selected' : '' }}>{{ $value }}</option>
-                                @endforeach
-                            </select>
-                            @error('kategori')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Jumlah -->
-                        <div class="w-full max-w-full px-3 mb-4 md:w-1/2 md:flex-none">
-                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Jumlah Pengeluaran <span class="text-red-500">*</span></label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-sm text-gray-500">Rp</span>
-                                <input type="text" name="jumlah" id="jumlah" value="{{ old('jumlah') }}" placeholder="0" class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding pl-8 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('jumlah') border-red-300 @enderror" required>
+    <!-- Form Card -->
+    <div class="flex flex-wrap -mx-3">
+        <div class="flex-none w-full max-w-full px-3">
+            <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
+                <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
+                    <h6 class="font-bold">Form Tambah Pengeluaran</h6>
+                    <p class="text-sm leading-normal text-slate-400">Isi form di bawah untuk mencatat pengeluaran</p>
+                </div>
+                <div class="flex-auto px-6 pt-0 pb-6">
+                    <form action="{{ route('kelola-pengeluaran.store') }}" method="POST">
+                        @csrf
+                        
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+                            <!-- Deskripsi -->
+                            <div class="col-span-1 lg:col-span-2">
+                                <label for="deskripsi" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                    Deskripsi Pengeluaran <span class="text-red-500">*</span>
+                                </label>
+                                <input 
+                                    type="text" 
+                                    name="deskripsi" 
+                                    id="deskripsi"
+                                    value="{{ old('deskripsi') }}"
+                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('deskripsi') border-red-500 @enderror"
+                                    placeholder="Contoh: Pembelian pomade"
+                                    required
+                                />
+                                @error('deskripsi')
+                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
-                            @error('jumlah')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                            @enderror
+
+                            <!-- Jumlah -->
+                            <div>
+                                <label for="jumlah" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                    Jumlah Pengeluaran <span class="text-red-500">*</span>
+                                </label>
+                                <div class="flex">
+                                    <span class="inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-r-0 border-gray-300 rounded-l-lg">
+                                        Rp
+                                    </span>
+                                    <input 
+                                        type="number" 
+                                        name="jumlah" 
+                                        id="jumlah"
+                                        value="{{ old('jumlah') }}"
+                                        class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-none rounded-r-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('jumlah') border-red-500 @enderror"
+                                        placeholder="0"
+                                        min="0"
+                                        step="1000"
+                                        required
+                                    />
+                                </div>
+                                @error('jumlah')
+                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Kategori -->
+                            <div>
+                                <label for="kategori_id" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                    Kategori <span class="text-red-500">*</span>
+                                </label>
+                                <select 
+                                    name="kategori_id" 
+                                    id="kategori_id"
+                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('kategori_id') border-red-500 @enderror"
+                                    required
+                                >
+                                    <option value="">Pilih Kategori</option>
+                                    @foreach($categories as $id => $nama)
+                                        <option value="{{ $id }}" {{ old('kategori_id') == $id ? 'selected' : '' }}>{{ $nama }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="text-xs text-slate-500 mt-1">
+                                    Tidak ada kategori yang sesuai? 
+                                    <a href="{{ route('kelola-kategori.create', ['jenis' => 'pengeluaran']) }}" target="_blank" class="text-blue-500 hover:underline">
+                                        Tambah kategori baru
+                                    </a>
+                                </div>
+                                @error('kategori_id')
+                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Tanggal Pengeluaran -->
+                            <div class="col-span-1 lg:col-span-2">
+                                <label for="tanggal_pengeluaran" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                    Tanggal Pengeluaran <span class="text-red-500">*</span>
+                                </label>
+                                <input 
+                                    type="date" 
+                                    name="tanggal_pengeluaran" 
+                                    id="tanggal_pengeluaran"
+                                    value="{{ old('tanggal_pengeluaran', date('Y-m-d')) }}"
+                                    max="{{ date('Y-m-d') }}"
+                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('tanggal_pengeluaran') border-red-500 @enderror"
+                                    required
+                                />
+                                @error('tanggal_pengeluaran')
+                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Catatan -->
+                            <div class="col-span-1 lg:col-span-2">
+                                <label for="catatan" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                    Catatan (Opsional)
+                                </label>
+                                <textarea 
+                                    name="catatan" 
+                                    id="catatan"
+                                    rows="4"
+                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('catatan') border-red-500 @enderror"
+                                    placeholder="Catatan tambahan tentang pengeluaran ini..."
+                                >{{ old('catatan') }}</textarea>
+                                @error('catatan')
+                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
 
-                        <!-- Tanggal Pengeluaran -->
-                        <div class="w-full max-w-full px-3 mb-4 md:w-1/2 md:flex-none">
-                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Tanggal Pengeluaran <span class="text-red-500">*</span></label>
-                            <input type="date" name="tanggal_pengeluaran" value="{{ old('tanggal_pengeluaran', date('Y-m-d')) }}" max="{{ date('Y-m-d') }}" class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('tanggal_pengeluaran') border-red-300 @enderror" required>
-                            @error('tanggal_pengeluaran')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Catatan -->
-                        <div class="w-full max-w-full px-3 mb-4">
-                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Catatan (Opsional)</label>
-                            <textarea name="catatan" rows="4" placeholder="Catatan tambahan tentang pengeluaran ini..." class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('catatan') border-red-300 @enderror">{{ old('catatan') }}</textarea>
-                            @error('catatan')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Action Buttons -->
-                        <div class="w-full px-3 flex gap-4">
-                            <button type="submit" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent border-0 rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-green-600 to-lime-400 hover:shadow-soft-xs active:opacity-85 hover:scale-102">
-                                <i class="fas fa-save mr-2"></i>Simpan Pengeluaran
-                            </button>
-                            <a href="{{ route('kelola-pengeluaran.index') }}" class="inline-block px-6 py-3 font-bold text-center text-slate-700 uppercase align-middle transition-all bg-transparent border border-slate-700 rounded-lg cursor-pointer leading-pro text-xs ease-soft-in hover:shadow-soft-xs active:opacity-85 hover:scale-102">
-                                <i class="fas fa-times mr-2"></i>Batal
+                        <!-- Submit Buttons -->
+                        <div class="flex justify-end mt-6 space-x-3">
+                            <a href="{{ route('kelola-pengeluaran.index') }}" 
+                                class="inline-block px-6 py-3 font-bold text-center text-slate-700 uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-gray-100 to-gray-200 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                                Batal
                             </a>
+                            <button type="submit"
+                                class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-green-600 to-lime-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                                <i class="fas fa-save mr-2"></i>
+                                Simpan Pengeluaran
+                            </button>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-- JavaScript for currency formatting -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const jumlahInput = document.getElementById('jumlah');
-    
-    // Format number as currency
-    function formatCurrency(value) {
-        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    }
-    
-    // Remove currency formatting
-    function unformatCurrency(value) {
-        return value.replace(/\./g, '');
-    }
-    
-    jumlahInput.addEventListener('input', function() {
-        let value = this.value.replace(/\./g, '');
-        if (value !== '') {
-            this.value = formatCurrency(value);
-        }
-    });
-    
-    // Remove formatting before form submission
-    document.querySelector('form').addEventListener('submit', function() {
-        jumlahInput.value = unformatCurrency(jumlahInput.value);
-    });
-});
-</script>
 @endsection

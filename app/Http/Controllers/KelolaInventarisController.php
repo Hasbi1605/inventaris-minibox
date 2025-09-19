@@ -20,13 +20,15 @@ class KelolaInventarisController extends Controller
     /**
      * Display a listing of the inventaris.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $inventaris = $this->inventarisService->getAllInventaris();
+        $filters = $request->only(['search', 'kategori', 'status']);
+        $inventaris = $this->inventarisService->getAllInventaris($filters);
         $statistics = $this->inventarisService->getInventarisStatistics();
         $lowStockItems = $this->inventarisService->getLowStockItems();
         $nearExpiryItems = $this->inventarisService->getItemsNearExpiry();
-        return view('pages.kelola-inventaris.index', compact('inventaris', 'statistics', 'lowStockItems', 'nearExpiryItems'));
+        $categories = $this->inventarisService->getAvailableCategories();
+        return view('pages.kelola-inventaris.index', compact('inventaris', 'statistics', 'lowStockItems', 'nearExpiryItems', 'categories', 'filters'));
     }
 
     /**

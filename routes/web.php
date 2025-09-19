@@ -7,6 +7,7 @@ use App\Http\Controllers\KelolaTransaksiController;
 use App\Http\Controllers\KelolaPengeluaranController;
 use App\Http\Controllers\KelolaInventarisController;
 use App\Http\Controllers\KelolaCabangController;
+use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LaporanController;
 
 Route::get('/', [DashboardController::class, 'index'])->name('home');
@@ -28,6 +29,19 @@ Route::resource('kelola-inventaris', KelolaInventarisController::class);
 // Kelola Cabang Routes
 Route::resource('kelola-cabang', KelolaCabangController::class);
 Route::patch('/kelola-cabang/{cabang}/toggle-status', [KelolaCabangController::class, 'toggleStatus'])->name('kelola-cabang.toggle-status');
+
+// Kelola Kategori Routes
+Route::resource('kelola-kategori', KategoriController::class)->names([
+    'index' => 'kelola-kategori.index',
+    'create' => 'kelola-kategori.create',
+    'store' => 'kelola-kategori.store',
+    'show' => 'kelola-kategori.show',
+    'edit' => 'kelola-kategori.edit',
+    'update' => 'kelola-kategori.update',
+    'destroy' => 'kelola-kategori.destroy'
+]);
+Route::post('/kelola-kategori/reorder', [KategoriController::class, 'reorder'])->name('kelola-kategori.reorder');
+Route::get('/kelola-kategori/by-jenis', [KategoriController::class, 'getByJenis'])->name('kelola-kategori.getByJenis');
 
 // Laporan Routes
 Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');

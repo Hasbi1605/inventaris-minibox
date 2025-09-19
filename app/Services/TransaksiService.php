@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Transaksi;
 use App\Models\Layanan;
+use App\Models\Kategori;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
@@ -12,9 +13,40 @@ class TransaksiService
     /**
      * Get all transaksi with pagination
      */
-    public function getAllTransaksi($perPage = 10)
+    public function getAllTransaksi(array $filters = [], $perPage = 10)
     {
-        return Transaksi::with('layanan')->latest()->paginate($perPage);
+        $query = Transaksi::query()->with('layanan');
+
+        // Filter by status
+        if (!empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        // Filter by date range
+        if (!empty($filters['tanggal_dari'])) {
+            $query->whereDate('tanggal_transaksi', '>=', $filters['tanggal_dari']);
+        }
+
+        if (!empty($filters['tanggal_sampai'])) {
+            $query->whereDate('tanggal_transaksi', '<=', $filters['tanggal_sampai']);
+        }
+
+        // Filter by category (from related Layanan)
+        if (!empty($filters['kategori'])) {
+            $query->whereHas('layanan', function ($q) use ($filters) {
+                $q->where('kategori_id', $filters['kategori']);
+            });
+        }
+
+        // Search in nomor_transaksi or nama_pelanggan
+        if (!empty($filters['search'])) {
+            $query->where(function ($q) use ($filters) {
+                $q->where('nomor_transaksi', 'like', '%' . $filters['search'] . '%')
+                    ->orWhere('nama_pelanggan', 'like', '%' . $filters['search'] . '%');
+            });
+        }
+
+        return $query->latest()->paginate($perPage);
     }
 
     /**
@@ -42,6 +74,18 @@ class TransaksiService
     public function getAvailableLayanan()
     {
         return Layanan::where('status', 'aktif')->get();
+    }
+
+    /**
+     * Get available categories for transactions (from Layanan)
+     */
+    public function getAvailableCategories()
+    {
+        return Kategori::where('jenis_kategori', Kategori::JENIS_LAYANAN)
+            ->aktif()
+            ->orderBy('urutan')
+            ->get()
+            ->pluck('nama_kategori', 'id');
     }
 
     /**

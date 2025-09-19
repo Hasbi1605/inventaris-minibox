@@ -24,7 +24,7 @@ class InventarisRequest extends FormRequest
         $rules = [
             'nama_barang' => 'required|string|max:255',
             'deskripsi' => 'nullable|string|max:1000',
-            'kategori' => 'required|in:alat_cukur,produk_perawatan,furniture,elektronik,lainnya',
+            'kategori_id' => 'required|exists:kategoris,id',
             'stok_minimal' => 'required|integer|min:0',
             'stok_saat_ini' => 'required|integer|min:0',
             'harga_satuan' => 'required|numeric|min:0|max:999999999.99',
@@ -38,7 +38,7 @@ class InventarisRequest extends FormRequest
         if ($this->isMethod('post')) {
             $rules['nama_barang'] .= '|unique:inventaris,nama_barang';
         } elseif ($this->isMethod('put') || $this->isMethod('patch')) {
-            $inventarisId = $this->route('inventaris') ?? $this->route('id');
+            $inventarisId = $this->route('kelola_inventari');
             $rules['nama_barang'] .= '|unique:inventaris,nama_barang,' . $inventarisId;
         }
 

@@ -70,34 +70,28 @@
 
                             <!-- Kategori -->
                             <div>
-                                <label for="kategori" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                <label for="kategori_id" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
                                     Kategori
                                 </label>
                                 <select 
-                                    name="kategori" 
-                                    id="kategori"
-                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('kategori') border-red-500 @enderror"
+                                    name="kategori_id" 
+                                    id="kategori_id"
+                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('kategori_id') border-red-500 @enderror"
                                 >
                                     <option value="">Pilih Kategori (Opsional)</option>
-                                    @foreach($categories as $category)
-                                        <option value="{{ $category }}" {{ old('kategori', $layanan->kategori) == $category ? 'selected' : '' }}>
-                                            {{ $category }}
+                                    @foreach($categories as $id => $nama)
+                                        <option value="{{ $id }}" {{ old('kategori_id', $layanan->kategori_id) == $id ? 'selected' : '' }}>
+                                            {{ $nama }}
                                         </option>
                                     @endforeach
-                                    @if($layanan->kategori && !$categories->contains($layanan->kategori))
-                                        <option value="{{ $layanan->kategori }}" selected>{{ $layanan->kategori }}</option>
-                                    @endif
-                                    <option value="other">Kategori Lain</option>
                                 </select>
-                                <input 
-                                    type="text" 
-                                    name="kategori_custom" 
-                                    id="kategori_custom"
-                                    value="{{ old('kategori_custom') }}"
-                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow mt-2 hidden"
-                                    placeholder="Masukkan kategori baru"
-                                />
-                                @error('kategori')
+                                <div class="text-xs text-slate-500 mt-1">
+                                    Tidak ada kategori yang sesuai? 
+                                    <a href="{{ route('kelola-kategori.create', ['jenis' => 'layanan']) }}" target="_blank" class="text-blue-500 hover:underline">
+                                        Tambah kategori baru
+                                    </a>
+                                </div>
+                                @error('kategori_id')
                                     <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
                                 @enderror
                             </div>

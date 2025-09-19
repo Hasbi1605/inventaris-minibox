@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Layanan;
+use App\Models\Kategori;
 use Illuminate\Support\Facades\Log;
 
 class LayananService
@@ -10,9 +11,29 @@ class LayananService
     /**
      * Get all layanan with pagination
      */
-    public function getAllLayanan($perPage = 10)
+    public function getAllLayanan(array $filters = [], $perPage = 10)
     {
-        return Layanan::latest()->paginate($perPage);
+        $query = Layanan::query()->with('kategoriRelasi');
+
+        // Filter by kategori
+        if (!empty($filters['kategori'])) {
+            $query->where('kategori_id', $filters['kategori']);
+        }
+
+        // Filter by status
+        if (!empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        // Search in nama_layanan or deskripsi
+        if (!empty($filters['search'])) {
+            $query->where(function ($q) use ($filters) {
+                $q->where('nama_layanan', 'like', '%' . $filters['search'] . '%')
+                    ->orWhere('deskripsi', 'like', '%' . $filters['search'] . '%');
+            });
+        }
+
+        return $query->latest()->paginate($perPage);
     }
 
     /**
@@ -28,7 +49,11 @@ class LayananService
      */
     public function getAvailableCategories()
     {
-        return Layanan::distinct()->pluck('kategori')->filter()->values();
+        return Kategori::where('jenis_kategori', Kategori::JENIS_LAYANAN)
+            ->aktif()
+            ->orderBy('urutan')
+            ->get()
+            ->pluck('nama_kategori', 'id');
     }
 
     /**

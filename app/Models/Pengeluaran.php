@@ -15,6 +15,7 @@ class Pengeluaran extends Model
     protected $fillable = [
         'nama_pengeluaran',
         'kategori',
+        'kategori_id',
         'jumlah',
         'tanggal_pengeluaran',
         'deskripsi',
@@ -106,5 +107,23 @@ class Pengeluaran extends Model
             'utilitas' => 'Utilitas',
             'lainnya' => 'Lainnya',
         ];
+    }
+
+    // Relasi dengan kategori
+    public function kategoriRelasi()
+    {
+        return $this->belongsTo(Kategori::class, 'kategori_id');
+    }
+
+    // Scope berdasarkan kategori ID
+    public function scopeByKategoriId($query, $kategoriId)
+    {
+        return $query->where('kategori_id', $kategoriId);
+    }
+
+    // Accessor untuk nama kategori
+    public function getNamaKategoriAttribute()
+    {
+        return $this->kategoriRelasi ? $this->kategoriRelasi->nama_kategori : $this->kategori;
     }
 }

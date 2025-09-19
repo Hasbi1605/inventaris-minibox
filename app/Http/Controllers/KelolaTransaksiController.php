@@ -20,11 +20,13 @@ class KelolaTransaksiController extends Controller
     /**
      * Display a listing of the transaksi.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $transaksi = $this->transaksiService->getAllTransaksi();
+        $filters = $request->only(['search', 'kategori', 'status', 'tanggal_dari', 'tanggal_sampai']);
+        $transaksi = $this->transaksiService->getAllTransaksi($filters);
         $statistics = $this->transaksiService->getTransaksiStatistics();
-        return view('pages.kelola-transaksi.index', compact('transaksi', 'statistics'));
+        $categories = $this->transaksiService->getAvailableCategories();
+        return view('pages.kelola-transaksi.index', compact('transaksi', 'statistics', 'categories', 'filters'));
     }
 
     /**

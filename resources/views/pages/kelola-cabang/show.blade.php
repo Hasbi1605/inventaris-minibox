@@ -1,191 +1,120 @@
 @extends('layouts.admin')
 
 @section('title', 'Detail Cabang')
+@section('page-title', 'Detail Cabang')
 
 @section('content')
-<div class="flex flex-wrap -mx-3">
-    <div class="flex-none w-full max-w-full px-3">
-        <!-- Header -->
-        <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
-            <div class="p-6 pb-0 mb-0 bg-white rounded-t-2xl">
-                <div class="flex justify-between items-center">
-                    <h6 class="mb-0 text-slate-700">Detail Cabang: {{ $cabang->nama_cabang }}</h6>
-                    <div class="flex gap-2">
-                        <a href="{{ route('kelola-cabang.edit', $cabang->id) }}" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent border-0 rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-blue-600 to-cyan-400 hover:shadow-soft-xs active:opacity-85 hover:scale-102">
-                            <i class="fas fa-edit mr-2"></i>Edit
-                        </a>
-                        <a href="{{ route('kelola-cabang.index') }}" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent border-0 rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-gray-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102">
-                            <i class="fas fa-arrow-left mr-2"></i>Kembali
-                        </a>
-                    </div>
-                </div>
+<div class="w-full max-w-full min-h-screen">
+    <!-- Page Header -->
+    <div class="flex flex-wrap items-center justify-between mb-6">
+        <div>
+            <h4 class="mb-0 font-bold text-slate-700">Detail Cabang</h4>
+            <p class="mb-0 text-sm text-slate-500">Informasi lengkap cabang: {{ $cabang->nama_cabang }}</p>
+        </div>
+        <div class="flex space-x-2">
+            <a href="{{ route('kelola-cabang.edit', $cabang->id) }}" 
+                class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-green-600 to-lime-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                <i class="fas fa-edit mr-2"></i>
+                Edit Cabang
+            </a>
+            <a href="{{ route('kelola-cabang.index') }}" 
+                class="inline-block px-6 py-3 font-bold text-center text-slate-700 uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-gray-100 to-gray-200 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Kembali
+            </a>
+        </div>
+    </div>
+
+    <!-- Alert Messages -->
+    @if(session('success'))
+        <div class="relative p-4 mb-4 text-green-700 bg-green-100 border border-green-300 rounded-lg" role="alert">
+            <div class="flex items-center">
+                <i class="fas fa-check-circle mr-2"></i>
+                <span class="font-medium">{{ session('success') }}</span>
             </div>
         </div>
+    @endif
 
-        <!-- Detail Content -->
-        <div class="flex flex-wrap -mx-3">
-            <!-- Main Info -->
-            <div class="w-full max-w-full px-3 lg:w-2/3 lg:flex-none">
-                <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
-                    <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
-                        <h6 class="mb-0 text-slate-700">Informasi Cabang</h6>
-                    </div>
-                    <div class="flex-auto p-6">
-                        <div class="flex flex-wrap -mx-3">
-                            <div class="w-full max-w-full px-3 mb-4">
-                                <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Nama Cabang</label>
-                                <div class="text-lg font-semibold text-slate-600 bg-gray-50 rounded-lg p-3">
-                                    {{ $cabang->nama_cabang }}
-                                </div>
-                            </div>
-                            <div class="w-full max-w-full px-3 mb-4 md:w-1/2 md:flex-none">
-                                <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Manager</label>
-                                <div class="text-sm text-slate-600 bg-gray-50 rounded-lg p-3">
-                                    {{ $cabang->manager }}
-                                </div>
-                            </div>
-                            <div class="w-full max-w-full px-3 mb-4 md:w-1/2 md:flex-none">
-                                <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Status</label>
-                                <div class="bg-gray-50 rounded-lg p-3">
-                                    <span class="bg-gradient-to-tl {{ $cabang->status_badge_color }} px-3.6 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
-                                        {{ ucfirst(str_replace('_', ' ', $cabang->status)) }}
-                                    </span>
-                                    @if($cabang->is_open)
-                                    <div class="text-xs text-green-600 mt-2">
-                                        <i class="fas fa-circle text-xxs mr-1"></i>Sedang Buka Sekarang
-                                    </div>
-                                    @else
-                                    <div class="text-xs text-slate-400 mt-2">
-                                        <i class="fas fa-circle text-xxs mr-1"></i>Sedang Tutup
-                                    </div>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="w-full max-w-full px-3 mb-4">
-                                <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Alamat Lengkap</label>
-                                <div class="text-sm text-slate-600 bg-gray-50 rounded-lg p-3">
-                                    {{ $cabang->alamat }}
-                                </div>
-                            </div>
-                            <div class="w-full max-w-full px-3 mb-4 md:w-1/2 md:flex-none">
-                                <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Telepon</label>
-                                <div class="text-sm text-slate-600 bg-gray-50 rounded-lg p-3">
-                                    <i class="fas fa-phone text-xs mr-2"></i>{{ $cabang->telepon }}
-                                </div>
-                            </div>
-                            <div class="w-full max-w-full px-3 mb-4 md:w-1/2 md:flex-none">
-                                <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Email</label>
-                                <div class="text-sm text-slate-600 bg-gray-50 rounded-lg p-3">
-                                    @if($cabang->email)
-                                    <i class="fas fa-envelope text-xs mr-2"></i>{{ $cabang->email }}
-                                    @else
-                                    <span class="text-slate-400">Tidak ada email</span>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="w-full max-w-full px-3 mb-4">
-                                <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Deskripsi</label>
-                                <div class="text-sm text-slate-600 bg-gray-50 rounded-lg p-3 min-h-[80px]">
-                                    {{ $cabang->deskripsi ?? 'Tidak ada deskripsi' }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    @if(session('error'))
+        <div class="relative p-4 mb-4 text-red-700 bg-red-100 border border-red-300 rounded-lg" role="alert">
+            <div class="flex items-center">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                <span class="font-medium">{{ session('error') }}</span>
             </div>
+        </div>
+    @endif
 
-            <!-- Operational & Timeline Info -->
-            <div class="w-full max-w-full px-3 lg:w-1/3 lg:flex-none">
-                <!-- Operational Information -->
-                <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
-                    <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
-                        <h6 class="mb-0 text-slate-700">Operasional</h6>
-                    </div>
-                    <div class="flex-auto p-6">
-                        <div class="mb-4">
-                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Jam Operasional</label>
-                            <div class="text-lg font-semibold text-slate-600">
-                                {{ $cabang->jam_operasional }}
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Tanggal Buka</label>
-                            <div class="text-sm text-slate-600">
-                                {{ $cabang->tanggal_buka->format('d F Y') }}
-                                <div class="text-xs text-slate-400 mt-1">
-                                    {{ $cabang->tanggal_buka->diffForHumans() }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Usia Cabang</label>
-                            <div class="text-sm text-slate-600">
-                                {{ $cabang->age_in_days }} hari
-                                <div class="text-xs text-slate-400 mt-1">
-                                    Sekitar {{ round($cabang->age_in_days / 30, 1) }} bulan
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Status Saat Ini</label>
-                            <div class="text-sm text-slate-600">
-                                @if($cabang->status === 'aktif')
-                                    @if($cabang->is_open)
-                                    <span class="bg-gradient-to-tl from-green-600 to-lime-400 px-3.6 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
-                                        <i class="fas fa-circle text-xxs mr-1"></i>Buka
-                                    </span>
-                                    @else
-                                    <span class="bg-gradient-to-tl from-orange-600 to-yellow-400 px-3.6 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
-                                        <i class="fas fa-circle text-xxs mr-1"></i>Tutup
-                                    </span>
-                                    @endif
-                                @else
-                                <span class="bg-gradient-to-tl from-red-600 to-rose-400 px-3.6 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
-                                    <i class="fas fa-times text-xxs mr-1"></i>Tidak Aktif
-                                </span>
-                                @endif
-                            </div>
-                        </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Main Information Card -->
+        <div class="lg:col-span-2">
+            <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
+                <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
+                    <div class="flex items-center justify-between">
+                        <h6 class="font-bold">Informasi Cabang</h6>
+                        <span class="bg-gradient-to-tl {{ $cabang->status_badge_color }} px-3 text-xs rounded-1.8 py-1.5 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                            {{ ucfirst(str_replace('_', ' ', $cabang->status)) }}
+                        </span>
                     </div>
                 </div>
+                <div class="flex-auto px-6 pt-0 pb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                        <!-- Nama Cabang -->
+                        <div class="md:col-span-2">
+                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Nama Cabang</label>
+                            <div class="p-3 bg-gray-50 rounded-lg border">
+                                <h5 class="mb-0 font-semibold text-slate-700">{{ $cabang->nama_cabang }}</h5>
+                            </div>
+                        </div>
 
-                <!-- Timeline Information -->
-                <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
-                    <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
-                        <h6 class="mb-0 text-slate-700">Timeline</h6>
-                    </div>
-                    <div class="flex-auto p-6">
-                        <div class="mb-4">
-                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Dibuat</label>
-                            <div class="text-sm text-slate-600">
-                                {{ $cabang->created_at->format('d F Y H:i') }}
-                                <div class="text-xs text-slate-400">
-                                    {{ $cabang->created_at->diffForHumans() }}
-                                </div>
+                        <!-- Manager -->
+                        <div>
+                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Manager</label>
+                            <div class="p-3 bg-gray-50 rounded-lg border">
+                                <p class="mb-0 text-slate-600">{{ $cabang->manager }}</p>
                             </div>
                         </div>
-                        <div class="mb-4">
-                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Terakhir Diperbarui</label>
-                            <div class="text-sm text-slate-600">
-                                {{ $cabang->updated_at->format('d F Y H:i') }}
-                                <div class="text-xs text-slate-400">
-                                    {{ $cabang->updated_at->diffForHumans() }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">ID Record</label>
-                            <div class="text-sm text-slate-600 font-mono">
-                                #{{ str_pad($cabang->id, 6, '0', STR_PAD_LEFT) }}
-                            </div>
-                        </div>
-                        @if($cabang->created_at != $cabang->updated_at)
-                        <div class="mb-4">
-                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Status Record</label>
-                            <div class="text-xs">
-                                <span class="bg-gradient-to-tl from-orange-600 to-yellow-400 px-3.6 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
-                                    Telah Diperbarui
+
+                        <!-- Status -->
+                        <div>
+                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Status</label>
+                            <div class="p-3 bg-gray-50 rounded-lg border">
+                                <span class="inline-flex items-center">
+                                    <i class="fas fa-circle text-xs {{ $cabang->status == 'aktif' ? 'text-green-500' : 'text-gray-500' }} mr-2"></i>
+                                    {{ ucfirst(str_replace('_', ' ', $cabang->status)) }}
                                 </span>
+                            </div>
+                        </div>
+
+                        <!-- Telepon -->
+                        <div>
+                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Telepon</label>
+                            <div class="p-3 bg-gray-50 rounded-lg border">
+                                <p class="mb-0 text-slate-600 font-semibold">{{ $cabang->telepon }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div>
+                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Email</label>
+                            <div class="p-3 bg-gray-50 rounded-lg border">
+                                <p class="mb-0 text-slate-600">{{ $cabang->email ?? 'Tidak ada email' }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Alamat -->
+                        <div class="md:col-span-2">
+                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Alamat</label>
+                            <div class="p-3 bg-gray-50 rounded-lg border">
+                                <p class="mb-0 text-slate-600 leading-relaxed">{{ $cabang->alamat }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Deskripsi -->
+                        @if($cabang->deskripsi)
+                        <div class="md:col-span-2">
+                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Deskripsi</label>
+                            <div class="p-3 bg-gray-50 rounded-lg border">
+                                <p class="mb-0 text-slate-600 leading-relaxed">{{ $cabang->deskripsi }}</p>
                             </div>
                         </div>
                         @endif
@@ -194,42 +123,93 @@
             </div>
         </div>
 
-        <!-- Quick Actions -->
-        <div class="relative flex flex-col min-w-0 mt-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
-            <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
-                <h6 class="mb-0 text-slate-700">Aksi Cepat</h6>
-            </div>
-            <div class="flex-auto p-6">
-                <div class="flex gap-3">
-                    <a href="{{ route('kelola-cabang.edit', $cabang->id) }}" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent border-0 rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-blue-600 to-cyan-400 hover:shadow-soft-xs active:opacity-85 hover:scale-102">
-                        <i class="fas fa-edit mr-2"></i>Edit Cabang
-                    </a>
-                    
-                    @if($cabang->status === 'aktif')
-                    <form action="{{ route('kelola-cabang.toggle-status', $cabang->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Apakah Anda yakin ingin menonaktifkan cabang ini?')">
-                        @csrf
-                        @method('PATCH')
-                        <button type="submit" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent border-0 rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-orange-600 to-yellow-400 hover:shadow-soft-xs active:opacity-85 hover:scale-102">
-                            <i class="fas fa-pause mr-2"></i>Nonaktifkan
-                        </button>
-                    </form>
-                    @else
-                    <form action="{{ route('kelola-cabang.toggle-status', $cabang->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Apakah Anda yakin ingin mengaktifkan cabang ini?')">
-                        @csrf
-                        @method('PATCH')
-                        <button type="submit" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent border-0 rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-green-600 to-lime-400 hover:shadow-soft-xs active:opacity-85 hover:scale-102">
-                            <i class="fas fa-play mr-2"></i>Aktifkan
-                        </button>
-                    </form>
-                    @endif
+        <!-- Quick Stats & Actions -->
+        <div class="lg:col-span-1">
+            <!-- Quick Stats -->
+            <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
+                <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
+                    <h6 class="font-bold">Statistik Cepat</h6>
+                </div>
+                <div class="flex-auto px-6 pt-0 pb-6">
+                    <div class="space-y-4 mt-4">
+                        <!-- Status Visual -->
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <span class="text-sm font-medium text-slate-600">Status Cabang</span>
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 rounded-full {{ $cabang->status == 'aktif' ? 'bg-green-500' : 'bg-gray-500' }} mr-2"></div>
+                                <span class="text-sm font-semibold">{{ ucfirst(str_replace('_', ' ', $cabang->status)) }}</span>
+                            </div>
+                        </div>
 
-                    <form action="{{ route('kelola-cabang.destroy', $cabang->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Apakah Anda yakin ingin menghapus cabang ini? Tindakan ini tidak dapat dibatalkan.')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent border-0 rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-red-600 to-rose-400 hover:shadow-soft-xs active:opacity-85 hover:scale-102">
-                            <i class="fas fa-trash mr-2"></i>Hapus Cabang
-                        </button>
-                    </form>
+                        <!-- Jam Operasional -->
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <span class="text-sm font-medium text-slate-600">Jam Operasional</span>
+                            <span class="text-sm font-semibold">
+                                {{ $cabang->jam_operasional }}
+                            </span>
+                        </div>
+
+                        <!-- Usia Cabang -->
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <span class="text-sm font-medium text-slate-600">Usia Cabang</span>
+                            <span class="text-sm font-semibold">
+                                {{ $cabang->age_in_days }} hari
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions Card -->
+            <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
+                <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
+                    <h6 class="font-bold">Aksi Cepat</h6>
+                </div>
+                <div class="flex-auto px-6 pt-0 pb-6">
+                    <div class="space-y-3 mt-4">
+                        <!-- Edit Action -->
+                        <a href="{{ route('kelola-cabang.edit', $cabang->id) }}" 
+                            class="flex items-center justify-center w-full px-4 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-green-600 to-lime-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                            <i class="fas fa-edit mr-2"></i>
+                            Edit Cabang
+                        </a>
+
+                        <!-- Delete Action -->
+                        <form action="{{ route('kelola-cabang.destroy', $cabang->id) }}" method="POST" 
+                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus cabang ini? Tindakan ini tidak dapat dibatalkan.')" 
+                            class="w-full">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" 
+                                class="flex items-center justify-center w-full px-4 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-red-600 to-yellow-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                                <i class="fas fa-trash mr-2"></i>
+                                Hapus Cabang
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metadata Card -->
+            <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
+                <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
+                    <h6 class="font-bold">Informasi Sistem</h6>
+                </div>
+                <div class="flex-auto px-6 pt-0 pb-6">
+                    <div class="space-y-3 mt-4">
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-slate-600">ID Cabang:</span>
+                            <span class="font-mono text-slate-800">#{{ $cabang->id }}</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-slate-600">Dibuat:</span>
+                            <span class="text-slate-800">{{ $cabang->created_at->format('d M Y H:i') }}</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-slate-600">Diperbarui:</span>
+                            <span class="text-slate-800">{{ $cabang->updated_at->format('d M Y H:i') }}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

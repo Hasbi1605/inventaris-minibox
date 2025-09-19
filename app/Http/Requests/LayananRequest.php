@@ -26,7 +26,7 @@ class LayananRequest extends FormRequest
             'deskripsi' => 'nullable|string|max:1000',
             'harga' => 'required|numeric|min:0|max:999999999.99',
             'durasi_estimasi' => 'required|integer|min:1|max:480', // max 8 jam
-            'kategori' => 'nullable|string|max:100',
+            'kategori_id' => 'nullable|exists:kategoris,id',
             'status' => 'required|in:aktif,nonaktif'
         ];
 

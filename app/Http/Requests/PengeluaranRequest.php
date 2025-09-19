@@ -28,10 +28,9 @@ class PengeluaranRequest extends FormRequest
                 'min:3',
                 'max:255',
             ],
-            'kategori' => [
+            'kategori_id' => [
                 'required',
-                'string',
-                'in:operasional,inventaris,promosi,maintenance,gaji,utilitas,lainnya',
+                'exists:kategoris,id',
             ],
             'jumlah' => [
                 'required',

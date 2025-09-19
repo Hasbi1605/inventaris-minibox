@@ -14,6 +14,7 @@ class Inventaris extends Model
         'nama_barang',
         'deskripsi',
         'kategori',
+        'kategori_id',
         'stok_minimal',
         'stok_saat_ini',
         'harga_satuan',
@@ -87,9 +88,27 @@ class Inventaris extends Model
         return $query->where('tanggal_kadaluarsa', '<', Carbon::today());
     }
 
+    // Relasi dengan kategori
+    public function kategoriRelasi()
+    {
+        return $this->belongsTo(Kategori::class, 'kategori_id');
+    }
+
     // Scope berdasarkan kategori
     public function scopeByKategori($query, $kategori)
     {
         return $query->where('kategori', $kategori);
+    }
+
+    // Scope berdasarkan kategori ID
+    public function scopeByKategoriId($query, $kategoriId)
+    {
+        return $query->where('kategori_id', $kategoriId);
+    }
+
+    // Accessor untuk nama kategori
+    public function getNamaKategoriAttribute()
+    {
+        return $this->kategoriRelasi ? $this->kategoriRelasi->nama_kategori : $this->kategori;
     }
 }

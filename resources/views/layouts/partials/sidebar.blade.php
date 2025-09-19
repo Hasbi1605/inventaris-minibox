@@ -1,5 +1,5 @@
 <!-- sidenav -->
-<aside id="sidenav-main" class="max-w-62.5 ease-nav-brand z-990 fixed inset-y-0 my-4 ml-4 block w-full -translate-x-full flex-wrap items-center justify-between overflow-y-auto rounded-2xl border-0 bg-white p-0 antialiased shadow-none transition-all duration-300 xl:left-0 xl:translate-x-0 xl:bg-transparent sidebar-expanded">
+<aside id="sidenav-main" class="max-w-62.5 ease-nav-brand z-990 fixed inset-y-0 my-4 ml-4 block w-full -translate-x-full flex-wrap items-center justify-between rounded-2xl border-0 bg-white p-0 antialiased shadow-none transition-all duration-300 xl:left-0 xl:translate-x-0 xl:bg-transparent sidebar-expanded">
     
     <div class="h-19.5 relative">
         <i class="absolute top-0 right-0 hidden p-4 opacity-50 cursor-pointer fas fa-times text-slate-400 xl:hidden" sidenav-close></i>
@@ -36,8 +36,8 @@
 
     <hr class="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent" />
 
-    <div class="items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full">
-        <ul class="flex flex-col pl-0 mb-0">
+    <div class="items-center block w-auto h-full flex-1 flex flex-col">
+        <ul class="flex flex-col pl-0 mb-0 flex-1 w-full">
             <!-- Dashboard -->
             <li class="mt-0.5 w-full relative">
                 <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('dashboard', 'home') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('dashboard') }}">
@@ -180,6 +180,17 @@
                 </a>
             </li>
 
+            <!-- Kelola Kategori -->
+            <li class="mt-0.5 w-full relative">
+                <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('kelola-kategori.*') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('kelola-kategori.index') }}">
+                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('kelola-kategori.*') ? 'bg-gradient-to-tl from-purple-600 to-pink-400 shadow-soft-2xl' : 'bg-white' }}">
+                        <i class="fas fa-tags text-sm {{ request()->routeIs('kelola-kategori.*') ? 'text-white' : 'text-slate-700' }}"></i>
+                    </div>
+                    <span class="sidebar-text ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Kelola Kategori</span>
+                    <div class="sidebar-tooltip">Kelola Kategori</div>
+                </a>
+            </li>
+
             <!-- Laporan -->
             <li class="mt-0.5 w-full relative">
                 <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('laporan.*') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('laporan') }}">
@@ -208,12 +219,4 @@
         </ul>
     </div>
 
-    <div class="mx-4">
-        <!-- Need help? -->
-        <h6 class="sidebar-text pl-6 ml-2 text-xs font-bold leading-tight uppercase opacity-60 text-slate-500">Need help?</h6>
-        <a href="https://www.creative-tim.com/learning-lab/tailwind/html/quick-start/soft-ui-dashboard/" target="_blank" class="ease-nav-brand block w-full px-0 py-1 text-center transition-colors">
-            <i class="ni ni-collection text-slate-300"></i>
-            <span class="sidebar-text ml-1 text-slate-700 text-sm">Documentation</span>
-        </a>
-    </div>
 </aside>

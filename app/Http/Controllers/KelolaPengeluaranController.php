@@ -24,7 +24,7 @@ class KelolaPengeluaranController extends Controller
         $filters = $request->only(['kategori', 'tanggal_dari', 'tanggal_sampai', 'jumlah_min', 'jumlah_max', 'search']);
         $pengeluaran = $this->pengeluaranService->getAllPengeluaran($filters, 10);
         $statistics = $this->pengeluaranService->getPengeluaranStatistics();
-        $categories = Pengeluaran::getCategories();
+        $categories = $this->pengeluaranService->getAvailableCategories();
 
         return view('pages.kelola-pengeluaran.index', compact('pengeluaran', 'statistics', 'categories'));
     }
@@ -34,7 +34,7 @@ class KelolaPengeluaranController extends Controller
      */
     public function create()
     {
-        $categories = Pengeluaran::getCategories();
+        $categories = $this->pengeluaranService->getAvailableCategories();
         return view('pages.kelola-pengeluaran.create', compact('categories'));
     }
 
@@ -44,9 +44,16 @@ class KelolaPengeluaranController extends Controller
     public function store(PengeluaranRequest $request)
     {
         try {
-            $this->pengeluaranService->createPengeluaran($request->validated());
-            return redirect()->route('kelola-pengeluaran.index')
-                ->with('success', 'Pengeluaran berhasil ditambahkan!');
+            $pengeluaran = $this->pengeluaranService->createPengeluaran($request->validated());
+
+            if ($pengeluaran) {
+                return redirect()->route('kelola-pengeluaran.index')
+                    ->with('success', 'Pengeluaran berhasil ditambahkan!');
+            } else {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'Gagal menambahkan pengeluaran. Silakan coba lagi.');
+            }
         } catch (\Exception $e) {
             return redirect()->back()
                 ->withInput()
@@ -69,7 +76,8 @@ class KelolaPengeluaranController extends Controller
      */
     public function edit(Pengeluaran $kelolaPengeluaran)
     {
-        $categories = Pengeluaran::getCategories();
+        $categories = $this->pengeluaranService->getAvailableCategories();
+        $pengeluaran = $kelolaPengeluaran;
         return view('pages.kelola-pengeluaran.edit', compact('pengeluaran', 'categories'));
     }
 
@@ -79,13 +87,20 @@ class KelolaPengeluaranController extends Controller
     public function update(PengeluaranRequest $request, Pengeluaran $kelolaPengeluaran)
     {
         try {
-            $this->pengeluaranService->updatePengeluaran($kelolaPengeluaran->id, $request->validated());
-            return redirect()->route('kelola-pengeluaran.index')
-                ->with('success', 'Pengeluaran berhasil diperbarui!');
+            $updated = $this->pengeluaranService->updatePengeluaran($kelolaPengeluaran->id, $request->validated());
+
+            if ($updated) {
+                return redirect()->route('kelola-pengeluaran.show', $kelolaPengeluaran->id)
+                    ->with('success', 'Pengeluaran berhasil diperbarui!');
+            } else {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'Gagal memperbarui pengeluaran. Silakan coba lagi.');
+            }
         } catch (\Exception $e) {
             return redirect()->back()
                 ->withInput()
-                ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+                ->with('error', 'Terjadi kesalahan saat memperbarui: ' . $e->getMessage());
         }
     }
 

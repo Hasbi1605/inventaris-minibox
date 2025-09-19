@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Inventaris;
+use App\Models\Kategori;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -12,9 +13,29 @@ class InventarisService
     /**
      * Get all inventaris with pagination
      */
-    public function getAllInventaris($perPage = 10)
+    public function getAllInventaris(array $filters = [], $perPage = 10)
     {
-        return Inventaris::latest()->paginate($perPage);
+        $query = Inventaris::query()->with('kategoriRelasi');
+
+        // Filter by kategori
+        if (!empty($filters['kategori'])) {
+            $query->where('kategori_id', $filters['kategori']);
+        }
+
+        // Filter by status
+        if (!empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        // Search in nama_barang or deskripsi
+        if (!empty($filters['search'])) {
+            $query->where(function ($q) use ($filters) {
+                $q->where('nama_barang', 'like', '%' . $filters['search'] . '%')
+                    ->orWhere('deskripsi', 'like', '%' . $filters['search'] . '%');
+            });
+        }
+
+        return $query->latest()->paginate($perPage);
     }
 
     /**
@@ -30,13 +51,11 @@ class InventarisService
      */
     public function getAvailableCategories()
     {
-        return [
-            'alat_cukur' => 'Alat Cukur',
-            'produk_perawatan' => 'Produk Perawatan',
-            'furniture' => 'Furniture',
-            'elektronik' => 'Elektronik',
-            'lainnya' => 'Lainnya'
-        ];
+        return Kategori::inventaris()
+            ->aktif()
+            ->orderBy('urutan')
+            ->get()
+            ->pluck('nama_kategori', 'id');
     }
 
     /**
