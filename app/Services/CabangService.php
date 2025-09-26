@@ -27,6 +27,11 @@ class CabangService
                 $query->where('status', $filters['status']);
             }
 
+            // Filter by kategori
+            if (!empty($filters['kategori_id'])) {
+                $query->where('kategori_id', $filters['kategori_id']);
+            }
+
             // Filter by manager
             if (!empty($filters['manager'])) {
                 $query->where('manager', 'like', '%' . $filters['manager'] . '%');

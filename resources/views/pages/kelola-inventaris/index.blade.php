@@ -75,7 +75,7 @@
                             </div>
                         </div>
                         <div class="text-right ml-4">
-                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-yellow-600 to-orange-400 flex items-center justify-center shadow-soft-md">
+                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400 flex items-center justify-center shadow-soft-md">
                                 <i class="fas fa-exclamation-triangle text-lg text-white"></i>
                             </div>
                         </div>
@@ -96,7 +96,7 @@
                             </div>
                         </div>
                         <div class="text-right ml-4">
-                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-red-600 to-rose-400 flex items-center justify-center shadow-soft-md">
+                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400 flex items-center justify-center shadow-soft-md">
                                 <i class="fas fa-clock text-lg text-white"></i>
                             </div>
                         </div>
@@ -117,7 +117,7 @@
                             </div>
                         </div>
                         <div class="text-right ml-4">
-                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-blue-600 to-cyan-400 flex items-center justify-center shadow-soft-md">
+                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400 flex items-center justify-center shadow-soft-md ">
                                 <i class="fas fa-money-bill-wave text-lg text-white"></i>
                             </div>
                         </div>

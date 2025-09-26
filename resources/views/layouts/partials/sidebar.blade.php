@@ -18,7 +18,7 @@
             <!-- Logo and title centered -->
             <div class="flex items-center justify-center pt-2">
                 <a class="flex items-center text-sm whitespace-nowrap text-slate-700" href="{{ route('dashboard') }}">
-                    <img src="{{ asset('assets/img/logo-ct.png') }}" class="sidebar-logo-img h-8 w-8 transition-all duration-300 ease-nav-brand flex-shrink-0" alt="main_logo" />
+                    <img src="{{ asset('assets/img/logos/logo-barber.png') }}" class="sidebar-logo-img h-8 w-8 transition-all duration-300 ease-nav-brand flex-shrink-0" alt="main_logo" />
                     <span class="sidebar-text ml-3 font-semibold transition-all duration-300 ease-nav-brand">Inventaris Barbershop</span>
                 </a>
             </div>
@@ -183,7 +183,7 @@
             <!-- Kelola Kategori -->
             <li class="mt-0.5 w-full relative">
                 <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('kelola-kategori.*') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('kelola-kategori.index') }}">
-                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('kelola-kategori.*') ? 'bg-gradient-to-tl from-purple-600 to-pink-400 shadow-soft-2xl' : 'bg-white' }}">
+                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('kelola-kategori.*') ? 'bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-2xl' : 'bg-white' }}">
                         <i class="fas fa-tags text-sm {{ request()->routeIs('kelola-kategori.*') ? 'text-white' : 'text-slate-700' }}"></i>
                     </div>
                     <span class="sidebar-text ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Kelola Kategori</span>
@@ -193,12 +193,12 @@
 
             <!-- Laporan -->
             <li class="mt-0.5 w-full relative">
-                <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('laporan.*') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('laporan') }}">
-                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('laporan.*') ? 'bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-2xl' : 'bg-white' }}">
+                <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('laporan') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('laporan') }}">
+                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('laporan') ? 'bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-2xl' : 'bg-white' }}">
                         <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <title>chart-bar-32</title>
                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <g transform="translate(-1869.000000, -293.000000)" fill="{{ request()->routeIs('laporan.*') ? '#FFFFFF' : '#1f2937' }}" fill-rule="nonzero">
+                                <g transform="translate(-1869.000000, -293.000000)" fill="{{ request()->routeIs('laporan') ? '#FFFFFF' : '#1f2937' }}" fill-rule="nonzero">
                                     <g transform="translate(1716.000000, 291.000000)">
                                         <g transform="translate(153.000000, 2.000000)">
                                             <path d="M6,9 L6,39 L36,39 L36,9 L6,9 Z M8,11 L34,11 L34,37 L8,37 L8,11 Z"></path>

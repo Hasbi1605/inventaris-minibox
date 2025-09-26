@@ -145,6 +145,27 @@
                                 @enderror
                             </div>
 
+                            <!-- Kategori -->
+                            <div>
+                                <label for="kategori_id" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                    Kategori <span class="text-red-500">*</span>
+                                </label>
+                                <select 
+                                    name="kategori_id" 
+                                    id="kategori_id"
+                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('kategori_id') border-red-500 @enderror"
+                                    required
+                                >
+                                    <option value="">Pilih Kategori</option>
+                                    @foreach($kategori as $item)
+                                        <option value="{{ $item->id }}" {{ old('kategori_id', $cabang->kategori_id) == $item->id ? 'selected' : '' }}>{{ $item->nama_kategori }}</option>
+                                    @endforeach
+                                </select>
+                                @error('kategori_id')
+                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
                             <!-- Alamat -->
                             <div class="col-span-1 lg:col-span-2">
                                 <label for="alamat" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">

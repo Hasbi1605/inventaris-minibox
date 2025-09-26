@@ -23,6 +23,7 @@ class Cabang extends Model
         'jam_operasional_buka',
         'jam_operasional_tutup',
         'deskripsi',
+        'kategori_id',
     ];
 
     protected $casts = [
@@ -137,5 +138,10 @@ class Cabang extends Model
             'maintenance' => 'Maintenance',
             'renovasi' => 'Renovasi',
         ];
+    }
+
+    public function kategori()
+    {
+        return $this->belongsTo(Kategori::class);
     }
 }

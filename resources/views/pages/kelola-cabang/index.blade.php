@@ -53,7 +53,7 @@
                             </div>
                         </div>
                         <div class="text-right ml-4">
-                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-blue-600 to-cyan-400 flex items-center justify-center shadow-soft-md">
+                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400 flex items-center justify-center shadow-soft-md">
                                 <i class="fas fa-building text-lg text-white"></i>
                             </div>
                         </div>
@@ -95,7 +95,7 @@
                             </div>
                         </div>
                         <div class="text-right ml-4">
-                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-orange-600 to-yellow-400 flex items-center justify-center shadow-soft-md">
+                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400 flex items-center justify-center shadow-soft-md">
                                 <i class="fas fa-clock text-lg text-white"></i>
                             </div>
                         </div>
@@ -116,13 +116,75 @@
                             </div>
                         </div>
                         <div class="text-right ml-4">
-                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-600 to-pink-400 flex items-center justify-center shadow-soft-md">
+                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400 flex items-center justify-center shadow-soft-md">
                                 <i class="fas fa-store text-lg text-white"></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Filter & Search -->
+    <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
+        <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
+            <h6 class="font-bold">Filter & Pencarian</h6>
+        </div>
+        <div class="flex-auto p-6">
+            <form method="GET" action="{{ route('kelola-cabang.index') }}">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                    <!-- Kategori -->
+                    <div class="xl:col-span-1">
+                        <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Kategori</label>
+                        <select name="kategori_id" class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow">
+                            <option value="">Semua Kategori</option>
+                            @foreach($kategori as $item)
+                                <option value="{{ $item->id }}" {{ request('kategori_id') == $item->id ? 'selected' : '' }}>
+                                    {{ $item->nama_kategori }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="xl:col-span-1">
+                        <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Status</label>
+                        <select name="status" class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow">
+                            <option value="">Semua Status</option>
+                            <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
+                            <option value="tidak_aktif" {{ request('status') == 'tidak_aktif' ? 'selected' : '' }}>Tidak Aktif</option>
+                            <option value="maintenance" {{ request('status') == 'maintenance' ? 'selected' : '' }}>Maintenance</option>
+                            <option value="renovasi" {{ request('status') == 'renovasi' ? 'selected' : '' }}>Renovasi</option>
+                        </select>
+                    </div>
+
+                    <!-- Manager -->
+                    <div class="xl:col-span-1">
+                        <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Manager</label>
+                        <select name="manager" class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow">
+                            <option value="">Semua Manager</option>
+                            @foreach($managers as $manager)
+                                <option value="{{ $manager }}" {{ request('manager') == $manager ? 'selected' : '' }}>{{ $manager }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Pencarian -->
+                    <div class="xl:col-span-2">
+                        <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Cari</label>
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama, alamat, telepon..." class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow">
+                    </div>
+                </div>
+                <div class="flex justify-end mt-4 space-x-2">
+                    <a href="{{ route('kelola-cabang.index') }}" class="inline-block px-6 py-3 font-bold text-center text-slate-700 uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-gray-100 to-gray-200 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                        <i class="fas fa-undo mr-2"></i>Reset
+                    </a>
+                    <button type="submit" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-600 to-cyan-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                        <i class="fas fa-search mr-2"></i>Filter
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 

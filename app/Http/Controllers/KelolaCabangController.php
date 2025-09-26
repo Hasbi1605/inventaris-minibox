@@ -4,16 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Cabang;
 use App\Services\CabangService;
+use App\Services\KategoriService;
 use App\Http\Requests\CabangRequest;
 use Illuminate\Http\Request;
 
 class KelolaCabangController extends Controller
 {
     protected $cabangService;
+    protected $kategoriService;
 
-    public function __construct(CabangService $cabangService)
+    public function __construct(CabangService $cabangService, KategoriService $kategoriService)
     {
         $this->cabangService = $cabangService;
+        $this->kategoriService = $kategoriService;
     }
 
     /**
@@ -21,12 +24,15 @@ class KelolaCabangController extends Controller
      */
     public function index(Request $request)
     {
-        $filters = $request->only(['status', 'manager', 'tanggal_dari', 'tanggal_sampai', 'search']);
+        $filters = $request->only(['status', 'manager', 'tanggal_dari', 'tanggal_sampai', 'search', 'kategori_id']);
         $cabang = $this->cabangService->getAllCabang($filters, 10);
         $statistics = $this->cabangService->getCabangStatistics();
         $managers = Cabang::distinct()->pluck('manager');
 
-        return view('pages.kelola-cabang.index', compact('cabang', 'statistics', 'managers'));
+        // Perbaiki method call - gunakan getKategoris dengan parameter 'cabang'
+        $kategori = $this->kategoriService->getKategoris('cabang');
+
+        return view('pages.kelola-cabang.index', compact('cabang', 'statistics', 'managers', 'kategori'));
     }
 
     /**
@@ -35,7 +41,11 @@ class KelolaCabangController extends Controller
     public function create()
     {
         $statusOptions = Cabang::getStatusOptions();
-        return view('pages.kelola-cabang.create', compact('statusOptions'));
+
+        // Perbaiki method call - gunakan getKategoris dengan parameter 'cabang'
+        $kategori = $this->kategoriService->getKategoris('cabang');
+
+        return view('pages.kelola-cabang.create', compact('statusOptions', 'kategori'));
     }
 
     /**
@@ -70,7 +80,12 @@ class KelolaCabangController extends Controller
     public function edit(Cabang $kelolaCabang)
     {
         $statusOptions = Cabang::getStatusOptions();
-        return view('pages.kelola-cabang.edit', compact('cabang', 'statusOptions'));
+
+        // Perbaiki method call - gunakan getKategoris dengan parameter 'cabang'
+        $kategori = $this->kategoriService->getKategoris('cabang');
+        $cabang = $kelolaCabang; // Fix variable name
+
+        return view('pages.kelola-cabang.edit', compact('cabang', 'statusOptions', 'kategori'));
     }
 
     /**
@@ -95,7 +110,7 @@ class KelolaCabangController extends Controller
     public function destroy(Cabang $kelolaCabang)
     {
         try {
-            $this->cabangService->deleteCabang($kelolaCabang->id);
+            $this->cabangService->deleteCabang($keloloCabang->id);
             return redirect()->route('kelola-cabang.index')
                 ->with('success', 'Cabang berhasil dihapus!');
         } catch (\Exception $e) {
