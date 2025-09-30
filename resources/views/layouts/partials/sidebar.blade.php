@@ -180,6 +180,17 @@
                 </a>
             </li>
 
+            <!-- Kelola Kapster -->
+            <li class="mt-0.5 w-full relative">
+                <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('kelola-kapster.*') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('kelola-kapster.index') }}">
+                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('kelola-kapster.*') ? 'bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-2xl' : 'bg-white' }}">
+                        <i class="fas fa-user-tie text-sm {{ request()->routeIs('kelola-kapster.*') ? 'text-white' : 'text-slate-700' }}"></i>
+                    </div>
+                    <span class="sidebar-text ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Kelola Kapster</span>
+                    <div class="sidebar-tooltip">Kelola Kapster</div>
+                </a>
+            </li>
+
             <!-- Kelola Kategori -->
             <li class="mt-0.5 w-full relative">
                 <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('kelola-kategori.*') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('kelola-kategori.index') }}">

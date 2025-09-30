@@ -37,20 +37,6 @@ class CabangRequest extends FormRequest
                 'min:10',
                 'max:500',
             ],
-            'telepon' => [
-                'required',
-                'string',
-                'min:10',
-                'max:15',
-                'regex:/^[0-9+\-\s()]+$/',
-                'unique:cabang,telepon,' . $cabangId,
-            ],
-            'email' => [
-                'nullable',
-                'email',
-                'max:100',
-                'unique:cabang,email,' . $cabangId,
-            ],
             'manager' => [
                 'required',
                 'string',
@@ -62,10 +48,10 @@ class CabangRequest extends FormRequest
                 'string',
                 'in:aktif,tidak_aktif,maintenance,renovasi',
             ],
-            'tanggal_buka' => [
+            'kategori_id' => [
                 'required',
-                'date',
-                'before_or_equal:today',
+                'integer',
+                'exists:kategori,id',
             ],
             'jam_operasional_buka' => [
                 'nullable',
@@ -101,15 +87,6 @@ class CabangRequest extends FormRequest
             'alamat.min' => 'Alamat cabang minimal 10 karakter.',
             'alamat.max' => 'Alamat cabang maksimal 500 karakter.',
 
-            'telepon.required' => 'Nomor telepon wajib diisi.',
-            'telepon.min' => 'Nomor telepon minimal 10 karakter.',
-            'telepon.max' => 'Nomor telepon maksimal 15 karakter.',
-            'telepon.regex' => 'Format nomor telepon tidak valid.',
-            'telepon.unique' => 'Nomor telepon sudah digunakan.',
-
-            'email.email' => 'Format email tidak valid.',
-            'email.unique' => 'Email sudah digunakan.',
-
             'manager.required' => 'Nama manager wajib diisi.',
             'manager.min' => 'Nama manager minimal 3 karakter.',
             'manager.max' => 'Nama manager maksimal 100 karakter.',
@@ -117,9 +94,9 @@ class CabangRequest extends FormRequest
             'status.required' => 'Status cabang wajib dipilih.',
             'status.in' => 'Status cabang tidak valid.',
 
-            'tanggal_buka.required' => 'Tanggal buka wajib diisi.',
-            'tanggal_buka.date' => 'Tanggal buka tidak valid.',
-            'tanggal_buka.before_or_equal' => 'Tanggal buka tidak boleh lebih dari hari ini.',
+            'kategori_id.required' => 'Kategori wajib dipilih.',
+            'kategori_id.integer' => 'Kategori tidak valid.',
+            'kategori_id.exists' => 'Kategori yang dipilih tidak ditemukan.',
 
             'jam_operasional_buka.date_format' => 'Format jam buka tidak valid (HH:MM).',
             'jam_operasional_tutup.date_format' => 'Format jam tutup tidak valid (HH:MM).',
@@ -134,16 +111,6 @@ class CabangRequest extends FormRequest
      */
     protected function prepareForValidation(): void
     {
-        // Clean phone number
-        if ($this->has('telepon')) {
-            $telepon = $this->input('telepon');
-            // Remove extra spaces and normalize format
-            $cleanTelepon = preg_replace('/\s+/', ' ', trim($telepon));
-            $this->merge([
-                'telepon' => $cleanTelepon,
-            ]);
-        }
-
         // Clean and normalize status
         if ($this->has('status')) {
             $this->merge([
@@ -164,13 +131,6 @@ class CabangRequest extends FormRequest
                 'manager' => trim($this->input('manager')),
             ]);
         }
-
-        // Clean email
-        if ($this->has('email') && !empty($this->input('email'))) {
-            $this->merge([
-                'email' => strtolower(trim($this->input('email'))),
-            ]);
-        }
     }
 
     /**
@@ -183,11 +143,9 @@ class CabangRequest extends FormRequest
         return [
             'nama_cabang' => 'nama cabang',
             'alamat' => 'alamat',
-            'telepon' => 'nomor telepon',
-            'email' => 'email',
             'manager' => 'manager',
             'status' => 'status',
-            'tanggal_buka' => 'tanggal buka',
+            'kategori_id' => 'kategori',
             'jam_operasional_buka' => 'jam operasional buka',
             'jam_operasional_tutup' => 'jam operasional tutup',
             'deskripsi' => 'deskripsi',

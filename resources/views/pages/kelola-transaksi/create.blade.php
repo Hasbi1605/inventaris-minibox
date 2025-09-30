@@ -103,10 +103,89 @@
                                 @enderror
                             </div>
 
+                            <!-- Kapster -->
+                            <div class="col-span-1">
+                                <label for="kapster_id" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                    Kapster <span class="text-red-500">*</span>
+                                </label>
+                                <select 
+                                    name="kapster_id" 
+                                    id="kapster_id"
+                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('kapster_id') border-red-500 @enderror"
+                                    required
+                                >
+                                    <option value="">Pilih Kapster</option>
+                                    @foreach($kapster as $k)
+                                        <option value="{{ $k->id }}" {{ old('kapster_id') == $k->id ? 'selected' : '' }}>
+                                            {{ $k->nama_kapster }} - {{ $k->cabang->nama_cabang }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('kapster_id')
+                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Subtotal Layanan -->
+                            <div class="col-span-1">
+                                <label for="subtotal_layanan" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                    Subtotal Layanan
+                                </label>
+                                <input 
+                                    type="number" 
+                                    name="subtotal_layanan" 
+                                    id="subtotal_layanan"
+                                    value="{{ old('subtotal_layanan') }}"
+                                    min="0" 
+                                    step="0.01"
+                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-gray-100 bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow"
+                                    placeholder="0.00"
+                                    readonly
+                                />
+                            </div>
+                        </div>
+
+                        <!-- Produk Section -->
+                        <div class="mt-8 mb-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h6 class="text-base font-bold text-slate-700">
+                                    <i class="fas fa-shopping-cart mr-2 text-blue-500"></i>
+                                    Produk Tambahan (Opsional)
+                                </h6>
+                                <button type="button" id="addProduk" class="inline-block px-4 py-2 text-xs font-bold text-center text-white uppercase transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-600 to-cyan-400 leading-pro ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                                    <i class="fas fa-plus mr-1"></i>
+                                    Tambah Produk
+                                </button>
+                            </div>
+
+                            <div id="produkContainer" class="space-y-4">
+                                <!-- Dynamic product items will be added here -->
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- Subtotal Produk -->
+                            <div class="col-span-1">
+                                <label for="subtotal_produk" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                    Subtotal Produk
+                                </label>
+                                <input 
+                                    type="number" 
+                                    name="subtotal_produk" 
+                                    id="subtotal_produk"
+                                    value="{{ old('subtotal_produk', 0) }}"
+                                    min="0" 
+                                    step="0.01"
+                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-gray-100 bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow"
+                                    placeholder="0.00"
+                                    readonly
+                                />
+                            </div>
+
                             <!-- Total Harga -->
                             <div class="col-span-1">
                                 <label for="total_harga" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Total Harga <span class="text-red-500">*</span>
+                                    <strong>Total Harga <span class="text-red-500">*</span></strong>
                                 </label>
                                 <input 
                                     type="number" 
@@ -115,8 +194,9 @@
                                     value="{{ old('total_harga') }}"
                                     min="0" 
                                     step="0.01"
-                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('total_harga') border-red-500 @enderror"
+                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-yellow-50 bg-clip-padding px-3 py-2 font-bold text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('total_harga') border-red-500 @enderror"
                                     placeholder="0.00"
+                                    readonly
                                     required
                                 />
                                 @error('total_harga')
@@ -262,13 +342,147 @@
 
 @push('scripts')
 <script>
-    // Auto fill total harga when layanan is selected
-    document.getElementById('layanan_id').addEventListener('change', function() {
-        const selectedOption = this.options[this.selectedIndex];
-        const harga = selectedOption.getAttribute('data-harga');
-        if (harga) {
-            document.getElementById('total_harga').value = harga;
-        }
+    let produkCounter = 0;
+    const availableProduk = @json($inventaris ?? []);
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Auto fill subtotal layanan when layanan is selected
+        document.getElementById('layanan_id').addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const harga = selectedOption.getAttribute('data-harga');
+            if (harga) {
+                document.getElementById('subtotal_layanan').value = harga;
+                calculateTotal();
+            }
+        });
+
+        // Add product functionality
+        document.getElementById('addProduk').addEventListener('click', function() {
+            addProdukRow();
+        });
+
+        // Initial calculation
+        calculateTotal();
     });
+
+    function addProdukRow() {
+        produkCounter++;
+        const container = document.getElementById('produkContainer');
+        
+        const produkRow = document.createElement('div');
+        produkRow.className = 'produk-row bg-gray-50 p-4 rounded-lg border border-gray-200';
+        produkRow.setAttribute('data-index', produkCounter);
+        
+        produkRow.innerHTML = `
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                <div class="col-span-1 md:col-span-2">
+                    <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                        Produk <span class="text-red-500">*</span>
+                    </label>
+                    <select name="produk[${produkCounter}][inventaris_id]" 
+                            class="produk-select focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow"
+                            data-index="${produkCounter}" required>
+                        <option value="">Pilih Produk</option>
+                        ${availableProduk.map(item => `
+                            <option value="${item.id}" data-harga="${item.harga_satuan}" data-stok="${item.stok_saat_ini}">
+                                ${item.nama_barang} - Rp ${number_format(item.harga_satuan)} (Stok: ${item.stok_saat_ini})
+                            </option>
+                        `).join('')}
+                    </select>
+                </div>
+                <div>
+                    <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                        Qty <span class="text-red-500">*</span>
+                    </label>
+                    <input type="number" 
+                           name="produk[${produkCounter}][quantity]" 
+                           class="qty-input focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow"
+                           data-index="${produkCounter}"
+                           min="1" value="1" required>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <div class="flex-1">
+                        <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                            Subtotal
+                        </label>
+                        <input type="number" 
+                               class="subtotal-produk focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-gray-100 bg-clip-padding px-3 py-2 font-normal text-gray-700"
+                               data-index="${produkCounter}"
+                               readonly>
+                    </div>
+                    <button type="button" 
+                            class="remove-produk bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm"
+                            data-index="${produkCounter}">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        container.appendChild(produkRow);
+        
+        // Add event listeners for the new row
+        const select = produkRow.querySelector('.produk-select');
+        const qtyInput = produkRow.querySelector('.qty-input');
+        const removeBtn = produkRow.querySelector('.remove-produk');
+        
+        select.addEventListener('change', function() {
+            calculateProdukSubtotal(produkCounter);
+            calculateTotal();
+        });
+        
+        qtyInput.addEventListener('input', function() {
+            calculateProdukSubtotal(produkCounter);
+            calculateTotal();
+        });
+        
+        removeBtn.addEventListener('click', function() {
+            removeProdukRow(produkCounter);
+        });
+    }
+
+    function removeProdukRow(index) {
+        const row = document.querySelector(`[data-index="${index}"]`);
+        if (row) {
+            row.remove();
+            calculateTotal();
+        }
+    }
+
+    function calculateProdukSubtotal(index) {
+        const select = document.querySelector(`select[data-index="${index}"]`);
+        const qtyInput = document.querySelector(`input[data-index="${index}"]`);
+        const subtotalInput = document.querySelector(`.subtotal-produk[data-index="${index}"]`);
+        
+        if (select && qtyInput && subtotalInput) {
+            const selectedOption = select.options[select.selectedIndex];
+            const harga = parseFloat(selectedOption.getAttribute('data-harga')) || 0;
+            const qty = parseInt(qtyInput.value) || 0;
+            const subtotal = harga * qty;
+            
+            subtotalInput.value = subtotal.toFixed(2);
+        }
+    }
+
+    function calculateTotal() {
+        // Calculate subtotal layanan
+        const subtotalLayanan = parseFloat(document.getElementById('subtotal_layanan').value) || 0;
+        
+        // Calculate subtotal produk
+        let subtotalProduk = 0;
+        document.querySelectorAll('.subtotal-produk').forEach(input => {
+            subtotalProduk += parseFloat(input.value) || 0;
+        });
+        
+        document.getElementById('subtotal_produk').value = subtotalProduk.toFixed(2);
+        
+        // Calculate total
+        const total = subtotalLayanan + subtotalProduk;
+        document.getElementById('total_harga').value = total.toFixed(2);
+    }
+
+    function number_format(number) {
+        return new Intl.NumberFormat('id-ID').format(number);
+    }
 </script>
 @endpush

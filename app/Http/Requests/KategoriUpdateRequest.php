@@ -23,7 +23,7 @@ class KategoriUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        $kategoriId = $this->route('kategori');
+        $kategoriId = $this->route('kelola_kategori');
 
         return [
             'nama_kategori' => [
@@ -36,13 +36,7 @@ class KategoriUpdateRequest extends FormRequest
                         return $query->where('jenis_kategori', $this->jenis_kategori);
                     }),
             ],
-            'kode_kategori' => [
-                'nullable',
-                'string',
-                'max:10',
-                Rule::unique('kategoris', 'kode_kategori')->ignore($kategoriId),
-                'regex:/^[A-Z0-9]+$/'
-            ],
+            // kode_kategori tidak boleh diubah saat update, dihandle di service layer
             'deskripsi' => 'nullable|string|max:1000',
             'jenis_kategori' => [
                 'required',
@@ -94,7 +88,6 @@ class KategoriUpdateRequest extends FormRequest
         return [
             'nama_kategori.required' => 'Nama kategori harus diisi.',
             'nama_kategori.unique' => 'Nama kategori sudah ada dalam jenis dan parent yang sama.',
-            'kode_kategori.unique' => 'Kode kategori sudah digunakan.',
             'jenis_kategori.required' => 'Jenis kategori harus dipilih.',
             'jenis_kategori.in' => 'Jenis kategori yang dipilih tidak valid.',
             'parent_id.exists' => 'Parent kategori tidak ditemukan.',

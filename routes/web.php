@@ -8,6 +8,7 @@ use App\Http\Controllers\KelolaPengeluaranController;
 use App\Http\Controllers\KelolaInventarisController;
 use App\Http\Controllers\KelolaCabangController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\KapsterController;
 use App\Http\Controllers\LaporanController;
 
 Route::get('/', [DashboardController::class, 'index'])->name('home');
@@ -29,6 +30,9 @@ Route::resource('kelola-inventaris', KelolaInventarisController::class);
 // Kelola Cabang Routes
 Route::resource('kelola-cabang', KelolaCabangController::class);
 Route::patch('/kelola-cabang/{cabang}/toggle-status', [KelolaCabangController::class, 'toggleStatus'])->name('kelola-cabang.toggle-status');
+
+// Kelola Kapster Routes
+Route::resource('kelola-kapster', KapsterController::class);
 
 // Kelola Kategori Routes
 Route::resource('kelola-kategori', KategoriController::class)->names([

@@ -88,9 +88,20 @@ class PengeluaranService
     public function createPengeluaran(array $data): ?Pengeluaran
     {
         try {
+            // Debug log untuk melihat data yang diterima
+            Log::info('Creating pengeluaran with data:', $data);
+
+            // Get kategori name from kategori_id untuk backward compatibility
+            $kategoriName = null;
+            if (isset($data['kategori_id'])) {
+                $kategori = Kategori::find($data['kategori_id']);
+                $kategoriName = $kategori ? $kategori->nama_kategori : null;
+            }
+
             $pengeluaran = Pengeluaran::create([
                 'nama_pengeluaran' => $data['deskripsi'],
-                'kategori' => $data['kategori'],
+                'kategori' => $kategoriName, // untuk backward compatibility
+                'kategori_id' => $data['kategori_id'], // foreign key baru
                 'jumlah' => $data['jumlah'],
                 'tanggal_pengeluaran' => $data['tanggal_pengeluaran'],
                 'deskripsi' => $data['catatan'] ?? null,
@@ -99,7 +110,12 @@ class PengeluaranService
             Log::info('Pengeluaran created successfully', ['id' => $pengeluaran->id]);
             return $pengeluaran;
         } catch (\Exception $e) {
-            Log::error('Error creating pengeluaran: ' . $e->getMessage());
+            Log::error('Error creating pengeluaran: ' . $e->getMessage(), [
+                'data' => $data,
+                'trace' => $e->getTraceAsString(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ]);
             return null;
         }
     }

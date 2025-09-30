@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaksi;
+use App\Models\Kapster;
 use App\Services\TransaksiService;
 use App\Http\Requests\TransaksiRequest;
 use Illuminate\Http\Request;
@@ -35,7 +36,9 @@ class KelolaTransaksiController extends Controller
     public function create()
     {
         $layanan = $this->transaksiService->getAvailableLayanan();
-        return view('pages.kelola-transaksi.create', compact('layanan'));
+        $inventaris = $this->transaksiService->getAvailableInventaris();
+        $kapster = Kapster::with('cabang')->where('status', 'aktif')->orderBy('nama_kapster')->get();
+        return view('pages.kelola-transaksi.create', compact('layanan', 'inventaris', 'kapster'));
     }
 
     /**

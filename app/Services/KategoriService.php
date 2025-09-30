@@ -108,6 +108,9 @@ class KategoriService
         try {
             $kategori = Kategori::findOrFail($id);
 
+            // Hapus kode_kategori dari data karena tidak boleh diubah
+            unset($data['kode_kategori']);
+
             // Validasi parent kategori (tidak boleh circular reference)
             if (isset($data['parent_id']) && $data['parent_id']) {
                 $this->validateParentKategori($id, $data['parent_id']);

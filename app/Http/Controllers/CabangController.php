@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CabangRequest;
 use App\Services\CabangService;
+use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -22,14 +23,13 @@ class CabangController extends Controller
      */
     public function index(Request $request): View
     {
-        $filters = $request->only(['status', 'manager', 'tanggal_dari', 'tanggal_sampai', 'search']);
+        $filters = $request->only(['status', 'tanggal_dari', 'tanggal_sampai', 'search']);
         $perPage = $request->get('per_page', 10);
 
         $cabang = $this->cabangService->getAllCabang($filters, $perPage);
         $statistics = $this->cabangService->getCabangStatistics();
-        $managers = $this->cabangService->getAvailableManagers();
 
-        return view('pages.kelola-cabang.index', compact('cabang', 'statistics', 'managers', 'filters'));
+        return view('pages.kelola-cabang.index', compact('cabang', 'statistics', 'filters'));
     }
 
     /**
@@ -44,7 +44,9 @@ class CabangController extends Controller
             'renovasi' => 'Renovasi',
         ];
 
-        return view('pages.kelola-cabang.create', compact('statusOptions'));
+        $kategori = Kategori::orderBy('nama_kategori')->get();
+
+        return view('pages.kelola-cabang.create', compact('statusOptions', 'kategori'));
     }
 
     /**

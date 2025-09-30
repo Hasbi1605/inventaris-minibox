@@ -11,11 +11,14 @@ class Transaksi extends Model
     /** @use HasFactory<\Database\Factories\TransaksiFactory> */
     use HasFactory;
 
+    protected $table = 'transaksis';
+
     protected $fillable = [
         'nomor_transaksi',
         'nama_pelanggan',
         'telepon_pelanggan',
         'layanan_id',
+        'kapster_id',
         'tanggal_transaksi',
         'waktu_mulai',
         'waktu_selesai',
@@ -36,6 +39,12 @@ class Transaksi extends Model
     public function layanan()
     {
         return $this->belongsTo(Layanan::class);
+    }
+
+    // Relationship with Kapster
+    public function kapster()
+    {
+        return $this->belongsTo(Kapster::class);
     }
 
     // Accessor for formatted total harga

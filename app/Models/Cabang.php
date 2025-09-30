@@ -15,11 +15,7 @@ class Cabang extends Model
     protected $fillable = [
         'nama_cabang',
         'alamat',
-        'telepon',
-        'email',
-        'manager',
         'status',
-        'tanggal_buka',
         'jam_operasional_buka',
         'jam_operasional_tutup',
         'deskripsi',
@@ -27,7 +23,6 @@ class Cabang extends Model
     ];
 
     protected $casts = [
-        'tanggal_buka' => 'date',
         'status' => 'string',
     ];
 
@@ -143,5 +138,21 @@ class Cabang extends Model
     public function kategori()
     {
         return $this->belongsTo(Kategori::class);
+    }
+
+    /**
+     * Relasi ke Kapster (One to Many)
+     */
+    public function kapster()
+    {
+        return $this->hasMany(Kapster::class);
+    }
+
+    /**
+     * Relasi ke Kapster aktif
+     */
+    public function kapsterAktif()
+    {
+        return $this->hasMany(Kapster::class)->where('status', 'aktif');
     }
 }

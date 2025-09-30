@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Transaksi;
 use App\Models\Layanan;
 use App\Models\Kategori;
+use App\Models\Inventaris;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
@@ -15,7 +16,7 @@ class TransaksiService
      */
     public function getAllTransaksi(array $filters = [], $perPage = 10)
     {
-        $query = Transaksi::query()->with('layanan');
+        $query = Transaksi::query()->with(['layanan', 'kapster.cabang']);
 
         // Filter by status
         if (!empty($filters['status'])) {
@@ -74,6 +75,18 @@ class TransaksiService
     public function getAvailableLayanan()
     {
         return Layanan::where('status', 'aktif')->get();
+    }
+
+    /**
+     * Get available inventaris for product sales
+     */
+    public function getAvailableInventaris()
+    {
+        return Inventaris::where('status', 'tersedia')
+            ->where('stok_saat_ini', '>', 0)
+            ->select('id', 'nama_barang', 'harga_satuan', 'stok_saat_ini', 'satuan')
+            ->orderBy('nama_barang')
+            ->get();
     }
 
     /**
