@@ -133,7 +133,7 @@
         </div>
         <div class="flex-auto p-6">
             <form method="GET" action="{{ route('kelola-cabang.index') }}">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     <!-- Kategori -->
                     <div class="xl:col-span-1">
                         <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Kategori</label>
@@ -159,21 +159,10 @@
                         </select>
                     </div>
 
-                    <!-- Manager -->
-                    <div class="xl:col-span-1">
-                        <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Manager</label>
-                        <select name="manager" class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow">
-                            <option value="">Semua Manager</option>
-                            @foreach($managers as $manager)
-                                <option value="{{ $manager }}" {{ request('manager') == $manager ? 'selected' : '' }}>{{ $manager }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
                     <!-- Pencarian -->
                     <div class="xl:col-span-2">
                         <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Cari</label>
-                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama, alamat, telepon..." class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow">
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama atau alamat..." class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow">
                     </div>
                 </div>
                 <div class="flex justify-end mt-4 space-x-2">
@@ -201,7 +190,6 @@
                             <thead class="align-bottom">
                                 <tr>
                                     <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Cabang</th>
-                                    <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Manager</th>
                                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Status</th>
                                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Jam Operasional</th>
                                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Aksi</th>
@@ -217,9 +205,6 @@
                                                 <p class="mb-0 text-xs leading-tight text-slate-400">{{ $item->short_alamat }}</p>
                                             </div>
                                         </div>
-                                    </td>
-                                    <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                        <span class="text-xs font-semibold leading-tight text-slate-400">{{ $item->manager }}</span>
                                     </td>
                                     <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
                                         <span class="bg-gradient-to-tl {{ $item->status_badge_color }} px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">

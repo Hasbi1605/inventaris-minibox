@@ -32,11 +32,6 @@ class CabangService
                 $query->where('kategori_id', $filters['kategori_id']);
             }
 
-            // Filter by manager
-            if (!empty($filters['manager'])) {
-                $query->where('manager', 'like', '%' . $filters['manager'] . '%');
-            }
-
             // Filter by date range
             if (!empty($filters['tanggal_dari'])) {
                 $query->whereDate('tanggal_buka', '>=', $filters['tanggal_dari']);
@@ -46,18 +41,16 @@ class CabangService
                 $query->whereDate('tanggal_buka', '<=', $filters['tanggal_sampai']);
             }
 
-            // Search in nama_cabang, alamat, or telepon
+            // Search in nama_cabang or alamat
             if (!empty($filters['search'])) {
                 $query->where(function ($q) use ($filters) {
                     $q->where('nama_cabang', 'like', '%' . $filters['search'] . '%')
-                        ->orWhere('alamat', 'like', '%' . $filters['search'] . '%')
-                        ->orWhere('telepon', 'like', '%' . $filters['search'] . '%')
-                        ->orWhere('manager', 'like', '%' . $filters['search'] . '%');
+                        ->orWhere('alamat', 'like', '%' . $filters['search'] . '%');
                 });
             }
 
             return $query->orderBy('status', 'desc')
-                ->orderBy('tanggal_buka', 'desc')
+                ->orderBy('created_at', 'desc')
                 ->paginate($perPage);
         } catch (\Exception $e) {
             Log::error('Error getting cabang: ' . $e->getMessage());
@@ -93,14 +86,11 @@ class CabangService
             $cabang = Cabang::create([
                 'nama_cabang' => $data['nama_cabang'],
                 'alamat' => $data['alamat'],
-                'telepon' => $data['telepon'],
-                'email' => $data['email'] ?? null,
-                'manager' => $data['manager'],
                 'status' => $data['status'],
-                'tanggal_buka' => $data['tanggal_buka'],
                 'jam_operasional_buka' => $data['jam_operasional_buka'] ?? null,
                 'jam_operasional_tutup' => $data['jam_operasional_tutup'] ?? null,
                 'deskripsi' => $data['deskripsi'] ?? null,
+                'kategori_id' => $data['kategori_id'] ?? null,
             ]);
 
             Log::info('Cabang created successfully', ['id' => $cabang->id]);
@@ -126,14 +116,11 @@ class CabangService
             $cabang->update([
                 'nama_cabang' => $data['nama_cabang'],
                 'alamat' => $data['alamat'],
-                'telepon' => $data['telepon'],
-                'email' => $data['email'] ?? null,
-                'manager' => $data['manager'],
                 'status' => $data['status'],
-                'tanggal_buka' => $data['tanggal_buka'],
                 'jam_operasional_buka' => $data['jam_operasional_buka'] ?? null,
                 'jam_operasional_tutup' => $data['jam_operasional_tutup'] ?? null,
                 'deskripsi' => $data['deskripsi'] ?? null,
+                'kategori_id' => $data['kategori_id'] ?? null,
             ]);
 
             Log::info('Cabang updated successfully', ['id' => $cabang->id]);
@@ -184,7 +171,7 @@ class CabangService
             $cabangTidakAktif = Cabang::where('status', '!=', 'aktif')->count();
 
             // Cabang baru (30 hari terakhir)
-            $cabangBaru = Cabang::where('tanggal_buka', '>=', $now->subDays(30))->count();
+            $cabangBaru = Cabang::where('created_at', '>=', $now->copy()->subDays(30))->count();
 
             // Cabang sedang buka saat ini
             $cabangSedangBuka = 0;
@@ -204,10 +191,9 @@ class CabangService
             // Rata-rata usia cabang (dalam hari)
             $rataRataUsia = 0;
             if ($totalCabang > 0) {
-                $totalUsia = Cabang::whereNotNull('tanggal_buka')
-                    ->get()
+                $totalUsia = Cabang::get()
                     ->sum(function ($cabang) {
-                        return $cabang->tanggal_buka->diffInDays(Carbon::now());
+                        return $cabang->created_at->diffInDays(Carbon::now());
                     });
                 $rataRataUsia = round($totalUsia / $totalCabang, 0);
             }
@@ -259,25 +245,6 @@ class CabangService
     public function getActiveCabang(): Collection
     {
         return $this->getCabangByStatus('aktif');
-    }
-
-    /**
-     * Get available managers
-     *
-     * @return Collection
-     */
-    public function getAvailableManagers(): Collection
-    {
-        try {
-            return Cabang::select('manager')
-                ->distinct()
-                ->whereNotNull('manager')
-                ->orderBy('manager')
-                ->pluck('manager');
-        } catch (\Exception $e) {
-            Log::error('Error getting available managers: ' . $e->getMessage());
-            return collect([]);
-        }
     }
 
     /**

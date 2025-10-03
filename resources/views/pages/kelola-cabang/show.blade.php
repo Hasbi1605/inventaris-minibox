@@ -66,14 +66,6 @@
                             </div>
                         </div>
 
-                        <!-- Manager -->
-                        <div>
-                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Manager</label>
-                            <div class="p-3 bg-gray-50 rounded-lg border">
-                                <p class="mb-0 text-slate-600">{{ $cabang->manager }}</p>
-                            </div>
-                        </div>
-
                         <!-- Status -->
                         <div>
                             <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Status</label>
@@ -85,19 +77,11 @@
                             </div>
                         </div>
 
-                        <!-- Telepon -->
+                        <!-- Kategori -->
                         <div>
-                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Telepon</label>
+                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Kategori</label>
                             <div class="p-3 bg-gray-50 rounded-lg border">
-                                <p class="mb-0 text-slate-600 font-semibold">{{ $cabang->telepon }}</p>
-                            </div>
-                        </div>
-
-                        <!-- Email -->
-                        <div>
-                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Email</label>
-                            <div class="p-3 bg-gray-50 rounded-lg border">
-                                <p class="mb-0 text-slate-600">{{ $cabang->email ?? 'Tidak ada email' }}</p>
+                                <p class="mb-0 text-slate-600">{{ $cabang->kategori->nama_kategori ?? 'Tidak ada kategori' }}</p>
                             </div>
                         </div>
 

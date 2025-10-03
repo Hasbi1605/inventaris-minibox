@@ -37,12 +37,6 @@ class CabangRequest extends FormRequest
                 'min:10',
                 'max:500',
             ],
-            'manager' => [
-                'required',
-                'string',
-                'min:3',
-                'max:100',
-            ],
             'status' => [
                 'required',
                 'string',
@@ -87,10 +81,6 @@ class CabangRequest extends FormRequest
             'alamat.min' => 'Alamat cabang minimal 10 karakter.',
             'alamat.max' => 'Alamat cabang maksimal 500 karakter.',
 
-            'manager.required' => 'Nama manager wajib diisi.',
-            'manager.min' => 'Nama manager minimal 3 karakter.',
-            'manager.max' => 'Nama manager maksimal 100 karakter.',
-
             'status.required' => 'Status cabang wajib dipilih.',
             'status.in' => 'Status cabang tidak valid.',
 
@@ -124,13 +114,6 @@ class CabangRequest extends FormRequest
                 'nama_cabang' => trim($this->input('nama_cabang')),
             ]);
         }
-
-        // Clean manager name
-        if ($this->has('manager')) {
-            $this->merge([
-                'manager' => trim($this->input('manager')),
-            ]);
-        }
     }
 
     /**
@@ -143,7 +126,6 @@ class CabangRequest extends FormRequest
         return [
             'nama_cabang' => 'nama cabang',
             'alamat' => 'alamat',
-            'manager' => 'manager',
             'status' => 'status',
             'kategori_id' => 'kategori',
             'jam_operasional_buka' => 'jam operasional buka',

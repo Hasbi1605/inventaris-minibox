@@ -34,7 +34,15 @@ class KapsterController extends Controller
         $kapster = $query->orderBy('nama_kapster')->paginate(10);
         $cabang = Cabang::orderBy('nama_cabang')->get();
 
-        return view('pages.kelola-kapster.index', compact('kapster', 'cabang'));
+        // Statistics
+        $statistics = [
+            'total_kapster' => Kapster::count(),
+            'kapster_aktif' => Kapster::where('status', 'aktif')->count(),
+            'kapster_tidak_aktif' => Kapster::where('status', 'tidak_aktif')->count(),
+            'rata_rata_komisi' => Kapster::where('status', 'aktif')->avg('komisi_persen') ?? 0,
+        ];
+
+        return view('pages.kelola-kapster.index', compact('kapster', 'cabang', 'statistics'));
     }
 
     /**

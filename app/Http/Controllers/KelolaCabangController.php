@@ -24,15 +24,14 @@ class KelolaCabangController extends Controller
      */
     public function index(Request $request)
     {
-        $filters = $request->only(['status', 'manager', 'tanggal_dari', 'tanggal_sampai', 'search', 'kategori_id']);
+        $filters = $request->only(['status', 'tanggal_dari', 'tanggal_sampai', 'search', 'kategori_id']);
         $cabang = $this->cabangService->getAllCabang($filters, 10);
         $statistics = $this->cabangService->getCabangStatistics();
-        $managers = Cabang::distinct()->pluck('manager');
 
         // Perbaiki method call - gunakan getKategoris dengan parameter 'cabang'
         $kategori = $this->kategoriService->getKategoris('cabang');
 
-        return view('pages.kelola-cabang.index', compact('cabang', 'statistics', 'managers', 'kategori'));
+        return view('pages.kelola-cabang.index', compact('cabang', 'statistics', 'kategori'));
     }
 
     /**
@@ -110,7 +109,7 @@ class KelolaCabangController extends Controller
     public function destroy(Cabang $kelolaCabang)
     {
         try {
-            $this->cabangService->deleteCabang($keloloCabang->id);
+            $this->cabangService->deleteCabang($kelolaCabang->id);
             return redirect()->route('kelola-cabang.index')
                 ->with('success', 'Cabang berhasil dihapus!');
         } catch (\Exception $e) {

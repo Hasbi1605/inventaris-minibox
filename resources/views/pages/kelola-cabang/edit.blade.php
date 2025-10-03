@@ -68,45 +68,7 @@
                                 @enderror
                             </div>
 
-                            <!-- Manager -->
-                            <div>
-                                <label for="manager" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Manager <span class="text-red-500">*</span>
-                                </label>
-                                <input 
-                                    type="text" 
-                                    name="manager" 
-                                    id="manager"
-                                    value="{{ old('manager', $cabang->manager) }}"
-                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('manager') border-red-500 @enderror"
-                                    placeholder="Masukkan nama manager"
-                                    required
-                                />
-                                @error('manager')
-                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Telepon -->
-                            <div>
-                                <label for="telepon" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Telepon <span class="text-red-500">*</span>
-                                </label>
-                                <input 
-                                    type="tel" 
-                                    name="telepon" 
-                                    id="telepon"
-                                    value="{{ old('telepon', $cabang->telepon) }}"
-                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('telepon') border-red-500 @enderror"
-                                    placeholder="081234567890"
-                                    required
-                                />
-                                @error('telepon')
-                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Email -->
+                            <!-- Status -->
                             <div>
                                 <label for="email" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
                                     Email (Opsional)
