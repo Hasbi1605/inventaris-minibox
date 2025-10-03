@@ -48,44 +48,7 @@
                         @csrf
                         @method('PUT')
                         
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            <!-- Nama Pelanggan -->
-                            <div>
-                                <label for="nama_pelanggan" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Nama Pelanggan <span class="text-red-500">*</span>
-                                </label>
-                                <input 
-                                    type="text" 
-                                    name="nama_pelanggan" 
-                                    id="nama_pelanggan"
-                                    value="{{ old('nama_pelanggan', $transaksi->nama_pelanggan) }}"
-                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('nama_pelanggan') border-red-500 @enderror"
-                                    placeholder="Masukkan nama pelanggan"
-                                    required
-                                />
-                                @error('nama_pelanggan')
-                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Telepon Pelanggan -->
-                            <div>
-                                <label for="telepon_pelanggan" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Telepon Pelanggan
-                                </label>
-                                <input 
-                                    type="text" 
-                                    name="telepon_pelanggan" 
-                                    id="telepon_pelanggan"
-                                    value="{{ old('telepon_pelanggan', $transaksi->telepon_pelanggan) }}"
-                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('telepon_pelanggan') border-red-500 @enderror"
-                                    placeholder="Masukkan nomor telepon (opsional)"
-                                />
-                                @error('telepon_pelanggan')
-                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
                             <!-- Layanan -->
                             <div>
                                 <label for="layanan_id" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
@@ -109,83 +72,104 @@
                                 @enderror
                             </div>
 
-                            <!-- Total Harga -->
+                            <!-- Kapster -->
                             <div>
-                                <label for="total_harga" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Total Harga <span class="text-red-500">*</span>
+                                <label for="kapster_id" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                    Kapster <span class="text-red-500">*</span>
                                 </label>
-                                <div class="flex">
-                                    <span class="inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-r-0 border-gray-300 rounded-l-lg">
-                                        Rp
-                                    </span>
-                                    <input 
-                                        type="number" 
-                                        name="total_harga" 
-                                        id="total_harga"
-                                        value="{{ old('total_harga', $transaksi->total_harga) }}"
-                                        class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-none rounded-r-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('total_harga') border-red-500 @enderror"
-                                        placeholder="0"
-                                        min="0"
-                                        step="1000"
-                                        required
-                                    />
+                                <select 
+                                    name="kapster_id" 
+                                    id="kapster_id"
+                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('kapster_id') border-red-500 @enderror"
+                                    required
+                                >
+                                    <option value="">Pilih Kapster</option>
+                                    @foreach($kapster as $k)
+                                        <option value="{{ $k->id }}" {{ old('kapster_id', $transaksi->kapster_id) == $k->id ? 'selected' : '' }}>
+                                            {{ $k->nama_kapster }} - {{ $k->cabang->nama_cabang }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('kapster_id')
+                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Produk Tambahan -->
+                            <div class="col-span-1 lg:col-span-2" id="produkSection">
+                                <div class="flex items-center justify-between mb-2">
+                                    <label class="inline-block ml-1 font-bold text-xs text-slate-700">
+                                        Produk Tambahan <span class="text-xs text-slate-400">(Opsional)</span>
+                                    </label>
+                                    <div class="flex gap-2">
+                                        <button type="button" 
+                                            id="closeProdukSection"
+                                            class="{{ $transaksi->produk->count() > 0 ? '' : 'hidden' }} inline-block px-4 py-2 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-red-600 to-yellow-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                                            <i class="fas fa-times mr-2"></i>
+                                            Tutup
+                                        </button>
+                                        <button type="button" 
+                                            id="addProduk"
+                                            class="inline-block px-4 py-2 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-600 to-cyan-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                                            <i class="fas fa-plus mr-2"></i>
+                                            Tambah Produk
+                                        </button>
+                                    </div>
                                 </div>
-                                @error('total_harga')
-                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Tanggal Transaksi -->
-                            <div>
-                                <label for="tanggal_transaksi" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Tanggal Transaksi <span class="text-red-500">*</span>
-                                </label>
-                                <input 
-                                    type="date" 
-                                    name="tanggal_transaksi" 
-                                    id="tanggal_transaksi"
-                                    value="{{ old('tanggal_transaksi', $transaksi->tanggal_transaksi->format('Y-m-d')) }}"
-                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('tanggal_transaksi') border-red-500 @enderror"
-                                    required
-                                />
-                                @error('tanggal_transaksi')
-                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Waktu Mulai -->
-                            <div>
-                                <label for="waktu_mulai" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Waktu Mulai <span class="text-red-500">*</span>
-                                </label>
-                                <input 
-                                    type="time" 
-                                    name="waktu_mulai" 
-                                    id="waktu_mulai"
-                                    value="{{ old('waktu_mulai', $transaksi->waktu_mulai) }}"
-                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('waktu_mulai') border-red-500 @enderror"
-                                    required
-                                />
-                                @error('waktu_mulai')
-                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Waktu Selesai -->
-                            <div>
-                                <label for="waktu_selesai" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Waktu Selesai
-                                </label>
-                                <input 
-                                    type="time" 
-                                    name="waktu_selesai" 
-                                    id="waktu_selesai"
-                                    value="{{ old('waktu_selesai', $transaksi->waktu_selesai) }}"
-                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('waktu_selesai') border-red-500 @enderror"
-                                />
-                                @error('waktu_selesai')
-                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
-                                @enderror
+                                <div id="produkContainer" class="space-y-4">
+                                    @foreach($transaksi->produk as $index => $produk)
+                                    <div class="produk-row bg-gray-50 p-4 rounded-lg border border-gray-200" data-index="{{ $index }}">
+                                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                                            <div class="col-span-1 md:col-span-2">
+                                                <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                                    Produk
+                                                </label>
+                                                <select name="produk[{{ $index }}][inventaris_id]" 
+                                                        class="produk-select focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow"
+                                                        data-index="{{ $index }}">
+                                                    <option value="">Pilih Produk</option>
+                                                    @foreach($inventaris as $item)
+                                                        <option value="{{ $item->id }}" 
+                                                                data-harga="{{ $item->harga_satuan }}" 
+                                                                data-stok="{{ $item->stok_saat_ini }}"
+                                                                {{ $produk->id == $item->id ? 'selected' : '' }}>
+                                                            {{ $item->nama_barang }} - Rp {{ number_format($item->harga_satuan, 0, ',', '.') }} (Stok: {{ $item->stok_saat_ini }})
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                                    Qty
+                                                </label>
+                                                <input type="number" 
+                                                       name="produk[{{ $index }}][quantity]" 
+                                                       class="qty-input focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow"
+                                                       data-index="{{ $index }}"
+                                                       min="1" 
+                                                       value="{{ $produk->pivot->quantity }}">
+                                            </div>
+                                            <div class="flex items-center space-x-2">
+                                                <div class="flex-1">
+                                                    <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                                        Subtotal
+                                                    </label>
+                                                    <input type="number" 
+                                                           class="subtotal-produk focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-gray-100 bg-clip-padding px-3 py-2 font-normal text-gray-700"
+                                                           data-index="{{ $index }}"
+                                                           value="{{ $produk->pivot->subtotal }}"
+                                                           readonly>
+                                                </div>
+                                                <button type="button" 
+                                                        class="remove-produk bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm"
+                                                        data-index="{{ $index }}">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                </div>
                             </div>
 
                             <!-- Metode Pembayaran -->
@@ -214,7 +198,7 @@
                             <!-- Status -->
                             <div>
                                 <label for="status" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Status <span class="text-red-500">*</span>
+                                    Status Transaksi <span class="text-red-500">*</span>
                                 </label>
                                 <select 
                                     name="status" 
@@ -231,6 +215,44 @@
                                 @error('status')
                                     <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
                                 @enderror
+                            </div>
+
+                            <!-- Tanggal Transaksi -->
+                            <div>
+                                <label for="tanggal_transaksi" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                    Tanggal Transaksi <span class="text-red-500">*</span>
+                                </label>
+                                <input 
+                                    type="date" 
+                                    name="tanggal_transaksi" 
+                                    id="tanggal_transaksi"
+                                    value="{{ old('tanggal_transaksi', $transaksi->tanggal_transaksi->format('Y-m-d')) }}"
+                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('tanggal_transaksi') border-red-500 @enderror"
+                                    required
+                                />
+                                @error('tanggal_transaksi')
+                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Total Harga -->
+                            <div>
+                                <label for="total_harga" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                    Total Harga <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-sm text-gray-700 font-semibold pointer-events-none">
+                                        Rp
+                                    </span>
+                                    <input 
+                                        type="number" 
+                                        name="total_harga" 
+                                        id="total_harga"
+                                        step="0.01"
+                                        class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-gray-100 bg-clip-padding pl-12 pr-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow"
+                                        readonly
+                                    />
+                                </div>
                             </div>
 
                             <!-- Catatan -->
@@ -252,12 +274,13 @@
                         </div>
 
                         <!-- Submit Buttons -->
-                        <div class="flex justify-end mt-6 space-x-3">
+                        <div class="flex items-center justify-end mt-6 gap-3">
                             <a href="{{ route('kelola-transaksi.index') }}" 
                                 class="inline-block px-6 py-3 font-bold text-center text-slate-700 uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-gray-100 to-gray-200 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                                <i class="fas fa-times mr-2"></i>
                                 Batal
                             </a>
-                            <button type="submit"
+                            <button type="submit" 
                                 class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-green-600 to-lime-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
                                 <i class="fas fa-save mr-2"></i>
                                 Perbarui Transaksi
@@ -273,21 +296,194 @@
 
 @push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const layananSelect = document.getElementById('layanan_id');
-        const totalHargaInput = document.getElementById('total_harga');
+    let produkCounter = {{ $transaksi->produk->count() }};
+    const availableProduk = @json($inventaris ?? []);
 
-        layananSelect.addEventListener('change', function() {
-            const selectedOption = this.options[this.selectedIndex];
-            const harga = selectedOption.getAttribute('data-harga');
-            
-            if (harga) {
-                totalHargaInput.value = harga;
-            } else {
-                totalHargaInput.value = '';
-            }
+    document.addEventListener('DOMContentLoaded', function() {
+        // Auto calculate total when layanan is selected
+        document.getElementById('layanan_id').addEventListener('change', function() {
+            calculateTotal();
         });
+
+        // Add product functionality
+        document.getElementById('addProduk').addEventListener('click', function() {
+            addProdukRow();
+            // Show close button when first product is added
+            document.getElementById('closeProdukSection').classList.remove('hidden');
+        });
+
+        // Close product section functionality
+        document.getElementById('closeProdukSection').addEventListener('click', function() {
+            // Remove all product rows
+            document.getElementById('produkContainer').innerHTML = '';
+            // Hide close button
+            this.classList.add('hidden');
+            // Reset counter
+            produkCounter = 0;
+            // Recalculate total
+            calculateTotal();
+        });
+
+        // Add event listeners to existing produk rows
+        document.querySelectorAll('.produk-row').forEach(row => {
+            const index = row.getAttribute('data-index');
+            const select = row.querySelector('.produk-select');
+            const qtyInput = row.querySelector('.qty-input');
+            const removeBtn = row.querySelector('.remove-produk');
+            
+            select.addEventListener('change', function() {
+                calculateProdukSubtotal(index);
+                calculateTotal();
+            });
+            
+            qtyInput.addEventListener('input', function() {
+                calculateProdukSubtotal(index);
+                calculateTotal();
+            });
+            
+            removeBtn.addEventListener('click', function() {
+                removeProdukRow(index);
+            });
+        });
+
+        // Show close button if there are existing products
+        if (document.querySelectorAll('.produk-row').length > 0) {
+            document.getElementById('closeProdukSection').classList.remove('hidden');
+        }
+
+        // Initial calculation
+        calculateTotal();
     });
+
+    function addProdukRow() {
+        produkCounter++;
+        const container = document.getElementById('produkContainer');
+        
+        const produkRow = document.createElement('div');
+        produkRow.className = 'produk-row bg-gray-50 p-4 rounded-lg border border-gray-200';
+        produkRow.setAttribute('data-index', produkCounter);
+        produkRow.setAttribute('data-new', 'true');
+        
+        produkRow.innerHTML = `
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                <div class="col-span-1 md:col-span-2">
+                    <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                        Produk
+                    </label>
+                    <select name="produk[${produkCounter}][inventaris_id]" 
+                            class="produk-select focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow"
+                            data-index="${produkCounter}">
+                        <option value="">Pilih Produk</option>
+                        ${availableProduk.map(item => `
+                            <option value="${item.id}" data-harga="${item.harga_satuan}" data-stok="${item.stok_saat_ini}">
+                                ${item.nama_barang} - Rp ${number_format(item.harga_satuan)} (Stok: ${item.stok_saat_ini})
+                            </option>
+                        `).join('')}
+                    </select>
+                </div>
+                <div>
+                    <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                        Qty
+                    </label>
+                    <input type="number" 
+                           name="produk[${produkCounter}][quantity]" 
+                           class="qty-input focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow"
+                           data-index="${produkCounter}"
+                           min="1" value="1">
+                </div>
+                <div class="flex items-center space-x-2">
+                    <div class="flex-1">
+                        <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                            Subtotal
+                        </label>
+                        <input type="number" 
+                               class="subtotal-produk focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-gray-100 bg-clip-padding px-3 py-2 font-normal text-gray-700"
+                               data-index="${produkCounter}"
+                               readonly>
+                    </div>
+                    <button type="button" 
+                            class="remove-produk bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm"
+                            data-index="${produkCounter}">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        container.appendChild(produkRow);
+        
+        // Add event listeners for the new row
+        const select = produkRow.querySelector('.produk-select');
+        const qtyInput = produkRow.querySelector('.qty-input');
+        const removeBtn = produkRow.querySelector('.remove-produk');
+        
+        select.addEventListener('change', function() {
+            calculateProdukSubtotal(produkCounter);
+            calculateTotal();
+        });
+        
+        qtyInput.addEventListener('input', function() {
+            calculateProdukSubtotal(produkCounter);
+            calculateTotal();
+        });
+        
+        removeBtn.addEventListener('click', function() {
+            removeProdukRow(produkCounter);
+        });
+    }
+
+    function removeProdukRow(index) {
+        const row = document.querySelector(`[data-index="${index}"]`);
+        if (row) {
+            row.remove();
+            calculateTotal();
+            
+            // Hide close button if no products left
+            const remainingRows = document.querySelectorAll('.produk-row');
+            if (remainingRows.length === 0) {
+                document.getElementById('closeProdukSection').classList.add('hidden');
+            }
+        }
+    }
+
+    function calculateProdukSubtotal(index) {
+        const select = document.querySelector(`select[data-index="${index}"]`);
+        const qtyInput = document.querySelector(`input[data-index="${index}"]`);
+        const subtotalInput = document.querySelector(`.subtotal-produk[data-index="${index}"]`);
+        
+        if (select && qtyInput && subtotalInput) {
+            const selectedOption = select.options[select.selectedIndex];
+            const harga = parseFloat(selectedOption.getAttribute('data-harga')) || 0;
+            const qty = parseInt(qtyInput.value) || 0;
+            const subtotal = harga * qty;
+            
+            subtotalInput.value = subtotal.toFixed(2);
+        }
+    }
+
+    function calculateTotal() {
+        // Calculate subtotal layanan
+        let totalLayanan = 0;
+        const layananSelect = document.getElementById('layanan_id');
+        if (layananSelect && layananSelect.value) {
+            const selectedOption = layananSelect.options[layananSelect.selectedIndex];
+            totalLayanan = parseFloat(selectedOption.getAttribute('data-harga')) || 0;
+        }
+        
+        // Calculate subtotal produk
+        let totalProduk = 0;
+        document.querySelectorAll('.subtotal-produk').forEach(input => {
+            totalProduk += parseFloat(input.value) || 0;
+        });
+        
+        // Calculate total
+        const total = totalLayanan + totalProduk;
+        document.getElementById('total_harga').value = total.toFixed(2);
+    }
+
+    function number_format(number) {
+        return new Intl.NumberFormat('id-ID').format(number);
+    }
 </script>
 @endpush
 

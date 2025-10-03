@@ -13,7 +13,7 @@ class Kategori extends Model
         'nama_kategori',
         'kode_kategori',
         'deskripsi',
-        'jenis_kategori', // inventaris, layanan, pengeluaran, cabang, transaksi
+        'jenis_kategori', // inventaris, layanan, pengeluaran, cabang
         'parent_id',
         'urutan',
         'status',
@@ -31,7 +31,6 @@ class Kategori extends Model
     public const JENIS_LAYANAN = 'layanan';
     public const JENIS_PENGELUARAN = 'pengeluaran';
     public const JENIS_CABANG = 'cabang';
-    public const JENIS_TRANSAKSI = 'transaksi';
 
     public static function getJenisKategori()
     {
@@ -40,7 +39,6 @@ class Kategori extends Model
             self::JENIS_LAYANAN => 'Layanan',
             self::JENIS_PENGELUARAN => 'Pengeluaran',
             self::JENIS_CABANG => 'Cabang',
-            self::JENIS_TRANSAKSI => 'Transaksi'
         ];
     }
 
@@ -90,11 +88,6 @@ class Kategori extends Model
     public function scopeCabang($query)
     {
         return $query->where('jenis_kategori', self::JENIS_CABANG);
-    }
-
-    public function scopeTransaksi($query)
-    {
-        return $query->where('jenis_kategori', self::JENIS_TRANSAKSI);
     }
 
     // Scope untuk kategori aktif

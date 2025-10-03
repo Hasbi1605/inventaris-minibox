@@ -187,9 +187,6 @@
     <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
         <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
             <h6 class="font-bold">Data Kapster</h6>
-            <p class="text-sm leading-normal text-slate-400">
-                Total {{ $kapster->total() }} kapster ditemukan
-            </p>
         </div>
                 
         <div class="flex-auto px-0 pt-0 pb-2">
@@ -256,37 +253,32 @@
                                 </span>
                             </td>
                             <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                <div class="flex items-center justify-center space-x-2">
+                                <div class="flex items-center justify-center space-x-3">
+                                    <!-- Tombol Lihat -->
                                     <a href="{{ route('kelola-kapster.show', $item->id) }}" 
-                                        class="inline-block px-4 py-3 mb-0 font-bold text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none cursor-pointer leading-pro text-xs ease-soft-in bg-150 hover:scale-102 active:opacity-85 bg-x-25 text-slate-700"
-                                        data-tooltip-target="tooltip-show-{{ $item->id }}">
-                                        <i class="fas fa-eye text-slate-700"></i>
+                                       class="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-white bg-gradient-to-tl from-blue-600 to-cyan-400 rounded-lg hover:scale-102 hover:shadow-soft-xs transition-all duration-200 shadow-soft-md"
+                                       title="Lihat Detail">
+                                        <i class="fas fa-eye"></i>
                                     </a>
-                                    <div id="tooltip-show-{{ $item->id }}" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-                                        Lihat Detail
-                                    </div>
-
+                                    
+                                    <!-- Tombol Edit -->
                                     <a href="{{ route('kelola-kapster.edit', $item->id) }}" 
-                                        class="inline-block px-4 py-3 mb-0 font-bold text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none cursor-pointer leading-pro text-xs ease-soft-in bg-150 hover:scale-102 active:opacity-85 bg-x-25 text-slate-700"
-                                        data-tooltip-target="tooltip-edit-{{ $item->id }}">
-                                        <i class="fas fa-edit text-slate-700"></i>
+                                       class="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-white bg-gradient-to-tl from-green-600 to-lime-400 rounded-lg hover:scale-102 hover:shadow-soft-xs transition-all duration-200 shadow-soft-md"
+                                       title="Edit Kapster">
+                                        <i class="fas fa-edit"></i>
                                     </a>
-                                    <div id="tooltip-edit-{{ $item->id }}" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-                                        Edit Kapster
-                                    </div>
-
-                                    <form action="{{ route('kelola-kapster.destroy', $item->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kapster ini?')">
+                                    
+                                    <!-- Tombol Hapus -->
+                                    <form action="{{ route('kelola-kapster.destroy', $item->id) }}" method="POST" class="inline-block"
+                                          onsubmit="return confirm('Apakah Anda yakin ingin menghapus kapster {{ $item->nama_kapster }}?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" 
-                                            class="inline-block px-4 py-3 mb-0 font-bold text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none cursor-pointer leading-pro text-xs ease-soft-in bg-150 hover:scale-102 active:opacity-85 bg-x-25 text-slate-700"
-                                            data-tooltip-target="tooltip-delete-{{ $item->id }}">
-                                            <i class="fas fa-trash text-slate-700"></i>
+                                                class="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-white bg-gradient-to-tl from-red-600 to-yellow-400 rounded-lg hover:scale-102 hover:shadow-soft-xs transition-all duration-200 shadow-soft-md"
+                                                title="Hapus Kapster">
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
-                                    <div id="tooltip-delete-{{ $item->id }}" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-                                        Hapus Kapster
-                                    </div>
                                 </div>
                             </td>
                         </tr>

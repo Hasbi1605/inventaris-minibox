@@ -16,7 +16,7 @@ class TransaksiService
      */
     public function getAllTransaksi(array $filters = [], $perPage = 10)
     {
-        $query = Transaksi::query()->with(['layanan', 'kapster.cabang']);
+        $query = Transaksi::query()->with(['layanan', 'kapster.cabang', 'produk']);
 
         // Filter by status
         if (!empty($filters['status'])) {
@@ -32,19 +32,14 @@ class TransaksiService
             $query->whereDate('tanggal_transaksi', '<=', $filters['tanggal_sampai']);
         }
 
-        // Filter by category (from related Layanan)
+        // Filter by layanan
         if (!empty($filters['kategori'])) {
-            $query->whereHas('layanan', function ($q) use ($filters) {
-                $q->where('kategori_id', $filters['kategori']);
-            });
+            $query->where('layanan_id', $filters['kategori']);
         }
 
-        // Search in nomor_transaksi or nama_pelanggan
+        // Search in nomor_transaksi only
         if (!empty($filters['search'])) {
-            $query->where(function ($q) use ($filters) {
-                $q->where('nomor_transaksi', 'like', '%' . $filters['search'] . '%')
-                    ->orWhere('nama_pelanggan', 'like', '%' . $filters['search'] . '%');
-            });
+            $query->where('nomor_transaksi', 'like', '%' . $filters['search'] . '%');
         }
 
         return $query->latest()->paginate($perPage);
@@ -90,15 +85,13 @@ class TransaksiService
     }
 
     /**
-     * Get available categories for transactions (from Layanan)
+     * Get available layanan for transactions filter
      */
     public function getAvailableCategories()
     {
-        return Kategori::where('jenis_kategori', Kategori::JENIS_LAYANAN)
-            ->aktif()
-            ->orderBy('urutan')
+        return Layanan::orderBy('nama_layanan')
             ->get()
-            ->pluck('nama_kategori', 'id');
+            ->pluck('nama_layanan', 'id');
     }
 
     /**
@@ -112,7 +105,46 @@ class TransaksiService
             // Generate nomor transaksi
             $data['nomor_transaksi'] = $this->generateNomorTransaksi();
 
+            // Extract produk data if exists
+            $produkData = $data['produk'] ?? [];
+            unset($data['produk']);
+
+            // Create transaksi
             $transaksi = Transaksi::create($data);
+
+            // Process produk if exists
+            if (!empty($produkData)) {
+                foreach ($produkData as $produk) {
+                    if (!empty($produk['inventaris_id']) && !empty($produk['quantity'])) {
+                        // Get inventaris data
+                        $inventaris = Inventaris::find($produk['inventaris_id']);
+                        if ($inventaris) {
+                            // Calculate subtotal
+                            $hargaSatuan = $inventaris->harga_satuan;
+                            $quantity = $produk['quantity'];
+                            $subtotal = $hargaSatuan * $quantity;
+
+                            // Attach produk to transaksi with pivot data
+                            $transaksi->produk()->attach($produk['inventaris_id'], [
+                                'quantity' => $quantity,
+                                'harga_satuan' => $hargaSatuan,
+                                'subtotal' => $subtotal
+                            ]);
+
+                            // Update inventaris stock
+                            $inventaris->stok_saat_ini -= $quantity;
+                            $inventaris->save();
+
+                            Log::info('Attached produk to transaksi and updated stock', [
+                                'transaksi_id' => $transaksi->id,
+                                'inventaris_id' => $produk['inventaris_id'],
+                                'quantity_sold' => $quantity,
+                                'remaining_stock' => $inventaris->stok_saat_ini
+                            ]);
+                        }
+                    }
+                }
+            }
 
             Log::info('Transaksi created successfully', ['id' => $transaksi->id]);
 
@@ -137,7 +169,87 @@ class TransaksiService
         try {
             Log::info('Updating transaksi', ['id' => $transaksi->id, 'data' => $data]);
 
+            // Extract produk data if exists
+            $produkData = $data['produk'] ?? [];
+            unset($data['produk']);
+
+            // Update transaksi basic data
             $transaksi->update($data);
+
+            // Process produk updates
+            if (!empty($produkData)) {
+                // Get existing produk relationships
+                $existingProduk = $transaksi->produk->pluck('id')->toArray();
+                $newProdukIds = [];
+
+                foreach ($produkData as $produk) {
+                    if (!empty($produk['inventaris_id']) && !empty($produk['quantity'])) {
+                        $inventaris = Inventaris::find($produk['inventaris_id']);
+                        if ($inventaris) {
+                            $hargaSatuan = $inventaris->harga_satuan;
+                            $quantity = $produk['quantity'];
+                            $subtotal = $hargaSatuan * $quantity;
+
+                            // Check if product already exists in transaction
+                            if (in_array($produk['inventaris_id'], $existingProduk)) {
+                                // Update existing pivot
+                                $existingQuantity = $transaksi->produk()->where('inventaris_id', $produk['inventaris_id'])->first()->pivot->quantity;
+                                $quantityDiff = $quantity - $existingQuantity;
+
+                                $transaksi->produk()->updateExistingPivot($produk['inventaris_id'], [
+                                    'quantity' => $quantity,
+                                    'harga_satuan' => $hargaSatuan,
+                                    'subtotal' => $subtotal
+                                ]);
+
+                                // Adjust stock based on difference
+                                $inventaris->stok_saat_ini -= $quantityDiff;
+                                $inventaris->save();
+                            } else {
+                                // Attach new product
+                                $transaksi->produk()->attach($produk['inventaris_id'], [
+                                    'quantity' => $quantity,
+                                    'harga_satuan' => $hargaSatuan,
+                                    'subtotal' => $subtotal
+                                ]);
+
+                                // Reduce stock
+                                $inventaris->stok_saat_ini -= $quantity;
+                                $inventaris->save();
+                            }
+
+                            $newProdukIds[] = $produk['inventaris_id'];
+                        }
+                    }
+                }
+
+                // Remove products that are no longer in the transaction
+                $removedProdukIds = array_diff($existingProduk, $newProdukIds);
+                foreach ($removedProdukIds as $removedId) {
+                    $removedProduk = $transaksi->produk()->where('inventaris_id', $removedId)->first();
+                    if ($removedProduk) {
+                        // Return stock
+                        $inventaris = Inventaris::find($removedId);
+                        if ($inventaris) {
+                            $inventaris->stok_saat_ini += $removedProduk->pivot->quantity;
+                            $inventaris->save();
+                        }
+
+                        // Detach from transaction
+                        $transaksi->produk()->detach($removedId);
+                    }
+                }
+            } else {
+                // If no products provided, remove all existing products and return stock
+                foreach ($transaksi->produk as $produk) {
+                    $inventaris = Inventaris::find($produk->id);
+                    if ($inventaris) {
+                        $inventaris->stok_saat_ini += $produk->pivot->quantity;
+                        $inventaris->save();
+                    }
+                }
+                $transaksi->produk()->detach();
+            }
 
             Log::info('Transaksi updated successfully', ['id' => $transaksi->id]);
 

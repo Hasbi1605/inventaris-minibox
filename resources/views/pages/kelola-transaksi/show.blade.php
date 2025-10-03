@@ -66,22 +66,6 @@
                             </div>
                         </div>
 
-                        <!-- Nama Pelanggan -->
-                        <div>
-                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Nama Pelanggan</label>
-                            <div class="p-3 bg-gray-50 rounded-lg border">
-                                <p class="mb-0 text-slate-600">{{ $transaksi->nama_pelanggan }}</p>
-                            </div>
-                        </div>
-
-                        <!-- Telepon Pelanggan -->
-                        <div>
-                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Telepon Pelanggan</label>
-                            <div class="p-3 bg-gray-50 rounded-lg border">
-                                <p class="mb-0 text-slate-600">{{ $transaksi->telepon_pelanggan ?? '-' }}</p>
-                            </div>
-                        </div>
-
                         <!-- Layanan -->
                         <div>
                             <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Layanan</label>
@@ -111,42 +95,31 @@
                 </div>
             </div>
 
-            <!-- Schedule Information -->
+            <!-- Produk Information -->
+            @if($transaksi->produk->count() > 0)
             <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
                 <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
-                    <h6 class="font-bold">Jadwal Layanan</h6>
+                    <h6 class="font-bold">Produk Tambahan</h6>
                 </div>
                 <div class="flex-auto px-6 pt-0 pb-6">
-                    <div class="space-y-4 mt-4">
-                        <!-- Tanggal -->
+                    <div class="space-y-3 mt-4">
+                        @foreach($transaksi->produk as $produk)
                         <div class="p-3 bg-gray-50 rounded-lg">
-                            <label class="text-sm font-medium text-slate-600 block mb-1">Tanggal</label>
-                            <div class="text-lg font-semibold text-slate-700">{{ $transaksi->tanggal_transaksi->format('d F Y') }}</div>
-                            <div class="text-xs text-slate-400">{{ $transaksi->tanggal_transaksi->diffForHumans() }}</div>
-                        </div>
-
-                        <!-- Waktu -->
-                        <div class="grid grid-cols-2 gap-2">
-                            <div class="p-3 bg-gray-50 rounded-lg">
-                                <label class="text-xs font-medium text-slate-600 block mb-1">Waktu Mulai</label>
-                                <div class="text-sm font-semibold text-slate-700">{{ $transaksi->waktu_mulai }}</div>
-                            </div>
-                            <div class="p-3 bg-gray-50 rounded-lg">
-                                <label class="text-xs font-medium text-slate-600 block mb-1">Waktu Selesai</label>
-                                <div class="text-sm font-semibold text-slate-700">{{ $transaksi->waktu_selesai ?? 'Belum selesai' }}</div>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h6 class="text-sm font-semibold text-slate-700">{{ $produk->nama_barang }}</h6>
+                                    <p class="text-xs text-slate-400">{{ $produk->pivot->quantity }} x Rp {{ number_format($produk->pivot->harga_satuan, 0, ',', '.') }}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm font-bold text-slate-700">Rp {{ number_format($produk->pivot->subtotal, 0, ',', '.') }}</p>
+                                </div>
                             </div>
                         </div>
-
-                        @if($transaksi->layanan)
-                        <!-- Durasi Estimasi -->
-                        <div class="p-3 bg-gray-50 rounded-lg">
-                            <label class="text-sm font-medium text-slate-600 block mb-1">Durasi Estimasi</label>
-                            <div class="text-sm font-semibold text-slate-700">{{ $transaksi->layanan->durasi_estimasi }} menit</div>
-                        </div>
-                        @endif
+                        @endforeach
                     </div>
                 </div>
             </div>
+            @endif
         </div>
 
         <!-- Quick Stats & Actions -->

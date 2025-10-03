@@ -22,17 +22,16 @@ class TransaksiRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nama_pelanggan' => 'required|string|max:255',
-            'telepon_pelanggan' => 'nullable|string|max:20',
             'layanan_id' => 'required|exists:layanans,id',
             'kapster_id' => 'required|exists:kapster,id',
             'tanggal_transaksi' => 'required|date',
-            'waktu_mulai' => 'required|date_format:H:i',
-            'waktu_selesai' => 'nullable|date_format:H:i|after:waktu_mulai',
             'total_harga' => 'required|numeric|min:0|max:999999999.99',
             'metode_pembayaran' => 'required|in:tunai,kartu_debit,kartu_kredit,transfer,ewallet',
             'status' => 'required|in:pending,sedang_proses,selesai,dibatalkan',
-            'catatan' => 'nullable|string|max:1000'
+            'catatan' => 'nullable|string|max:1000',
+            'produk' => 'nullable|array',
+            'produk.*.inventaris_id' => 'required_with:produk|exists:inventaris,id',
+            'produk.*.quantity' => 'required_with:produk|integer|min:1'
         ];
     }
 
@@ -42,21 +41,12 @@ class TransaksiRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'nama_pelanggan.required' => 'Nama pelanggan wajib diisi.',
-            'nama_pelanggan.string' => 'Nama pelanggan harus berupa teks.',
-            'nama_pelanggan.max' => 'Nama pelanggan maksimal 255 karakter.',
-            'telepon_pelanggan.string' => 'Telepon pelanggan harus berupa teks.',
-            'telepon_pelanggan.max' => 'Telepon pelanggan maksimal 20 karakter.',
             'layanan_id.required' => 'Layanan wajib dipilih.',
             'layanan_id.exists' => 'Layanan yang dipilih tidak valid.',
             'kapster_id.required' => 'Kapster wajib dipilih.',
             'kapster_id.exists' => 'Kapster yang dipilih tidak valid.',
             'tanggal_transaksi.required' => 'Tanggal transaksi wajib diisi.',
             'tanggal_transaksi.date' => 'Tanggal transaksi harus berupa tanggal yang valid.',
-            'waktu_mulai.required' => 'Waktu mulai wajib diisi.',
-            'waktu_mulai.date_format' => 'Format waktu mulai harus HH:MM.',
-            'waktu_selesai.date_format' => 'Format waktu selesai harus HH:MM.',
-            'waktu_selesai.after' => 'Waktu selesai harus setelah waktu mulai.',
             'total_harga.required' => 'Total harga wajib diisi.',
             'total_harga.numeric' => 'Total harga harus berupa angka.',
             'total_harga.min' => 'Total harga tidak boleh kurang dari 0.',
@@ -66,7 +56,13 @@ class TransaksiRequest extends FormRequest
             'status.required' => 'Status transaksi wajib dipilih.',
             'status.in' => 'Status transaksi tidak valid.',
             'catatan.string' => 'Catatan harus berupa teks.',
-            'catatan.max' => 'Catatan maksimal 1000 karakter.'
+            'catatan.max' => 'Catatan maksimal 1000 karakter.',
+            'produk.array' => 'Data produk tidak valid.',
+            'produk.*.inventaris_id.required_with' => 'Produk wajib dipilih.',
+            'produk.*.inventaris_id.exists' => 'Produk yang dipilih tidak valid.',
+            'produk.*.quantity.required_with' => 'Jumlah produk wajib diisi.',
+            'produk.*.quantity.integer' => 'Jumlah produk harus berupa angka.',
+            'produk.*.quantity.min' => 'Jumlah produk minimal 1.'
         ];
     }
 
@@ -76,17 +72,15 @@ class TransaksiRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'nama_pelanggan' => 'nama pelanggan',
-            'telepon_pelanggan' => 'telepon pelanggan',
             'layanan_id' => 'layanan',
             'kapster_id' => 'kapster',
             'tanggal_transaksi' => 'tanggal transaksi',
-            'waktu_mulai' => 'waktu mulai',
-            'waktu_selesai' => 'waktu selesai',
             'total_harga' => 'total harga',
             'metode_pembayaran' => 'metode pembayaran',
             'status' => 'status',
-            'catatan' => 'catatan'
+            'catatan' => 'catatan',
+            'produk.*.inventaris_id' => 'produk',
+            'produk.*.quantity' => 'jumlah produk'
         ];
     }
 }

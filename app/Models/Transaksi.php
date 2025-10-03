@@ -15,13 +15,9 @@ class Transaksi extends Model
 
     protected $fillable = [
         'nomor_transaksi',
-        'nama_pelanggan',
-        'telepon_pelanggan',
         'layanan_id',
         'kapster_id',
         'tanggal_transaksi',
-        'waktu_mulai',
-        'waktu_selesai',
         'total_harga',
         'metode_pembayaran',
         'status',
@@ -30,8 +26,6 @@ class Transaksi extends Model
 
     protected $casts = [
         'tanggal_transaksi' => 'date',
-        'waktu_mulai' => 'datetime:H:i',
-        'waktu_selesai' => 'datetime:H:i',
         'total_harga' => 'decimal:2'
     ];
 
@@ -45,6 +39,14 @@ class Transaksi extends Model
     public function kapster()
     {
         return $this->belongsTo(Kapster::class);
+    }
+
+    // Relationship with Inventaris (Produk)
+    public function produk()
+    {
+        return $this->belongsToMany(Inventaris::class, 'transaksi_produk')
+            ->withPivot('quantity', 'harga_satuan', 'subtotal')
+            ->withTimestamps();
     }
 
     // Accessor for formatted total harga

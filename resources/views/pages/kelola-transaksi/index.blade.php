@@ -134,11 +134,11 @@
         <div class="flex-auto p-6">
             <form method="GET" action="{{ route('kelola-transaksi.index') }}">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4">
-                    <!-- Kategori Layanan -->
+                    <!-- Layanan -->
                     <div class="xl:col-span-1">
-                        <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Kategori Layanan</label>
+                        <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Layanan</label>
                         <select name="kategori" class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow">
-                            <option value="">Semua Kategori</option>
+                            <option value="">Semua Layanan</option>
                             @foreach($categories as $id => $nama)
                             <option value="{{ $id }}" {{ (request('kategori') == $id) ? 'selected' : '' }}>{{ $nama }}</option>
                             @endforeach
@@ -200,8 +200,8 @@
                         <thead class="align-bottom">
                             <tr>
                                 <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">No. Transaksi</th>
-                                <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Pelanggan</th>
                                 <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Layanan</th>
+                                <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Produk</th>
                                 <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Kapster</th>
                                 <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Tanggal</th>
                                 <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Total</th>
@@ -221,15 +221,22 @@
                                     </div>
                                 </td>
                                 <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                    <div class="flex flex-col justify-center">
-                                        <h6 class="mb-0 leading-normal text-sm">{{ $item->nama_pelanggan }}</h6>
-                                        <p class="mb-0 leading-tight text-xs text-slate-400">{{ $item->telepon_pelanggan ?? '-' }}</p>
-                                    </div>
-                                </td>
-                                <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
                                     <span class="text-xs font-semibold leading-tight text-slate-400">
                                         {{ $item->layanan->nama_layanan ?? 'Layanan tidak ditemukan' }}
                                     </span>
+                                </td>
+                                <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                    @if($item->produk->count() > 0)
+                                        <div class="flex flex-col justify-center">
+                                            @foreach($item->produk as $produk)
+                                                <span class="text-xs leading-tight text-slate-600">
+                                                    {{ $produk->nama_barang }} ({{ $produk->pivot->quantity }}x)
+                                                </span>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <span class="text-xs leading-tight text-slate-400 italic">-</span>
+                                    @endif
                                 </td>
                                 <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
                                     <div class="flex flex-col justify-center">
@@ -244,14 +251,9 @@
                                     </div>
                                 </td>
                                 <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                    <div class="flex flex-col justify-center">
-                                        <span class="text-xs font-semibold leading-tight text-slate-400">
-                                            {{ $item->tanggal_transaksi->format('d/m/Y') }}
-                                        </span>
-                                        <span class="text-xs leading-tight text-slate-400">
-                                            {{ $item->waktu_mulai }} - {{ $item->waktu_selesai ?? 'Belum selesai' }}
-                                        </span>
-                                    </div>
+                                    <span class="text-xs font-semibold leading-tight text-slate-400">
+                                        {{ $item->tanggal_transaksi->format('d/m/Y') }}
+                                    </span>
                                 </td>
                                 <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
                                     <span class="text-xs font-semibold leading-tight text-slate-400">

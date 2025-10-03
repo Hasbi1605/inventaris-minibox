@@ -42,46 +42,9 @@
                     <form action="{{ route('kelola-transaksi.store') }}" method="POST">
                         @csrf
                         
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            <!-- Nama Pelanggan -->
-                            <div class="col-span-1">
-                                <label for="nama_pelanggan" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Nama Pelanggan <span class="text-red-500">*</span>
-                                </label>
-                                <input 
-                                    type="text" 
-                                    name="nama_pelanggan" 
-                                    id="nama_pelanggan"
-                                    value="{{ old('nama_pelanggan') }}"
-                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('nama_pelanggan') border-red-500 @enderror"
-                                    placeholder="Masukkan nama pelanggan"
-                                    required
-                                />
-                                @error('nama_pelanggan')
-                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Telepon Pelanggan -->
-                            <div class="col-span-1">
-                                <label for="telepon_pelanggan" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Telepon Pelanggan
-                                </label>
-                                <input 
-                                    type="text" 
-                                    name="telepon_pelanggan" 
-                                    id="telepon_pelanggan"
-                                    value="{{ old('telepon_pelanggan') }}"
-                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('telepon_pelanggan') border-red-500 @enderror"
-                                    placeholder="Masukkan nomor telepon (opsional)"
-                                />
-                                @error('telepon_pelanggan')
-                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
                             <!-- Layanan -->
-                            <div class="col-span-1">
+                            <div>
                                 <label for="layanan_id" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
                                     Layanan <span class="text-red-500">*</span>
                                 </label>
@@ -104,7 +67,7 @@
                             </div>
 
                             <!-- Kapster -->
-                            <div class="col-span-1">
+                            <div>
                                 <label for="kapster_id" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
                                     Kapster <span class="text-red-500">*</span>
                                 </label>
@@ -126,139 +89,32 @@
                                 @enderror
                             </div>
 
-                            <!-- Subtotal Layanan -->
-                            <div class="col-span-1">
-                                <label for="subtotal_layanan" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Subtotal Layanan
-                                </label>
-                                <input 
-                                    type="number" 
-                                    name="subtotal_layanan" 
-                                    id="subtotal_layanan"
-                                    value="{{ old('subtotal_layanan') }}"
-                                    min="0" 
-                                    step="0.01"
-                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-gray-100 bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow"
-                                    placeholder="0.00"
-                                    readonly
-                                />
-                            </div>
-                        </div>
-
-                        <!-- Produk Section -->
-                        <div class="mt-8 mb-6">
-                            <div class="flex items-center justify-between mb-4">
-                                <h6 class="text-base font-bold text-slate-700">
-                                    <i class="fas fa-shopping-cart mr-2 text-blue-500"></i>
-                                    Produk Tambahan (Opsional)
-                                </h6>
-                                <button type="button" id="addProduk" class="inline-block px-4 py-2 text-xs font-bold text-center text-white uppercase transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-600 to-cyan-400 leading-pro ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
-                                    <i class="fas fa-plus mr-1"></i>
-                                    Tambah Produk
-                                </button>
-                            </div>
-
-                            <div id="produkContainer" class="space-y-4">
-                                <!-- Dynamic product items will be added here -->
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            <!-- Subtotal Produk -->
-                            <div class="col-span-1">
-                                <label for="subtotal_produk" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Subtotal Produk
-                                </label>
-                                <input 
-                                    type="number" 
-                                    name="subtotal_produk" 
-                                    id="subtotal_produk"
-                                    value="{{ old('subtotal_produk', 0) }}"
-                                    min="0" 
-                                    step="0.01"
-                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-gray-100 bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow"
-                                    placeholder="0.00"
-                                    readonly
-                                />
-                            </div>
-
-                            <!-- Total Harga -->
-                            <div class="col-span-1">
-                                <label for="total_harga" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    <strong>Total Harga <span class="text-red-500">*</span></strong>
-                                </label>
-                                <input 
-                                    type="number" 
-                                    name="total_harga" 
-                                    id="total_harga"
-                                    value="{{ old('total_harga') }}"
-                                    min="0" 
-                                    step="0.01"
-                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-yellow-50 bg-clip-padding px-3 py-2 font-bold text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('total_harga') border-red-500 @enderror"
-                                    placeholder="0.00"
-                                    readonly
-                                    required
-                                />
-                                @error('total_harga')
-                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Tanggal Transaksi -->
-                            <div class="col-span-1">
-                                <label for="tanggal_transaksi" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Tanggal Transaksi <span class="text-red-500">*</span>
-                                </label>
-                                <input 
-                                    type="date" 
-                                    name="tanggal_transaksi" 
-                                    id="tanggal_transaksi"
-                                    value="{{ old('tanggal_transaksi', date('Y-m-d')) }}"
-                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('tanggal_transaksi') border-red-500 @enderror"
-                                    required
-                                />
-                                @error('tanggal_transaksi')
-                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Waktu Mulai -->
-                            <div class="col-span-1">
-                                <label for="waktu_mulai" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Waktu Mulai <span class="text-red-500">*</span>
-                                </label>
-                                <input 
-                                    type="time" 
-                                    name="waktu_mulai" 
-                                    id="waktu_mulai"
-                                    value="{{ old('waktu_mulai') }}"
-                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('waktu_mulai') border-red-500 @enderror"
-                                    required
-                                />
-                                @error('waktu_mulai')
-                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Waktu Selesai -->
-                            <div class="col-span-1">
-                                <label for="waktu_selesai" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Waktu Selesai
-                                </label>
-                                <input 
-                                    type="time" 
-                                    name="waktu_selesai" 
-                                    id="waktu_selesai"
-                                    value="{{ old('waktu_selesai') }}"
-                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('waktu_selesai') border-red-500 @enderror"
-                                />
-                                @error('waktu_selesai')
-                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
-                                @enderror
+                            <!-- Produk Tambahan -->
+                            <div class="col-span-1 lg:col-span-2" id="produkSection">
+                                <div class="flex items-center justify-between mb-2">
+                                    <label class="inline-block ml-1 font-bold text-xs text-slate-700">
+                                        Produk Tambahan <span class="text-xs text-slate-400">(Opsional)</span>
+                                    </label>
+                                    <div class="flex gap-2">
+                                        <button type="button" 
+                                            id="closeProdukSection"
+                                            class="hidden inline-block px-4 py-2 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-red-600 to-yellow-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                                            <i class="fas fa-times mr-2"></i>
+                                            Tutup
+                                        </button>
+                                        <button type="button" 
+                                            id="addProduk"
+                                            class="inline-block px-4 py-2 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-600 to-cyan-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                                            <i class="fas fa-plus mr-2"></i>
+                                            Tambah Produk
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="produkContainer" class="space-y-4"></div>
                             </div>
 
                             <!-- Metode Pembayaran -->
-                            <div class="col-span-1">
+                            <div>
                                 <label for="metode_pembayaran" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
                                     Metode Pembayaran <span class="text-red-500">*</span>
                                 </label>
@@ -281,9 +137,9 @@
                             </div>
 
                             <!-- Status -->
-                            <div class="col-span-1">
+                            <div>
                                 <label for="status" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Status <span class="text-red-500">*</span>
+                                    Status Transaksi <span class="text-red-500">*</span>
                                 </label>
                                 <select 
                                     name="status" 
@@ -294,12 +150,50 @@
                                     <option value="">Pilih Status</option>
                                     <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>Pending</option>
                                     <option value="sedang_proses" {{ old('status') == 'sedang_proses' ? 'selected' : '' }}>Sedang Proses</option>
-                                    <option value="selesai" {{ old('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
+                                    <option value="selesai" {{ old('status', 'selesai') == 'selesai' ? 'selected' : '' }}>Selesai</option>
                                     <option value="dibatalkan" {{ old('status') == 'dibatalkan' ? 'selected' : '' }}>Dibatalkan</option>
                                 </select>
                                 @error('status')
                                     <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
                                 @enderror
+                            </div>
+
+                            <!-- Tanggal Transaksi -->
+                            <div>
+                                <label for="tanggal_transaksi" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                    Tanggal Transaksi <span class="text-red-500">*</span>
+                                </label>
+                                <input 
+                                    type="date" 
+                                    name="tanggal_transaksi" 
+                                    id="tanggal_transaksi"
+                                    value="{{ old('tanggal_transaksi', date('Y-m-d')) }}"
+                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('tanggal_transaksi') border-red-500 @enderror"
+                                    required
+                                />
+                                @error('tanggal_transaksi')
+                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Total Harga -->
+                            <div>
+                                <label for="total_harga" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                    Total Harga <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-sm text-gray-700 font-semibold pointer-events-none">
+                                        Rp
+                                    </span>
+                                    <input 
+                                        type="number" 
+                                        name="total_harga" 
+                                        id="total_harga"
+                                        step="0.01"
+                                        class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-gray-100 bg-clip-padding pl-12 pr-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow"
+                                        readonly
+                                    />
+                                </div>
                             </div>
 
                             <!-- Catatan -->
@@ -346,19 +240,28 @@
     const availableProduk = @json($inventaris ?? []);
 
     document.addEventListener('DOMContentLoaded', function() {
-        // Auto fill subtotal layanan when layanan is selected
+        // Auto calculate total when layanan is selected
         document.getElementById('layanan_id').addEventListener('change', function() {
-            const selectedOption = this.options[this.selectedIndex];
-            const harga = selectedOption.getAttribute('data-harga');
-            if (harga) {
-                document.getElementById('subtotal_layanan').value = harga;
-                calculateTotal();
-            }
+            calculateTotal();
         });
 
         // Add product functionality
         document.getElementById('addProduk').addEventListener('click', function() {
             addProdukRow();
+            // Show close button when first product is added
+            document.getElementById('closeProdukSection').classList.remove('hidden');
+        });
+
+        // Close product section functionality
+        document.getElementById('closeProdukSection').addEventListener('click', function() {
+            // Remove all product rows
+            document.getElementById('produkContainer').innerHTML = '';
+            // Hide close button
+            this.classList.add('hidden');
+            // Reset counter
+            produkCounter = 0;
+            // Recalculate total
+            calculateTotal();
         });
 
         // Initial calculation
@@ -377,11 +280,11 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
                 <div class="col-span-1 md:col-span-2">
                     <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                        Produk <span class="text-red-500">*</span>
+                        Produk
                     </label>
                     <select name="produk[${produkCounter}][inventaris_id]" 
                             class="produk-select focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow"
-                            data-index="${produkCounter}" required>
+                            data-index="${produkCounter}">
                         <option value="">Pilih Produk</option>
                         ${availableProduk.map(item => `
                             <option value="${item.id}" data-harga="${item.harga_satuan}" data-stok="${item.stok_saat_ini}">
@@ -392,13 +295,13 @@
                 </div>
                 <div>
                     <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                        Qty <span class="text-red-500">*</span>
+                        Qty
                     </label>
                     <input type="number" 
                            name="produk[${produkCounter}][quantity]" 
                            class="qty-input focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow"
                            data-index="${produkCounter}"
-                           min="1" value="1" required>
+                           min="1" value="1">
                 </div>
                 <div class="flex items-center space-x-2">
                     <div class="flex-1">
@@ -446,6 +349,12 @@
         if (row) {
             row.remove();
             calculateTotal();
+            
+            // Hide close button if no products left
+            const remainingRows = document.querySelectorAll('.produk-row');
+            if (remainingRows.length === 0) {
+                document.getElementById('closeProdukSection').classList.add('hidden');
+            }
         }
     }
 
@@ -466,18 +375,21 @@
 
     function calculateTotal() {
         // Calculate subtotal layanan
-        const subtotalLayanan = parseFloat(document.getElementById('subtotal_layanan').value) || 0;
+        let totalLayanan = 0;
+        const layananSelect = document.getElementById('layanan_id');
+        if (layananSelect && layananSelect.value) {
+            const selectedOption = layananSelect.options[layananSelect.selectedIndex];
+            totalLayanan = parseFloat(selectedOption.getAttribute('data-harga')) || 0;
+        }
         
         // Calculate subtotal produk
-        let subtotalProduk = 0;
+        let totalProduk = 0;
         document.querySelectorAll('.subtotal-produk').forEach(input => {
-            subtotalProduk += parseFloat(input.value) || 0;
+            totalProduk += parseFloat(input.value) || 0;
         });
         
-        document.getElementById('subtotal_produk').value = subtotalProduk.toFixed(2);
-        
         // Calculate total
-        const total = subtotalLayanan + subtotalProduk;
+        const total = totalLayanan + totalProduk;
         document.getElementById('total_harga').value = total.toFixed(2);
     }
 

@@ -76,7 +76,7 @@ class KelolaTransaksiController extends Controller
     {
         try {
             Log::info('Menampilkan transaksi dengan ID: ' . $id);
-            $transaksi = Transaksi::with('layanan')->findOrFail($id);
+            $transaksi = Transaksi::with(['layanan', 'produk'])->findOrFail($id);
             return view('pages.kelola-transaksi.show', compact('transaksi'));
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             Log::error("Error menampilkan transaksi: " . $e->getMessage(), [
@@ -97,9 +97,11 @@ class KelolaTransaksiController extends Controller
     {
         try {
             Log::info('Menampilkan form edit untuk transaksi dengan ID: ' . $id);
-            $transaksi = Transaksi::with('layanan')->findOrFail($id);
+            $transaksi = Transaksi::with(['layanan', 'produk'])->findOrFail($id);
             $layanan = $this->transaksiService->getAvailableLayanan();
-            return view('pages.kelola-transaksi.edit', compact('transaksi', 'layanan'));
+            $inventaris = $this->transaksiService->getAvailableInventaris();
+            $kapster = Kapster::with('cabang')->where('status', 'aktif')->orderBy('nama_kapster')->get();
+            return view('pages.kelola-transaksi.edit', compact('transaksi', 'layanan', 'inventaris', 'kapster'));
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             Log::error("Error menampilkan form edit: " . $e->getMessage(), [
                 'request' => request()->all(),
