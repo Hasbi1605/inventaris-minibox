@@ -13,15 +13,12 @@ class Layanan extends Model
         'nama_layanan',
         'deskripsi',
         'harga',
-        'durasi_estimasi',
         'status',
-        'kategori',
         'kategori_id'
     ];
 
     protected $casts = [
-        'harga' => 'decimal:2',
-        'durasi_estimasi' => 'integer'
+        'harga' => 'decimal:2'
     ];
 
     // Accessor untuk format harga
@@ -30,16 +27,31 @@ class Layanan extends Model
         return 'Rp ' . number_format($this->harga, 0, ',', '.');
     }
 
-    // Accessor untuk format durasi
-    public function getFormattedDurasiAttribute()
-    {
-        return $this->durasi_estimasi . ' menit';
-    }
-
     // Relasi dengan kategori
-    public function kategoriRelasi()
+    public function kategori()
     {
         return $this->belongsTo(Kategori::class, 'kategori_id');
+    }
+
+    // Alias untuk backward compatibility
+    public function kategoriRelasi()
+    {
+        return $this->kategori();
+    }
+
+    // Relasi many-to-many dengan Cabang (untuk harga per cabang)
+    public function cabangs()
+    {
+        return $this->belongsToMany(Cabang::class, 'cabang_layanan')
+            ->withPivot('harga', 'status')
+            ->withTimestamps();
+    }
+
+    // Helper: Dapatkan harga untuk cabang tertentu
+    public function getHargaForCabang($cabangId)
+    {
+        $cabangLayanan = $this->cabangs()->where('cabang_id', $cabangId)->first();
+        return $cabangLayanan ? $cabangLayanan->pivot->harga : $this->harga; // fallback ke harga default
     }
 
     // Scope untuk layanan aktif
@@ -57,6 +69,21 @@ class Layanan extends Model
     // Accessor untuk nama kategori
     public function getNamaKategoriAttribute()
     {
-        return $this->kategoriRelasi ? $this->kategoriRelasi->nama_kategori : $this->kategori;
+        return $this->kategori ? $this->kategori->nama_kategori : '-';
+    }
+
+    /**
+     * Get sequential number for this layanan
+     * Returns the position of this layanan in the ordered list
+     */
+    public function getSequentialNumberAttribute()
+    {
+        // Get all layanan IDs ordered by ID
+        $allIds = self::orderBy('id')->pluck('id')->toArray();
+
+        // Find position of current layanan (1-based index)
+        $position = array_search($this->id, $allIds);
+
+        return $position !== false ? $position + 1 : 0;
     }
 }

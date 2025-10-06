@@ -21,22 +21,26 @@ class LayananRequest extends FormRequest
      */
     public function rules(): array
     {
+        $layananId = $this->route('kelola_layanan');
+
         $rules = [
-            'nama_layanan' => 'required|string|max:255',
+            'nama_layanan' => [
+                'required',
+                'string',
+                'max:255',
+                $this->isMethod('post')
+                    ? 'unique:layanans,nama_layanan'
+                    : 'unique:layanans,nama_layanan,' . $layananId
+            ],
             'deskripsi' => 'nullable|string|max:1000',
             'harga' => 'required|numeric|min:0|max:999999999.99',
-            'durasi_estimasi' => 'required|integer|min:1|max:480', // max 8 jam
             'kategori_id' => 'nullable|exists:kategoris,id',
-            'status' => 'required|in:aktif,nonaktif'
+            'status' => 'required|in:aktif,tidak_aktif',
+            'cabang_ids' => 'required|array|min:1',
+            'cabang_ids.*' => 'required|exists:cabang,id',
+            'harga_cabang' => 'nullable|array',
+            'harga_cabang.*' => 'nullable|numeric|min:0|max:999999999.99'
         ];
-
-        // Add unique rule for nama_layanan when creating or updating different record
-        if ($this->isMethod('post')) {
-            $rules['nama_layanan'] .= '|unique:layanans,nama_layanan';
-        } elseif ($this->isMethod('put') || $this->isMethod('patch')) {
-            $layananId = $this->route('layanan') ?? $this->route('id');
-            $rules['nama_layanan'] .= '|unique:layanans,nama_layanan,' . $layananId;
-        }
 
         return $rules;
     }
@@ -57,14 +61,17 @@ class LayananRequest extends FormRequest
             'harga.numeric' => 'Harga harus berupa angka.',
             'harga.min' => 'Harga tidak boleh kurang dari 0.',
             'harga.max' => 'Harga terlalu besar.',
-            'durasi_estimasi.required' => 'Durasi estimasi wajib diisi.',
-            'durasi_estimasi.integer' => 'Durasi estimasi harus berupa angka bulat.',
-            'durasi_estimasi.min' => 'Durasi estimasi minimal 1 menit.',
-            'durasi_estimasi.max' => 'Durasi estimasi maksimal 480 menit (8 jam).',
-            'kategori.string' => 'Kategori harus berupa teks.',
-            'kategori.max' => 'Kategori maksimal 100 karakter.',
+            'kategori_id.exists' => 'Kategori yang dipilih tidak valid.',
             'status.required' => 'Status layanan wajib dipilih.',
-            'status.in' => 'Status layanan harus aktif atau nonaktif.'
+            'status.in' => 'Status layanan harus aktif atau tidak_aktif.',
+            'cabang_ids.required' => 'Minimal pilih 1 cabang.',
+            'cabang_ids.array' => 'Format cabang tidak valid.',
+            'cabang_ids.min' => 'Minimal pilih 1 cabang.',
+            'cabang_ids.*.exists' => 'Cabang yang dipilih tidak valid.',
+            'harga_cabang.array' => 'Format harga cabang tidak valid.',
+            'harga_cabang.*.numeric' => 'Harga cabang harus berupa angka.',
+            'harga_cabang.*.min' => 'Harga cabang tidak boleh kurang dari 0.',
+            'harga_cabang.*.max' => 'Harga cabang terlalu besar.'
         ];
     }
 
@@ -77,8 +84,7 @@ class LayananRequest extends FormRequest
             'nama_layanan' => 'nama layanan',
             'deskripsi' => 'deskripsi',
             'harga' => 'harga',
-            'durasi_estimasi' => 'durasi estimasi',
-            'kategori' => 'kategori',
+            'kategori_id' => 'kategori',
             'status' => 'status'
         ];
     }

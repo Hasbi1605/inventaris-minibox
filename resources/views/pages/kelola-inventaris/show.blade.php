@@ -74,14 +74,6 @@
                             </div>
                         </div>
 
-                        <!-- Merek -->
-                        <div>
-                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Merek</label>
-                            <div class="p-3 bg-gray-50 rounded-lg border">
-                                <p class="mb-0 text-slate-600">{{ $inventaris->merek ?? '-' }}</p>
-                            </div>
-                        </div>
-
                         <!-- Satuan -->
                         <div>
                             <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Satuan</label>
@@ -210,19 +202,6 @@
                             <span class="text-slate-600">Diperbarui:</span>
                             <span class="text-slate-800">{{ $inventaris->updated_at->format('d M Y H:i') }}</span>
                         </div>
-                        @if($inventaris->tanggal_kadaluarsa)
-                        <div class="flex justify-between items-center text-sm">
-                            <span class="text-slate-600">Kadaluarsa:</span>
-                            <span class="text-slate-800 @if($inventaris->tanggal_kadaluarsa->isPast()) text-red-500 @endif">
-                                {{ $inventaris->tanggal_kadaluarsa->format('d M Y') }}
-                                @if($inventaris->tanggal_kadaluarsa->isPast())
-                                    (Expired)
-                                @elseif($inventaris->tanggal_kadaluarsa->diffInDays() <= 30)
-                                    ({{ $inventaris->tanggal_kadaluarsa->diffInDays() }} hari lagi)
-                                @endif
-                            </span>
-                        </div>
-                        @endif
                     </div>
                 </div>
             </div>

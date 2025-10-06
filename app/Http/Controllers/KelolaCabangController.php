@@ -26,7 +26,7 @@ class KelolaCabangController extends Controller
     {
         $filters = $request->only(['status', 'tanggal_dari', 'tanggal_sampai', 'search', 'kategori_id']);
         $cabang = $this->cabangService->getAllCabang($filters, 10);
-        $statistics = $this->cabangService->getCabangStatistics();
+        $statistics = $this->cabangService->getGeneralStatistics();
 
         // Perbaiki method call - gunakan getKategoris dengan parameter 'cabang'
         $kategori = $this->kategoriService->getKategoris('cabang');

@@ -21,11 +21,11 @@ class PengeluaranService
     public function getAllPengeluaran(array $filters = [], int $perPage = 10): LengthAwarePaginator
     {
         try {
-            $query = Pengeluaran::query();
+            $query = Pengeluaran::query()->with('kategori');
 
-            // Filter by kategori
+            // Filter by kategori_id
             if (!empty($filters['kategori'])) {
-                $query->where('kategori', 'like', '%' . $filters['kategori'] . '%');
+                $query->where('kategori_id', $filters['kategori']);
             }
 
             // Filter by date range
@@ -46,11 +46,11 @@ class PengeluaranService
                 $query->where('jumlah', '<=', $filters['jumlah_max']);
             }
 
-            // Search in deskripsi
+            // Search in deskripsi and nama_pengeluaran
             if (!empty($filters['search'])) {
                 $query->where(function ($q) use ($filters) {
                     $q->where('deskripsi', 'like', '%' . $filters['search'] . '%')
-                        ->orWhere('kategori', 'like', '%' . $filters['search'] . '%');
+                        ->orWhere('nama_pengeluaran', 'like', '%' . $filters['search'] . '%');
                 });
             }
 
@@ -91,17 +91,9 @@ class PengeluaranService
             // Debug log untuk melihat data yang diterima
             Log::info('Creating pengeluaran with data:', $data);
 
-            // Get kategori name from kategori_id untuk backward compatibility
-            $kategoriName = null;
-            if (isset($data['kategori_id'])) {
-                $kategori = Kategori::find($data['kategori_id']);
-                $kategoriName = $kategori ? $kategori->nama_kategori : null;
-            }
-
             $pengeluaran = Pengeluaran::create([
                 'nama_pengeluaran' => $data['deskripsi'],
-                'kategori' => $kategoriName, // untuk backward compatibility
-                'kategori_id' => $data['kategori_id'], // foreign key baru
+                'kategori_id' => $data['kategori_id'],
                 'jumlah' => $data['jumlah'],
                 'tanggal_pengeluaran' => $data['tanggal_pengeluaran'],
                 'deskripsi' => $data['catatan'] ?? null,
@@ -134,7 +126,7 @@ class PengeluaranService
 
             $pengeluaran->update([
                 'nama_pengeluaran' => $data['deskripsi'],
-                'kategori' => $data['kategori'],
+                'kategori_id' => $data['kategori_id'],
                 'jumlah' => $data['jumlah'],
                 'tanggal_pengeluaran' => $data['tanggal_pengeluaran'],
                 'deskripsi' => $data['catatan'] ?? null,

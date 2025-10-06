@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Inventaris;
 use App\Services\InventarisService;
+use App\Services\CabangService;
 use App\Http\Requests\InventarisRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -11,10 +12,12 @@ use Illuminate\Support\Facades\Log;
 class KelolaInventarisController extends Controller
 {
     protected $inventarisService;
+    protected $cabangService;
 
-    public function __construct(InventarisService $inventarisService)
+    public function __construct(InventarisService $inventarisService, CabangService $cabangService)
     {
         $this->inventarisService = $inventarisService;
+        $this->cabangService = $cabangService;
     }
 
     /**
@@ -23,12 +26,42 @@ class KelolaInventarisController extends Controller
     public function index(Request $request)
     {
         $filters = $request->only(['search', 'kategori', 'status']);
-        $inventaris = $this->inventarisService->getAllInventaris($filters);
-        $statistics = $this->inventarisService->getInventarisStatistics();
-        $lowStockItems = $this->inventarisService->getLowStockItems();
-        $nearExpiryItems = $this->inventarisService->getItemsNearExpiry();
+
+        // Get all cabang for tabs
+        $cabangList = $this->cabangService->getAllCabangForDropdown();
+
+        // Get statistics for all cabang (untuk tab semua cabang)
+        $statisticsSemuaCabang = $this->inventarisService->getInventarisStatistics();
+
+        // Get all inventaris untuk semua cabang (produk + aset)
+        $semuaInventaris = $this->inventarisService->getAllInventaris($filters);
+
+        // Get data per cabang (gabungan produk + aset) + statistics per cabang
+        $inventarisPerCabang = [];
+        $statisticsPerCabang = [];
+
+        foreach ($cabangList as $cabang) {
+            // Semua inventaris per cabang
+            $filtersCabang = array_merge($filters, [
+                'cabang_id' => $cabang->id
+            ]);
+            $inventarisPerCabang[$cabang->id] = $this->inventarisService->getInventarisByCabang($filtersCabang);
+
+            // Statistics per cabang
+            $statisticsPerCabang[$cabang->id] = $this->inventarisService->getInventarisStatistics($cabang->id);
+        }
+
         $categories = $this->inventarisService->getAvailableCategories();
-        return view('pages.kelola-inventaris.index', compact('inventaris', 'statistics', 'lowStockItems', 'nearExpiryItems', 'categories', 'filters'));
+
+        return view('pages.kelola-inventaris.index', compact(
+            'semuaInventaris',
+            'inventarisPerCabang',
+            'statisticsSemuaCabang',
+            'statisticsPerCabang',
+            'categories',
+            'cabangList',
+            'filters'
+        ));
     }
 
     /**
@@ -38,7 +71,9 @@ class KelolaInventarisController extends Controller
     {
         $categories = $this->inventarisService->getAvailableCategories();
         $units = $this->inventarisService->getAvailableUnits();
-        return view('pages.kelola-inventaris.create', compact('categories', 'units'));
+        $cabangList = $this->cabangService->getAllCabangForDropdown();
+
+        return view('pages.kelola-inventaris.create', compact('categories', 'units', 'cabangList'));
     }
 
     /**
@@ -100,7 +135,9 @@ class KelolaInventarisController extends Controller
             $inventaris = Inventaris::findOrFail($id);
             $categories = $this->inventarisService->getAvailableCategories();
             $units = $this->inventarisService->getAvailableUnits();
-            return view('pages.kelola-inventaris.edit', compact('inventaris', 'categories', 'units'));
+            $cabangList = $this->cabangService->getAllCabangForDropdown();
+
+            return view('pages.kelola-inventaris.edit', compact('inventaris', 'categories', 'units', 'cabangList'));
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             Log::error("Error menampilkan form edit: " . $e->getMessage(), [
                 'request' => request()->all(),

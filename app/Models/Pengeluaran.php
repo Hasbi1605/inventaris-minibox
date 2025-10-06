@@ -14,8 +14,8 @@ class Pengeluaran extends Model
 
     protected $fillable = [
         'nama_pengeluaran',
-        'kategori',
         'kategori_id',
+        'cabang_id',
         'jumlah',
         'tanggal_pengeluaran',
         'deskripsi',
@@ -110,9 +110,15 @@ class Pengeluaran extends Model
     }
 
     // Relasi dengan kategori
-    public function kategoriRelasi()
+    public function kategori()
     {
         return $this->belongsTo(Kategori::class, 'kategori_id');
+    }
+
+    // Alias untuk backward compatibility
+    public function kategoriRelasi()
+    {
+        return $this->kategori();
     }
 
     // Scope berdasarkan kategori ID
@@ -121,9 +127,36 @@ class Pengeluaran extends Model
         return $query->where('kategori_id', $kategoriId);
     }
 
+    // Relasi dengan cabang
+    public function cabang()
+    {
+        return $this->belongsTo(Cabang::class, 'cabang_id');
+    }
+
+    // Scope berdasarkan cabang
+    public function scopeByCabang($query, $cabangId)
+    {
+        return $query->where('cabang_id', $cabangId);
+    }
+
     // Accessor untuk nama kategori
     public function getNamaKategoriAttribute()
     {
-        return $this->kategoriRelasi ? $this->kategoriRelasi->nama_kategori : $this->kategori;
+        return $this->kategori ? $this->kategori->nama_kategori : '-';
+    }
+
+    /**
+     * Get sequential number for this pengeluaran
+     * Returns the position of this pengeluaran in the ordered list
+     */
+    public function getSequentialNumberAttribute()
+    {
+        // Get all pengeluaran IDs ordered by ID
+        $allIds = self::orderBy('id')->pluck('id')->toArray();
+
+        // Find position of current pengeluaran (1-based index)
+        $position = array_search($this->id, $allIds);
+
+        return $position !== false ? $position + 1 : 0;
     }
 }

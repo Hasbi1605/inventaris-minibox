@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Layanan;
 use App\Services\LayananService;
+use App\Services\CabangService;
 use App\Http\Requests\LayananRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -11,10 +12,12 @@ use Illuminate\Support\Facades\Log;
 class KelolaLayananController extends Controller
 {
     protected $layananService;
+    protected $cabangService;
 
-    public function __construct(LayananService $layananService)
+    public function __construct(LayananService $layananService, CabangService $cabangService)
     {
         $this->layananService = $layananService;
+        $this->cabangService = $cabangService;
     }
 
     /**
@@ -23,10 +26,34 @@ class KelolaLayananController extends Controller
     public function index(Request $request)
     {
         $filters = $request->only(['search', 'kategori', 'status']);
-        $layanan = $this->layananService->getAllLayanan($filters);
-        $statistics = $this->layananService->getLayananStatistics();
+
+        // Get all cabang untuk tab
+        $cabangList = $this->cabangService->getAllCabangForDropdown();
+
+        // Get semua layanan (untuk tab "Semua Cabang")
+        $semuaLayanan = $this->layananService->getAllLayananWithCabang($filters);
+
+        // Get layanan per cabang
+        $layananPerCabang = [];
+        $statisticsPerCabang = [];
+        foreach ($cabangList as $cabang) {
+            $layananPerCabang[$cabang->id] = $this->layananService->getLayananByCabang($cabang->id, $filters);
+            $statisticsPerCabang[$cabang->id] = $this->layananService->getLayananStatisticsByCabang($cabang->id);
+        }
+
+        // Get statistics untuk semua cabang
+        $statisticsSemuaCabang = $this->layananService->getLayananStatistics();
         $categories = $this->layananService->getAvailableCategories();
-        return view('pages.kelola-layanan.index', compact('layanan', 'statistics', 'categories', 'filters'));
+
+        return view('pages.kelola-layanan.index', compact(
+            'semuaLayanan',
+            'layananPerCabang',
+            'statisticsSemuaCabang',
+            'statisticsPerCabang',
+            'categories',
+            'cabangList',
+            'filters'
+        ));
     }
 
     /**
@@ -35,7 +62,8 @@ class KelolaLayananController extends Controller
     public function create()
     {
         $categories = $this->layananService->getAvailableCategories();
-        return view('pages.kelola-layanan.create', compact('categories'));
+        $cabangList = $this->cabangService->getAllCabangForDropdown();
+        return view('pages.kelola-layanan.create', compact('categories', 'cabangList'));
     }
 
     /**
@@ -73,7 +101,7 @@ class KelolaLayananController extends Controller
     {
         try {
             Log::info('Menampilkan layanan dengan ID: ' . $id);
-            $layanan = Layanan::findOrFail($id);
+            $layanan = Layanan::with('kategori')->findOrFail($id);
             return view('pages.kelola-layanan.show', compact('layanan'));
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             Log::error("Error menampilkan layanan: " . $e->getMessage(), [
@@ -94,9 +122,10 @@ class KelolaLayananController extends Controller
     {
         try {
             Log::info('Menampilkan form edit untuk layanan dengan ID: ' . $id);
-            $layanan = Layanan::findOrFail($id);
+            $layanan = Layanan::with('cabangs')->findOrFail($id);
             $categories = $this->layananService->getAvailableCategories();
-            return view('pages.kelola-layanan.edit', compact('layanan', 'categories'));
+            $cabangList = $this->cabangService->getAllCabangForDropdown();
+            return view('pages.kelola-layanan.edit', compact('layanan', 'categories', 'cabangList'));
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             Log::error("Error menampilkan form edit: " . $e->getMessage(), [
                 'request' => request()->all(),

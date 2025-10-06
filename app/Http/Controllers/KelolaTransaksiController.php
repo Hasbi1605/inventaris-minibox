@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Transaksi;
 use App\Models\Kapster;
 use App\Services\TransaksiService;
+use App\Services\CabangService;
+use App\Services\CabangLayananService;
 use App\Http\Requests\TransaksiRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -12,10 +14,17 @@ use Illuminate\Support\Facades\Log;
 class KelolaTransaksiController extends Controller
 {
     protected $transaksiService;
+    protected $cabangService;
+    protected $cabangLayananService;
 
-    public function __construct(TransaksiService $transaksiService)
-    {
+    public function __construct(
+        TransaksiService $transaksiService,
+        CabangService $cabangService,
+        CabangLayananService $cabangLayananService
+    ) {
         $this->transaksiService = $transaksiService;
+        $this->cabangService = $cabangService;
+        $this->cabangLayananService = $cabangLayananService;
     }
 
     /**
@@ -24,21 +33,49 @@ class KelolaTransaksiController extends Controller
     public function index(Request $request)
     {
         $filters = $request->only(['search', 'kategori', 'status', 'tanggal_dari', 'tanggal_sampai']);
-        $transaksi = $this->transaksiService->getAllTransaksi($filters);
-        $statistics = $this->transaksiService->getTransaksiStatistics();
+
+        // Get all cabang untuk tab
+        $cabangList = $this->cabangService->getAllCabangForDropdown();
+
+        // Get semua transaksi (tanpa filter cabang) untuk tab "Semua Cabang"
+        $semuaTransaksi = $this->transaksiService->getAllTransaksi($filters);
+
+        // Get transaksi per cabang
+        $transaksiPerCabang = [];
+        $statisticsPerCabang = [];
+        foreach ($cabangList as $cabang) {
+            $filtersCabang = array_merge($filters, ['cabang_id' => $cabang->id]);
+            $transaksiPerCabang[$cabang->id] = $this->transaksiService->getAllTransaksi($filtersCabang);
+            $statisticsPerCabang[$cabang->id] = $this->transaksiService->getTransaksiStatisticsByCabang($cabang->id);
+        }
+
+        // Get statistics untuk semua cabang
+        $statisticsSemuaCabang = $this->transaksiService->getTransaksiStatistics();
         $categories = $this->transaksiService->getAvailableCategories();
-        return view('pages.kelola-transaksi.index', compact('transaksi', 'statistics', 'categories', 'filters'));
+
+        return view('pages.kelola-transaksi.index', compact('semuaTransaksi', 'transaksiPerCabang', 'statisticsSemuaCabang', 'statisticsPerCabang', 'categories', 'cabangList', 'filters'));
     }
 
     /**
      * Show the form for creating a new transaksi.
      */
-    public function create()
+    public function create(Request $request)
     {
+        $cabangId = $request->get('cabang_id');
+
         $layanan = $this->transaksiService->getAvailableLayanan();
-        $inventaris = $this->transaksiService->getAvailableInventaris();
-        $kapster = Kapster::with('cabang')->where('status', 'aktif')->orderBy('nama_kapster')->get();
-        return view('pages.kelola-transaksi.create', compact('layanan', 'inventaris', 'kapster'));
+        $inventaris = $this->transaksiService->getAvailableInventaris($cabangId);
+        $kapster = Kapster::with('cabang')->where('status', 'aktif');
+
+        // Filter kapster by cabang if selected
+        if ($cabangId) {
+            $kapster->where('cabang_id', $cabangId);
+        }
+
+        $kapster = $kapster->orderBy('nama_kapster')->get();
+        $cabangList = $this->cabangService->getAllCabangForDropdown();
+
+        return view('pages.kelola-transaksi.create', compact('layanan', 'inventaris', 'kapster', 'cabangList', 'cabangId'));
     }
 
     /**
@@ -97,11 +134,18 @@ class KelolaTransaksiController extends Controller
     {
         try {
             Log::info('Menampilkan form edit untuk transaksi dengan ID: ' . $id);
-            $transaksi = Transaksi::with(['layanan', 'produk'])->findOrFail($id);
+            $transaksi = Transaksi::with(['layanan', 'produk', 'cabang'])->findOrFail($id);
+
             $layanan = $this->transaksiService->getAvailableLayanan();
-            $inventaris = $this->transaksiService->getAvailableInventaris();
-            $kapster = Kapster::with('cabang')->where('status', 'aktif')->orderBy('nama_kapster')->get();
-            return view('pages.kelola-transaksi.edit', compact('transaksi', 'layanan', 'inventaris', 'kapster'));
+            $inventaris = $this->transaksiService->getAvailableInventaris($transaksi->cabang_id);
+            $kapster = Kapster::with('cabang')
+                ->where('status', 'aktif')
+                ->where('cabang_id', $transaksi->cabang_id)
+                ->orderBy('nama_kapster')
+                ->get();
+            $cabangList = $this->cabangService->getAllCabangForDropdown();
+
+            return view('pages.kelola-transaksi.edit', compact('transaksi', 'layanan', 'inventaris', 'kapster', 'cabangList'));
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             Log::error("Error menampilkan form edit: " . $e->getMessage(), [
                 'request' => request()->all(),

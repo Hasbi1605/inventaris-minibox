@@ -70,7 +70,7 @@
                         <div>
                             <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Kategori</label>
                             <div class="p-3 bg-gray-50 rounded-lg border">
-                                <p class="mb-0 text-slate-600">{{ $layanan->kategori ?? 'Tidak ada kategori' }}</p>
+                                <p class="mb-0 text-slate-600">{{ $layanan->kategori->nama_kategori ?? 'Tidak ada kategori' }}</p>
                             </div>
                         </div>
 
@@ -86,18 +86,10 @@
                         </div>
 
                         <!-- Harga -->
-                        <div>
+                        <div class="md:col-span-2">
                             <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Harga</label>
                             <div class="p-3 bg-gray-50 rounded-lg border">
                                 <p class="mb-0 text-slate-600 font-semibold text-lg">{{ $layanan->formatted_harga }}</p>
-                            </div>
-                        </div>
-
-                        <!-- Durasi Estimasi -->
-                        <div>
-                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Durasi Estimasi</label>
-                            <div class="p-3 bg-gray-50 rounded-lg border">
-                                <p class="mb-0 text-slate-600 font-semibold">{{ $layanan->formatted_durasi }}</p>
                             </div>
                         </div>
 
@@ -146,20 +138,6 @@
                                 @endif
                             </span>
                         </div>
-
-                        <!-- Duration Category -->
-                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                            <span class="text-sm font-medium text-slate-600">Kategori Durasi</span>
-                            <span class="text-sm font-semibold">
-                                @if($layanan->durasi_estimasi <= 30)
-                                    <span class="text-green-600">Cepat</span>
-                                @elseif($layanan->durasi_estimasi <= 60)
-                                    <span class="text-blue-600">Sedang</span>
-                                @else
-                                    <span class="text-orange-600">Lama</span>
-                                @endif
-                            </span>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -203,7 +181,7 @@
                     <div class="space-y-3 mt-4">
                         <div class="flex justify-between items-center text-sm">
                             <span class="text-slate-600">ID Layanan:</span>
-                            <span class="font-mono text-slate-800">#{{ $layanan->id }}</span>
+                            <span class="font-mono text-slate-800">#{{ $layanan->sequential_number }}</span>
                         </div>
                         <div class="flex justify-between items-center text-sm">
                             <span class="text-slate-600">Dibuat:</span>

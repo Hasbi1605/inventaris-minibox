@@ -276,7 +276,7 @@
                     <div class="space-y-3 mt-4">
                         <div class="flex justify-between items-center text-sm">
                             <span class="text-slate-600">ID Transaksi:</span>
-                            <span class="font-mono text-slate-800">#{{ $transaksi->id }}</span>
+                            <span class="font-mono text-slate-800">#{{ $transaksi->sequential_number }}</span>
                         </div>
                         <div class="flex justify-between items-center text-sm">
                             <span class="text-slate-600">Dibuat:</span>

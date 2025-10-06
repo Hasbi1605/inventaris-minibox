@@ -1,10 +1,13 @@
 @extends('layouts.admin')
 
 @section('title', 'Edit Layanan')
+
 @section('page-title', 'Edit Layanan')
 
 @section('content')
+
 <div class="w-full max-w-full min-h-screen">
+
     <!-- Page Header -->
     <div class="flex flex-wrap items-center justify-between mb-6">
         <div>
@@ -12,12 +15,12 @@
             <p class="mb-0 text-sm text-slate-500">Perbarui informasi layanan: {{ $layanan->nama_layanan }}</p>
         </div>
         <div class="flex space-x-2">
-            <a href="{{ route('kelola-layanan.show', $layanan->id) }}" 
+            <a href="{{ route('kelola-layanan.show', $layanan->id) }}"
                 class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-600 to-cyan-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
                 <i class="fas fa-eye mr-2"></i>
                 Lihat Detail
             </a>
-            <a href="{{ route('kelola-layanan.index') }}" 
+            <a href="{{ route('kelola-layanan.index') }}"
                 class="inline-block px-6 py-3 font-bold text-center text-slate-700 uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-gray-100 to-gray-200 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
                 <i class="fas fa-arrow-left mr-2"></i>
                 Kembali
@@ -47,16 +50,16 @@
                     <form action="{{ route('kelola-layanan.update', $layanan->id) }}" method="POST">
                         @csrf
                         @method('PUT')
-                        
+
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             <!-- Nama Layanan -->
                             <div class="col-span-1 lg:col-span-2">
                                 <label for="nama_layanan" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
                                     Nama Layanan <span class="text-red-500">*</span>
                                 </label>
-                                <input 
-                                    type="text" 
-                                    name="nama_layanan" 
+                                <input
+                                    type="text"
+                                    name="nama_layanan"
                                     id="nama_layanan"
                                     value="{{ old('nama_layanan', $layanan->nama_layanan) }}"
                                     class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('nama_layanan') border-red-500 @enderror"
@@ -73,8 +76,8 @@
                                 <label for="kategori_id" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
                                     Kategori
                                 </label>
-                                <select 
-                                    name="kategori_id" 
+                                <select
+                                    name="kategori_id"
                                     id="kategori_id"
                                     class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('kategori_id') border-red-500 @enderror"
                                 >
@@ -86,7 +89,7 @@
                                     @endforeach
                                 </select>
                                 <div class="text-xs text-slate-500 mt-1">
-                                    Tidak ada kategori yang sesuai? 
+                                    Tidak ada kategori yang sesuai?
                                     <a href="{{ route('kelola-kategori.create', ['jenis' => 'layanan']) }}" target="_blank" class="text-blue-500 hover:underline">
                                         Tambah kategori baru
                                     </a>
@@ -101,33 +104,33 @@
                                 <label for="status" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
                                     Status <span class="text-red-500">*</span>
                                 </label>
-                                <select 
-                                    name="status" 
+                                <select
+                                    name="status"
                                     id="status"
                                     class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('status') border-red-500 @enderror"
                                     required
                                 >
                                     <option value="">Pilih Status</option>
                                     <option value="aktif" {{ old('status', $layanan->status) == 'aktif' ? 'selected' : '' }}>Aktif</option>
-                                    <option value="nonaktif" {{ old('status', $layanan->status) == 'nonaktif' ? 'selected' : '' }}>Non-aktif</option>
+                                    <option value="tidak_aktif" {{ old('status', $layanan->status) == 'tidak_aktif' ? 'selected' : '' }}>Tidak Aktif</option>
                                 </select>
                                 @error('status')
                                     <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <!-- Harga -->
-                            <div>
+                            <!-- Harga Base/Default -->
+                            <div class="col-span-1 lg:col-span-2">
                                 <label for="harga" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Harga <span class="text-red-500">*</span>
+                                    Harga Base/Default <span class="text-red-500">*</span>
                                 </label>
                                 <div class="flex">
                                     <span class="inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-r-0 border-gray-300 rounded-l-lg">
                                         Rp
                                     </span>
-                                    <input 
-                                        type="number" 
-                                        name="harga" 
+                                    <input
+                                        type="number"
+                                        name="harga"
                                         id="harga"
                                         value="{{ old('harga', $layanan->harga) }}"
                                         class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-none rounded-r-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('harga') border-red-500 @enderror"
@@ -137,65 +140,101 @@
                                         required
                                     />
                                 </div>
+                                <div class="text-xs text-slate-500 mt-1">
+                                    Harga default yang akan digunakan jika tidak ada harga spesifik per cabang
+                                </div>
                                 @error('harga')
                                     <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <!-- Durasi Estimasi -->
-                            <div>
-                                <label for="durasi_estimasi" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Durasi Estimasi <span class="text-red-500">*</span>
-                                </label>
-                                <div class="flex">
-                                    <input 
-                                        type="number" 
-                                        name="durasi_estimasi" 
-                                        id="durasi_estimasi"
-                                        value="{{ old('durasi_estimasi', $layanan->durasi_estimasi) }}"
-                                        class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-none rounded-l-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('durasi_estimasi') border-red-500 @enderror"
-                                        placeholder="30"
-                                        min="1"
-                                        max="480"
-                                        required
-                                    />
-                                    <span class="inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-l-0 border-gray-300 rounded-r-lg">
-                                        menit
-                                    </span>
-                                </div>
-                                @error('durasi_estimasi')
-                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
 
-                            <!-- Deskripsi -->
+
+                            <!-- Cabang & Harga Spesifik -->
                             <div class="col-span-1 lg:col-span-2">
-                                <label for="deskripsi" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Deskripsi
-                                </label>
-                                <textarea 
-                                    name="deskripsi" 
-                                    id="deskripsi"
-                                    rows="4"
-                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('deskripsi') border-red-500 @enderror"
-                                    placeholder="Masukkan deskripsi layanan (opsional)"
-                                >{{ old('deskripsi', $layanan->deskripsi) }}</textarea>
-                                @error('deskripsi')
-                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
-                                @enderror
+                                <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                                    <label class="inline-block mb-3 font-bold text-sm text-slate-700">
+                                        <i class="fas fa-store mr-2"></i>Tersedia di Cabang & Harga Spesifik <span class="text-red-500">*</span>
+                                    </label>
+                                    <p class="text-xs text-slate-600 mb-4">Pilih cabang dan set harga spesifik (kosongkan untuk menggunakan harga base)</p>
+
+                                    <div class="space-y-4">
+                                        @php
+                                            $selectedCabangIds = old('cabang_ids', $layanan->cabangs->pluck('id')->toArray());
+                                            $oldHargaCabang = old('harga_cabang', []);
+                                        @endphp
+
+                                        @foreach($cabangList as $cabang)
+                                        @php
+                                            $isChecked = in_array($cabang->id, $selectedCabangIds);
+                                            $existingHarga = $layanan->cabangs->where('id', $cabang->id)->first();
+                                            $hargaCabang = $oldHargaCabang[$cabang->id] ?? ($existingHarga ? $existingHarga->pivot->harga : '');
+                                        @endphp
+                                        <div class="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-blue-300 transition-all">
+                                            <div class="flex items-center h-5 mt-1">
+                                                <input
+                                                    type="checkbox"
+                                                    name="cabang_ids[]"
+                                                    id="cabang_{{ $cabang->id }}"
+                                                    value="{{ $cabang->id }}"
+                                                    class="cabang-checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                                                    onchange="toggleHargaCabang({{ $cabang->id }})"
+                                                    {{ $isChecked ? 'checked' : '' }}
+                                                />
+                                            </div>
+                                            <div class="ml-3 flex-1">
+                                                <label for="cabang_{{ $cabang->id }}" class="font-semibold text-sm text-slate-700 cursor-pointer">
+                                                    {{ $cabang->nama_cabang }}
+                                                </label>
+                                                <p class="text-xs text-slate-500">{{ $cabang->alamat ?? 'Alamat belum diisi' }}</p>
+
+                                                <!-- Input Harga Per Cabang -->
+                                                <div id="harga_container_{{ $cabang->id }}" class="mt-3 {{ $isChecked ? '' : 'hidden' }}">
+                                                    <label class="inline-block mb-1 text-xs font-semibold text-slate-600">
+                                                        Harga Khusus di {{ $cabang->nama_cabang }}
+                                                    </label>
+                                                    <div class="flex">
+                                                        <span class="inline-flex items-center px-3 text-xs text-gray-700 bg-gray-100 border border-r-0 border-gray-300 rounded-l-lg">
+                                                            Rp
+                                                        </span>
+                                                        <input
+                                                            type="number"
+                                                            name="harga_cabang[{{ $cabang->id }}]"
+                                                            id="harga_cabang_{{ $cabang->id }}"
+                                                            value="{{ $hargaCabang }}"
+                                                            class="focus:shadow-soft-primary-outline text-xs leading-5.6 ease-soft block w-full appearance-none rounded-none rounded-r-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow"
+                                                            placeholder="Kosongkan untuk pakai harga base"
+                                                            min="0"
+                                                            step="1000"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                    </div>
+
+                                    @error('cabang_ids')
+                                        <div class="text-xs text-red-500 mt-2">{{ $message }}</div>
+                                    @enderror
+                                    <div class="text-xs text-slate-500 mt-3">
+                                        <i class="fas fa-info-circle mr-1"></i>
+                                        Minimal pilih 1 cabang
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Submit Buttons -->
                         <div class="flex justify-end mt-6 space-x-3">
-                            <a href="{{ route('kelola-layanan.index') }}" 
+                            <a href="{{ route('kelola-layanan.index') }}"
                                 class="inline-block px-6 py-3 font-bold text-center text-slate-700 uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-gray-100 to-gray-200 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
                                 Batal
                             </a>
                             <button type="submit"
                                 class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-green-600 to-lime-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
                                 <i class="fas fa-save mr-2"></i>
-                                Perbarui Layanan
+                                Update Layanan
                             </button>
                         </div>
                     </form>
@@ -206,21 +245,30 @@
 </div>
 
 <script>
+// Toggle visibility of harga input per cabang
+function toggleHargaCabang(cabangId) {
+    const checkbox = document.getElementById('cabang_' + cabangId);
+    const hargaContainer = document.getElementById('harga_container_' + cabangId);
+    const hargaInput = document.getElementById('harga_cabang_' + cabangId);
+
+    if (checkbox.checked) {
+        hargaContainer.classList.remove('hidden');
+    } else {
+        hargaContainer.classList.add('hidden');
+        hargaInput.value = ''; // Clear value when unchecked
+    }
+}
+
+// Initialize on page load (for old input values and existing data)
 document.addEventListener('DOMContentLoaded', function() {
-    const kategoriSelect = document.getElementById('kategori');
-    const kategoriCustomInput = document.getElementById('kategori_custom');
-    
-    kategoriSelect.addEventListener('change', function() {
-        if (this.value === 'other') {
-            kategoriCustomInput.classList.remove('hidden');
-            kategoriCustomInput.required = true;
-            kategoriCustomInput.name = 'kategori';
-            kategoriSelect.name = 'kategori_select';
-        } else {
-            kategoriCustomInput.classList.add('hidden');
-            kategoriCustomInput.required = false;
-            kategoriCustomInput.name = 'kategori_custom';
-            kategoriSelect.name = 'kategori';
+    const checkboxes = document.querySelectorAll('.cabang-checkbox');
+    checkboxes.forEach(function(checkbox) {
+        if (checkbox.checked) {
+            const cabangId = checkbox.value;
+            const hargaContainer = document.getElementById('harga_container_' + cabangId);
+            if (hargaContainer) {
+                hargaContainer.classList.remove('hidden');
+            }
         }
     });
 });

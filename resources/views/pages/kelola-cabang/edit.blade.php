@@ -70,24 +70,6 @@
 
                             <!-- Status -->
                             <div>
-                                <label for="email" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Email (Opsional)
-                                </label>
-                                <input 
-                                    type="email" 
-                                    name="email" 
-                                    id="email"
-                                    value="{{ old('email', $cabang->email) }}"
-                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('email') border-red-500 @enderror"
-                                    placeholder="cabang@example.com"
-                                />
-                                @error('email')
-                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Status -->
-                            <div>
                                 <label for="status" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
                                     Status <span class="text-red-500">*</span>
                                 </label>
@@ -142,25 +124,6 @@
                                     required
                                 >{{ old('alamat', $cabang->alamat) }}</textarea>
                                 @error('alamat')
-                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Tanggal Buka -->
-                            <div>
-                                <label for="tanggal_buka" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Tanggal Buka <span class="text-red-500">*</span>
-                                </label>
-                                <input 
-                                    type="date" 
-                                    name="tanggal_buka" 
-                                    id="tanggal_buka"
-                                    value="{{ old('tanggal_buka', $cabang->tanggal_buka->format('Y-m-d')) }}"
-                                    max="{{ date('Y-m-d') }}"
-                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('tanggal_buka') border-red-500 @enderror"
-                                    required
-                                />
-                                @error('tanggal_buka')
                                     <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
                                 @enderror
                             </div>

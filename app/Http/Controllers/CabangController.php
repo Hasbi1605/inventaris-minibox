@@ -27,7 +27,7 @@ class CabangController extends Controller
         $perPage = $request->get('per_page', 10);
 
         $cabang = $this->cabangService->getAllCabang($filters, $perPage);
-        $statistics = $this->cabangService->getCabangStatistics();
+        $statistics = $this->cabangService->getGeneralStatistics();
 
         return view('pages.kelola-cabang.index', compact('cabang', 'statistics', 'filters'));
     }

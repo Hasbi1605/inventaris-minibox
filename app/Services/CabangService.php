@@ -152,11 +152,11 @@ class CabangService
     }
 
     /**
-     * Get cabang statistics
+     * Get general cabang statistics (all branches)
      *
      * @return array
      */
-    public function getCabangStatistics(): array
+    public function getGeneralStatistics(): array
     {
         try {
             $now = Carbon::now();
@@ -286,5 +286,45 @@ class CabangService
             Log::error('Error toggling cabang status: ' . $e->getMessage());
             return null;
         }
+    }
+
+    /**
+     * Get cabang statistics
+     *
+     * @param int $cabangId
+     * @return array
+     */
+    public function getCabangStatistics(int $cabangId): array
+    {
+        try {
+            $cabang = Cabang::with(['inventaris', 'transaksi', 'kapster'])->findOrFail($cabangId);
+
+            return [
+                'total_inventaris' => $cabang->inventaris()->count(),
+                'total_transaksi' => $cabang->transaksi()->count(),
+                'total_kapster' => $cabang->kapster()->count(),
+                'total_pendapatan' => $cabang->transaksi()->sum('total_harga'),
+                'transaksi_bulan_ini' => $cabang->transaksi()
+                    ->whereMonth('tanggal_transaksi', now()->month)
+                    ->whereYear('tanggal_transaksi', now()->year)
+                    ->count(),
+                'inventaris_stok_rendah' => $cabang->inventaris()->stokRendah()->count(),
+            ];
+        } catch (\Exception $e) {
+            Log::error('Error getting cabang statistics: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * Get all cabang untuk dropdown
+     *
+     * @return Collection
+     */
+    public function getAllCabangForDropdown(): Collection
+    {
+        return Cabang::where('status', 'aktif')
+            ->orderBy('nama_cabang')
+            ->get(['id', 'nama_cabang', 'alamat']);
     }
 }

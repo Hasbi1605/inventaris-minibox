@@ -43,6 +43,33 @@
                         @csrf
                         
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+                            <!-- Cabang -->
+                            <div>
+                                <label for="cabang_id" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                    Cabang <span class="text-red-500">*</span>
+                                </label>
+                                <select 
+                                    name="cabang_id" 
+                                    id="cabang_id"
+                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('cabang_id') border-red-500 @enderror"
+                                    required
+                                    onchange="reloadPageWithCabang(this.value)"
+                                >
+                                    <option value="">Pilih Cabang</option>
+                                    @foreach($cabangList as $cabang)
+                                        <option value="{{ $cabang->id }}" {{ (old('cabang_id', $cabangId) == $cabang->id) ? 'selected' : '' }}>
+                                            {{ $cabang->nama_cabang }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <div class="text-xs text-slate-500 mt-1">
+                                    Pilih cabang terlebih dahulu untuk memuat data kapster dan produk
+                                </div>
+                                @error('cabang_id')
+                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
                             <!-- Layanan -->
                             <div>
                                 <label for="layanan_id" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
@@ -395,6 +422,15 @@
 
     function number_format(number) {
         return new Intl.NumberFormat('id-ID').format(number);
+    }
+
+    // Function to reload page with cabang parameter
+    function reloadPageWithCabang(cabangId) {
+        if (cabangId) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('cabang_id', cabangId);
+            window.location.href = url.toString();
+        }
     }
 </script>
 @endpush

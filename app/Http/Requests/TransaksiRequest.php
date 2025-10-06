@@ -22,6 +22,7 @@ class TransaksiRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'cabang_id' => 'required|exists:cabang,id',
             'layanan_id' => 'required|exists:layanans,id',
             'kapster_id' => 'required|exists:kapster,id',
             'tanggal_transaksi' => 'required|date',
@@ -41,6 +42,8 @@ class TransaksiRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'cabang_id.required' => 'Cabang wajib dipilih.',
+            'cabang_id.exists' => 'Cabang yang dipilih tidak valid.',
             'layanan_id.required' => 'Layanan wajib dipilih.',
             'layanan_id.exists' => 'Layanan yang dipilih tidak valid.',
             'kapster_id.required' => 'Kapster wajib dipilih.',
@@ -72,6 +75,7 @@ class TransaksiRequest extends FormRequest
     public function attributes(): array
     {
         return [
+            'cabang_id' => 'cabang',
             'layanan_id' => 'layanan',
             'kapster_id' => 'kapster',
             'tanggal_transaksi' => 'tanggal transaksi',

@@ -21,7 +21,8 @@ class CabangRequest extends FormRequest
      */
     public function rules(): array
     {
-        $cabangId = $this->route('kelola_cabang') ?? null;
+        $cabang = $this->route('kelola_cabang');
+        $cabangId = $cabang ? $cabang->id : null;
 
         return [
             'nama_cabang' => [
@@ -34,7 +35,6 @@ class CabangRequest extends FormRequest
             'alamat' => [
                 'required',
                 'string',
-                'min:10',
                 'max:500',
             ],
             'status' => [
@@ -45,15 +45,15 @@ class CabangRequest extends FormRequest
             'kategori_id' => [
                 'required',
                 'integer',
-                'exists:kategori,id',
+                'exists:kategoris,id',
             ],
             'jam_operasional_buka' => [
                 'nullable',
-                'date_format:H:i',
+                'date_format:H:i:s',
             ],
             'jam_operasional_tutup' => [
                 'nullable',
-                'date_format:H:i',
+                'date_format:H:i:s',
                 'after:jam_operasional_buka',
             ],
             'deskripsi' => [
@@ -78,7 +78,6 @@ class CabangRequest extends FormRequest
             'nama_cabang.unique' => 'Nama cabang sudah digunakan.',
 
             'alamat.required' => 'Alamat cabang wajib diisi.',
-            'alamat.min' => 'Alamat cabang minimal 10 karakter.',
             'alamat.max' => 'Alamat cabang maksimal 500 karakter.',
 
             'status.required' => 'Status cabang wajib dipilih.',
@@ -88,8 +87,8 @@ class CabangRequest extends FormRequest
             'kategori_id.integer' => 'Kategori tidak valid.',
             'kategori_id.exists' => 'Kategori yang dipilih tidak ditemukan.',
 
-            'jam_operasional_buka.date_format' => 'Format jam buka tidak valid (HH:MM).',
-            'jam_operasional_tutup.date_format' => 'Format jam tutup tidak valid (HH:MM).',
+            'jam_operasional_buka.date_format' => 'Format jam buka tidak valid (HH:MM:SS).',
+            'jam_operasional_tutup.date_format' => 'Format jam tutup tidak valid (HH:MM:SS).',
             'jam_operasional_tutup.after' => 'Jam tutup harus setelah jam buka.',
 
             'deskripsi.max' => 'Deskripsi maksimal 1000 karakter.',

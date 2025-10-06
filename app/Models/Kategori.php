@@ -14,6 +14,7 @@ class Kategori extends Model
         'kode_kategori',
         'deskripsi',
         'jenis_kategori', // inventaris, layanan, pengeluaran, cabang
+        'tipe_penggunaan', // retail, operasional, both (untuk inventaris)
         'parent_id',
         'urutan',
         'status',
@@ -32,6 +33,11 @@ class Kategori extends Model
     public const JENIS_PENGELUARAN = 'pengeluaran';
     public const JENIS_CABANG = 'cabang';
 
+    // Konstanta untuk tipe penggunaan inventaris
+    public const TIPE_RETAIL = 'retail';
+    public const TIPE_OPERASIONAL = 'operasional';
+    public const TIPE_BOTH = 'both';
+
     public static function getJenisKategori()
     {
         return [
@@ -40,6 +46,31 @@ class Kategori extends Model
             self::JENIS_PENGELUARAN => 'Pengeluaran',
             self::JENIS_CABANG => 'Cabang',
         ];
+    }
+
+    public static function getTipePenggunaan()
+    {
+        return [
+            self::TIPE_RETAIL => 'Produk Retail (untuk dijual)',
+            self::TIPE_OPERASIONAL => 'Aset/Peralatan (operasional)',
+            self::TIPE_BOTH => 'Keduanya',
+        ];
+    }
+
+    /**
+     * Check if kategori is for retail products
+     */
+    public function isRetail(): bool
+    {
+        return in_array($this->tipe_penggunaan, [self::TIPE_RETAIL, self::TIPE_BOTH]);
+    }
+
+    /**
+     * Check if kategori is for operational assets
+     */
+    public function isOperasional(): bool
+    {
+        return in_array($this->tipe_penggunaan, [self::TIPE_OPERASIONAL, self::TIPE_BOTH]);
     }
 
     // Relasi parent-child untuk kategori bertingkat
@@ -88,6 +119,17 @@ class Kategori extends Model
     public function scopeCabang($query)
     {
         return $query->where('jenis_kategori', self::JENIS_CABANG);
+    }
+
+    // Scope untuk filter berdasarkan tipe penggunaan
+    public function scopeRetail($query)
+    {
+        return $query->whereIn('tipe_penggunaan', [self::TIPE_RETAIL, self::TIPE_BOTH]);
+    }
+
+    public function scopeOperasional($query)
+    {
+        return $query->whereIn('tipe_penggunaan', [self::TIPE_OPERASIONAL, self::TIPE_BOTH]);
     }
 
     // Scope untuk kategori aktif

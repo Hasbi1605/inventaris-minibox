@@ -15,7 +15,23 @@ class InventarisService
      */
     public function getAllInventaris(array $filters = [], $perPage = 10)
     {
-        $query = Inventaris::query()->with('kategoriRelasi');
+        $query = Inventaris::query()->with(['kategoriRelasi', 'cabang']);
+
+        // Filter by cabang
+        if (!empty($filters['cabang_id'])) {
+            $query->where('cabang_id', $filters['cabang_id']);
+        }
+
+        // Filter by tipe_penggunaan (retail/operasional) via kategori
+        if (!empty($filters['tipe_penggunaan'])) {
+            $query->whereHas('kategoriRelasi', function ($q) use ($filters) {
+                if ($filters['tipe_penggunaan'] === 'retail') {
+                    $q->whereIn('tipe_penggunaan', [Kategori::TIPE_RETAIL, Kategori::TIPE_BOTH]);
+                } elseif ($filters['tipe_penggunaan'] === 'operasional') {
+                    $q->whereIn('tipe_penggunaan', [Kategori::TIPE_OPERASIONAL, Kategori::TIPE_BOTH]);
+                }
+            });
+        }
 
         // Filter by kategori
         if (!empty($filters['kategori'])) {
@@ -30,8 +46,7 @@ class InventarisService
         // Search in nama_barang or deskripsi
         if (!empty($filters['search'])) {
             $query->where(function ($q) use ($filters) {
-                $q->where('nama_barang', 'like', '%' . $filters['search'] . '%')
-                    ->orWhere('deskripsi', 'like', '%' . $filters['search'] . '%');
+                $q->where('nama_barang', 'like', '%' . $filters['search'] . '%');
             });
         }
 
@@ -64,15 +79,9 @@ class InventarisService
     public function getAvailableUnits()
     {
         return [
-            'pcs' => 'Pieces (pcs)',
-            'botol' => 'Botol',
-            'tube' => 'Tube',
-            'kotak' => 'Kotak',
-            'pack' => 'Pack',
-            'liter' => 'Liter',
-            'ml' => 'Mililiter (ml)',
-            'kg' => 'Kilogram (kg)',
-            'gram' => 'Gram (g)'
+            'pcs' => 'pcs',
+            'unit' => 'unit',
+            'item' => 'item'
         ];
     }
 
@@ -84,8 +93,13 @@ class InventarisService
         try {
             Log::info('Creating new inventaris', $data);
 
-            // Update status based on stock and expiry
-            $data['status'] = $this->determineStatus($data);
+            // Auto-update status based on stock, unless it's manually set to discontinued
+            if (isset($data['status']) && $data['status'] === 'discontinued') {
+                // Keep discontinued status (manual override)
+            } else {
+                // Auto-determine status based on stock values
+                $data['status'] = $this->determineStatus($data);
+            }
 
             $inventaris = Inventaris::create($data);
 
@@ -112,8 +126,13 @@ class InventarisService
         try {
             Log::info('Updating inventaris', ['id' => $inventaris->id, 'data' => $data]);
 
-            // Update status based on stock and expiry
-            $data['status'] = $this->determineStatus($data);
+            // Auto-update status based on stock, unless it's manually set to discontinued
+            if (isset($data['status']) && $data['status'] === 'discontinued') {
+                // Keep discontinued status (manual override)
+            } else {
+                // Auto-determine status based on new stock values
+                $data['status'] = $this->determineStatus($data);
+            }
 
             $inventaris->update($data);
 
@@ -159,43 +178,107 @@ class InventarisService
     }
 
     /**
-     * Get inventaris statistics
+     * Get inventaris statistics (adaptive: retail vs operasional)
      */
-    public function getInventarisStatistics()
+    public function getInventarisStatistics($cabangId = null)
     {
+        $query = Inventaris::query()->with('kategoriRelasi');
+
+        if ($cabangId) {
+            $query->where('cabang_id', $cabangId);
+        }
+
+        $allItems = $query->get();
+
+        // Pisahkan retail vs operasional
+        $retailItems = $allItems->filter(function ($item) {
+            $kategori = $item->kategoriRelasi->nama_kategori ?? '';
+            return !(stripos($kategori, 'operasional') !== false ||
+                stripos($kategori, 'aset') !== false ||
+                stripos($kategori, 'peralatan') !== false);
+        });
+
+        $operasionalItems = $allItems->filter(function ($item) {
+            $kategori = $item->kategoriRelasi->nama_kategori ?? '';
+            return stripos($kategori, 'operasional') !== false ||
+                stripos($kategori, 'aset') !== false ||
+                stripos($kategori, 'peralatan') !== false;
+        });
+
         return [
-            'total' => Inventaris::count(),
-            'tersedia' => Inventaris::where('status', 'tersedia')->count(),
-            'hampir_habis' => Inventaris::stokRendah()->count(),
-            'habis' => Inventaris::where('status', 'habis')->count(),
-            'hampir_kadaluarsa' => Inventaris::hampirKadaluarsa()->count(),
-            'kadaluarsa' => Inventaris::kadaluarsa()->count(),
-            'total_nilai' => Inventaris::sum(DB::raw('stok_saat_ini * harga_satuan'))
+            'total' => $allItems->count(),
+            'total_retail' => $retailItems->count(),
+            'total_operasional' => $operasionalItems->count(),
+            'has_operasional' => $operasionalItems->count() > 0,
+
+            // Stats untuk retail (hanya jika ada retail items)
+            'hampir_habis' => $retailItems->filter(function ($item) {
+                return $item->stok_saat_ini <= $item->stok_minimal && $item->stok_saat_ini > 0;
+            })->count(),
+            'habis' => $retailItems->where('status', 'habis')->count(),
+
+            // Total nilai (hanya dari retail yang punya harga)
+            'total_nilai' => $retailItems->sum(function ($item) {
+                return $item->stok_saat_ini * $item->harga_satuan;
+            })
         ];
+    }
+
+    /**
+     * Get inventaris by cabang for tabs
+     */
+    public function getInventarisByCabang(array $filters = [], $perPage = 10)
+    {
+        $query = Inventaris::query()->with(['kategoriRelasi', 'cabang']);
+
+        // Filter by cabang
+        if (!empty($filters['cabang_id'])) {
+            $query->where('cabang_id', $filters['cabang_id']);
+        }
+
+        // Filter by tipe_penggunaan (retail/operasional) via kategori
+        if (!empty($filters['tipe_penggunaan'])) {
+            $query->whereHas('kategoriRelasi', function ($q) use ($filters) {
+                if ($filters['tipe_penggunaan'] === 'retail') {
+                    $q->whereIn('tipe_penggunaan', [Kategori::TIPE_RETAIL, Kategori::TIPE_BOTH]);
+                } elseif ($filters['tipe_penggunaan'] === 'operasional') {
+                    $q->whereIn('tipe_penggunaan', [Kategori::TIPE_OPERASIONAL, Kategori::TIPE_BOTH]);
+                }
+            });
+        }
+
+        // Filter by kategori
+        if (!empty($filters['kategori'])) {
+            $query->where('kategori_id', $filters['kategori']);
+        }
+
+        // Filter by status
+        if (!empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        // Search in nama_barang or deskripsi
+        if (!empty($filters['search'])) {
+            $query->where(function ($q) use ($filters) {
+                $q->where('nama_barang', 'like', '%' . $filters['search'] . '%');
+            });
+        }
+
+        return $query->latest()->paginate($perPage);
     }
 
     /**
      * Get low stock items
      */
-    public function getLowStockItems()
+    public function getLowStockItems($cabangId = null)
     {
-        return Inventaris::stokRendah()->get();
-    }
+        $query = Inventaris::stokRendah();
 
-    /**
-     * Get items near expiry
-     */
-    public function getItemsNearExpiry()
-    {
-        return Inventaris::hampirKadaluarsa()->get();
-    }
+        if ($cabangId) {
+            $query->where('cabang_id', $cabangId);
+        }
 
-    /**
-     * Get expired items
-     */
-    public function getExpiredItems()
-    {
-        return Inventaris::kadaluarsa()->get();
+        return $query->get();
     }
 
     /**
@@ -231,18 +314,12 @@ class InventarisService
     }
 
     /**
-     * Determine status based on stock and expiry date
+     * Determine status based on stock levels
      */
     private function determineStatus(array $data)
     {
         $stokSaatIni = $data['stok_saat_ini'] ?? 0;
         $stokMinimal = $data['stok_minimal'] ?? 0;
-        $tanggalKadaluarsa = isset($data['tanggal_kadaluarsa']) ? Carbon::parse($data['tanggal_kadaluarsa']) : null;
-
-        // Check if expired
-        if ($tanggalKadaluarsa && $tanggalKadaluarsa->isPast()) {
-            return 'kadaluarsa';
-        }
 
         // Check stock levels
         if ($stokSaatIni <= 0) {

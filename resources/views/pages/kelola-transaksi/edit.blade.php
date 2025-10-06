@@ -49,6 +49,23 @@
                         @method('PUT')
                         
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+                            <!-- Cabang (Read-only) -->
+                            <div>
+                                <label for="cabang_display" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                    Cabang
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="cabang_display" 
+                                    value="{{ $transaksi->cabang->nama_cabang }}"
+                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-gray-100 bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all cursor-not-allowed"
+                                    readonly
+                                    disabled
+                                >
+                                <input type="hidden" name="cabang_id" value="{{ $transaksi->cabang_id }}">
+                                <p class="text-xs text-slate-400 mt-1">Cabang tidak dapat diubah setelah transaksi dibuat</p>
+                            </div>
+
                             <!-- Layanan -->
                             <div>
                                 <label for="layanan_id" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">

@@ -66,6 +66,9 @@ class KelolaPengeluaranController extends Controller
      */
     public function show(Pengeluaran $kelolaPengeluaran)
     {
+        // Load kategori relationship
+        $kelolaPengeluaran->load('kategori');
+
         return view('pages.kelola-pengeluaran.show', [
             'pengeluaran' => $kelolaPengeluaran
         ]);

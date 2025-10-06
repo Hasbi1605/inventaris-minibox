@@ -12,23 +12,22 @@ class Inventaris extends Model
 
     protected $fillable = [
         'nama_barang',
-        'deskripsi',
+
         'kategori',
         'kategori_id',
+        'jenis',
+        'cabang_id',
         'stok_minimal',
         'stok_saat_ini',
         'harga_satuan',
         'satuan',
-        'merek',
-        'tanggal_kadaluarsa',
         'status'
     ];
 
     protected $casts = [
         'harga_satuan' => 'decimal:2',
         'stok_minimal' => 'integer',
-        'stok_saat_ini' => 'integer',
-        'tanggal_kadaluarsa' => 'date'
+        'stok_saat_ini' => 'integer'
     ];
 
     // Accessor untuk format harga
@@ -44,29 +43,8 @@ class Inventaris extends Model
             return 'habis';
         } elseif ($this->stok_saat_ini <= $this->stok_minimal) {
             return 'hampir_habis';
-        } elseif ($this->tanggal_kadaluarsa && $this->tanggal_kadaluarsa->isPast()) {
-            return 'kadaluarsa';
         }
         return 'tersedia';
-    }
-
-    // Accessor untuk informasi kadaluarsa
-    public function getKadaluarsaInfoAttribute()
-    {
-        if (!$this->tanggal_kadaluarsa) {
-            return null;
-        }
-
-        $today = Carbon::today();
-        $kadaluarsa = $this->tanggal_kadaluarsa;
-
-        if ($kadaluarsa->isPast()) {
-            return 'Sudah kadaluarsa';
-        } elseif ($kadaluarsa->diffInDays($today) <= 30) {
-            return 'Akan kadaluarsa dalam ' . $kadaluarsa->diffInDays($today) . ' hari';
-        }
-
-        return null;
     }
 
     // Scope untuk barang dengan stok rendah
@@ -75,23 +53,27 @@ class Inventaris extends Model
         return $query->whereRaw('stok_saat_ini <= stok_minimal');
     }
 
-    // Scope untuk barang hampir kadaluarsa
-    public function scopeHampirKadaluarsa($query)
+    // Scope berdasarkan jenis
+    public function scopeProduk($query)
     {
-        return $query->where('tanggal_kadaluarsa', '<=', Carbon::today()->addDays(30))
-            ->where('tanggal_kadaluarsa', '>', Carbon::today());
+        return $query->where('jenis', 'produk');
     }
 
-    // Scope untuk barang kadaluarsa
-    public function scopeKadaluarsa($query)
+    public function scopeAset($query)
     {
-        return $query->where('tanggal_kadaluarsa', '<', Carbon::today());
+        return $query->where('jenis', 'aset');
     }
 
     // Relasi dengan kategori
     public function kategoriRelasi()
     {
         return $this->belongsTo(Kategori::class, 'kategori_id');
+    }
+
+    // Relasi dengan cabang
+    public function cabang()
+    {
+        return $this->belongsTo(Cabang::class, 'cabang_id');
     }
 
     // Scope berdasarkan kategori
@@ -104,6 +86,12 @@ class Inventaris extends Model
     public function scopeByKategoriId($query, $kategoriId)
     {
         return $query->where('kategori_id', $kategoriId);
+    }
+
+    // Scope berdasarkan cabang
+    public function scopeByCabang($query, $cabangId)
+    {
+        return $query->where('cabang_id', $cabangId);
     }
 
     // Accessor untuk nama kategori

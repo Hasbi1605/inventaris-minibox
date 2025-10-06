@@ -16,6 +16,7 @@ class Cabang extends Model
         'nama_cabang',
         'alamat',
         'status',
+        'tanggal_buka',
         'jam_operasional_buka',
         'jam_operasional_tutup',
         'deskripsi',
@@ -24,6 +25,7 @@ class Cabang extends Model
 
     protected $casts = [
         'status' => 'string',
+        'tanggal_buka' => 'date',
     ];
 
     /**
@@ -154,5 +156,39 @@ class Cabang extends Model
     public function kapsterAktif()
     {
         return $this->hasMany(Kapster::class)->where('status', 'aktif');
+    }
+
+    /**
+     * Relasi ke Inventaris (One to Many)
+     */
+    public function inventaris()
+    {
+        return $this->hasMany(Inventaris::class);
+    }
+
+    /**
+     * Relasi ke Transaksi (One to Many)
+     */
+    public function transaksi()
+    {
+        return $this->hasMany(Transaksi::class);
+    }
+
+    /**
+     * Relasi ke Pengeluaran (One to Many)
+     */
+    public function pengeluaran()
+    {
+        return $this->hasMany(Pengeluaran::class);
+    }
+
+    /**
+     * Relasi many-to-many dengan Layanan (untuk harga per cabang)
+     */
+    public function layanans()
+    {
+        return $this->belongsToMany(Layanan::class, 'cabang_layanan')
+            ->withPivot('harga', 'status')
+            ->withTimestamps();
     }
 }

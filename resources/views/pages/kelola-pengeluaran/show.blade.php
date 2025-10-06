@@ -42,9 +42,11 @@
                 <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
                     <div class="flex items-center justify-between">
                         <h6 class="font-bold">Informasi Pengeluaran</h6>
-                        <span class="bg-gradient-to-tl {{ $pengeluaran->kategori_badge_color }} px-3 text-xs rounded-1.8 py-1.5 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
-                            {{ ucfirst(str_replace('_', ' ', $pengeluaran->kategori)) }}
+                        @if($pengeluaran->kategori)
+                        <span class="bg-gradient-to-tl from-blue-600 to-cyan-400 px-3 text-xs rounded-1.8 py-1.5 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                            {{ $pengeluaran->kategori->nama_kategori }}
                         </span>
+                        @endif
                     </div>
                 </div>
                 <div class="flex-auto px-6 pt-0 pb-6">
@@ -69,7 +71,7 @@
                         <div>
                             <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Kategori</label>
                             <div class="p-3 bg-gray-50 rounded-lg border">
-                                <p class="mb-0 text-slate-600">{{ $categories[$pengeluaran->kategori] ?? 'Tidak Dikenal' }}</p>
+                                <p class="mb-0 text-slate-600">{{ $pengeluaran->kategori->nama_kategori ?? 'Tidak ada kategori' }}</p>
                             </div>
                         </div>
 
@@ -167,7 +169,7 @@
                     <div class="space-y-3 mt-4">
                         <div class="flex justify-between items-center text-sm">
                             <span class="text-slate-600">ID Pengeluaran:</span>
-                            <span class="font-mono text-slate-800">#{{ $pengeluaran->id }}</span>
+                            <span class="font-mono text-slate-800">#{{ $pengeluaran->sequential_number }}</span>
                         </div>
                         <div class="flex justify-between items-center text-sm">
                             <span class="text-slate-600">Dibuat:</span>

@@ -16,7 +16,12 @@ class TransaksiService
      */
     public function getAllTransaksi(array $filters = [], $perPage = 10)
     {
-        $query = Transaksi::query()->with(['layanan', 'kapster.cabang', 'produk']);
+        $query = Transaksi::query()->with(['layanan', 'kapster.cabang', 'produk', 'cabang']);
+
+        // Filter by cabang
+        if (!empty($filters['cabang_id'])) {
+            $query->where('cabang_id', $filters['cabang_id']);
+        }
 
         // Filter by status
         if (!empty($filters['status'])) {
@@ -73,13 +78,24 @@ class TransaksiService
     }
 
     /**
-     * Get available inventaris for product sales
+     * Get available inventaris for product sales (filtered by cabang)
      */
-    public function getAvailableInventaris()
+    public function getAvailableInventaris($cabangId = null)
     {
-        return Inventaris::where('status', 'tersedia')
-            ->where('stok_saat_ini', '>', 0)
-            ->select('id', 'nama_barang', 'harga_satuan', 'stok_saat_ini', 'satuan')
+        $query = Inventaris::whereHas('kategoriRelasi', function ($q) {
+            // Hanya produk retail (tipe_penggunaan = 'retail' atau 'both'), bukan aset operasional
+            $q->whereIn('tipe_penggunaan', ['retail', 'both']);
+        })
+            ->where('status', 'tersedia')
+            ->where('stok_saat_ini', '>', 0);
+
+        // Filter by cabang if provided
+        if ($cabangId) {
+            $query->where('cabang_id', $cabangId);
+        }
+
+        return $query->select('id', 'nama_barang', 'harga_satuan', 'stok_saat_ini', 'satuan', 'cabang_id')
+            ->with('cabang:id,nama_cabang')
             ->orderBy('nama_barang')
             ->get();
     }
@@ -119,6 +135,21 @@ class TransaksiService
                         // Get inventaris data
                         $inventaris = Inventaris::find($produk['inventaris_id']);
                         if ($inventaris) {
+                            // Validate stock per cabang
+                            if (isset($data['cabang_id']) && $inventaris->cabang_id != $data['cabang_id']) {
+                                Log::warning('Inventaris cabang mismatch', [
+                                    'transaksi_cabang' => $data['cabang_id'],
+                                    'inventaris_cabang' => $inventaris->cabang_id,
+                                    'inventaris_id' => $inventaris->id
+                                ]);
+                                throw new \Exception("Produk {$inventaris->nama_barang} tidak tersedia di cabang ini.");
+                            }
+
+                            // Validate sufficient stock
+                            if ($inventaris->stok_saat_ini < $produk['quantity']) {
+                                throw new \Exception("Stok {$inventaris->nama_barang} tidak mencukupi. Tersedia: {$inventaris->stok_saat_ini}");
+                            }
+
                             // Calculate subtotal
                             $hargaSatuan = $inventaris->harga_satuan;
                             $quantity = $produk['quantity'];
@@ -133,13 +164,22 @@ class TransaksiService
 
                             // Update inventaris stock
                             $inventaris->stok_saat_ini -= $quantity;
+
+                            // Auto-update status based on stock level
+                            if ($inventaris->stok_saat_ini <= 0) {
+                                $inventaris->status = 'habis';
+                            } elseif ($inventaris->stok_saat_ini <= $inventaris->stok_minimal) {
+                                $inventaris->status = 'hampir_habis';
+                            }
+
                             $inventaris->save();
 
                             Log::info('Attached produk to transaksi and updated stock', [
                                 'transaksi_id' => $transaksi->id,
                                 'inventaris_id' => $produk['inventaris_id'],
                                 'quantity_sold' => $quantity,
-                                'remaining_stock' => $inventaris->stok_saat_ini
+                                'remaining_stock' => $inventaris->stok_saat_ini,
+                                'new_status' => $inventaris->status
                             ]);
                         }
                     }
@@ -204,6 +244,16 @@ class TransaksiService
 
                                 // Adjust stock based on difference
                                 $inventaris->stok_saat_ini -= $quantityDiff;
+
+                                // Auto-update status based on stock level
+                                if ($inventaris->stok_saat_ini <= 0) {
+                                    $inventaris->status = 'habis';
+                                } elseif ($inventaris->stok_saat_ini <= $inventaris->stok_minimal) {
+                                    $inventaris->status = 'hampir_habis';
+                                } else {
+                                    $inventaris->status = 'tersedia';
+                                }
+
                                 $inventaris->save();
                             } else {
                                 // Attach new product
@@ -215,6 +265,14 @@ class TransaksiService
 
                                 // Reduce stock
                                 $inventaris->stok_saat_ini -= $quantity;
+
+                                // Auto-update status based on stock level
+                                if ($inventaris->stok_saat_ini <= 0) {
+                                    $inventaris->status = 'habis';
+                                } elseif ($inventaris->stok_saat_ini <= $inventaris->stok_minimal) {
+                                    $inventaris->status = 'hampir_habis';
+                                }
+
                                 $inventaris->save();
                             }
 
@@ -232,6 +290,16 @@ class TransaksiService
                         $inventaris = Inventaris::find($removedId);
                         if ($inventaris) {
                             $inventaris->stok_saat_ini += $removedProduk->pivot->quantity;
+
+                            // Auto-update status based on stock level
+                            if ($inventaris->stok_saat_ini <= 0) {
+                                $inventaris->status = 'habis';
+                            } elseif ($inventaris->stok_saat_ini <= $inventaris->stok_minimal) {
+                                $inventaris->status = 'hampir_habis';
+                            } else {
+                                $inventaris->status = 'tersedia';
+                            }
+
                             $inventaris->save();
                         }
 
@@ -245,6 +313,16 @@ class TransaksiService
                     $inventaris = Inventaris::find($produk->id);
                     if ($inventaris) {
                         $inventaris->stok_saat_ini += $produk->pivot->quantity;
+
+                        // Auto-update status based on stock level
+                        if ($inventaris->stok_saat_ini <= 0) {
+                            $inventaris->status = 'habis';
+                        } elseif ($inventaris->stok_saat_ini <= $inventaris->stok_minimal) {
+                            $inventaris->status = 'hampir_habis';
+                        } else {
+                            $inventaris->status = 'tersedia';
+                        }
+
                         $inventaris->save();
                     }
                 }
@@ -275,9 +353,38 @@ class TransaksiService
         try {
             Log::info('Deleting transaksi', ['id' => $transaksi->id]);
 
+            // Return stock for all products in this transaction
+            foreach ($transaksi->produk as $produk) {
+                $inventaris = Inventaris::find($produk->id);
+                if ($inventaris) {
+                    $inventaris->stok_saat_ini += $produk->pivot->quantity;
+
+                    // Auto-update status based on stock level
+                    if ($inventaris->stok_saat_ini <= 0) {
+                        $inventaris->status = 'habis';
+                    } elseif ($inventaris->stok_saat_ini <= $inventaris->stok_minimal) {
+                        $inventaris->status = 'hampir_habis';
+                    } else {
+                        $inventaris->status = 'tersedia';
+                    }
+
+                    $inventaris->save();
+
+                    Log::info('Stock restored after transaction deletion', [
+                        'inventaris_id' => $inventaris->id,
+                        'quantity_restored' => $produk->pivot->quantity,
+                        'new_stock' => $inventaris->stok_saat_ini,
+                        'new_status' => $inventaris->status
+                    ]);
+                }
+            }
+
             $transaksi->delete();
 
-            Log::info('Transaksi deleted successfully', ['id' => $transaksi->id]);
+            // Renumber remaining transactions to keep sequential order
+            Transaksi::renumberTransactions();
+
+            Log::info('Transaksi deleted successfully and transactions renumbered', ['id' => $transaksi->id]);
 
             return true;
         } catch (\Exception $e) {
@@ -297,19 +404,10 @@ class TransaksiService
      */
     private function generateNomorTransaksi()
     {
-        $date = Carbon::now()->format('Ymd');
-        $lastTransaksi = Transaksi::whereDate('created_at', Carbon::today())
-            ->orderBy('created_at', 'desc')
-            ->first();
-
-        $sequence = 1;
-        if ($lastTransaksi) {
-            $lastNumber = substr($lastTransaksi->nomor_transaksi, -4);
-            $sequence = intval($lastNumber) + 1;
-        }
-
-        return 'TRX' . $date . str_pad($sequence, 4, '0', STR_PAD_LEFT);
+        // Gunakan method dari model untuk generate nomor transaksi
+        return Transaksi::generateNomorTransaksi();
     }
+
 
     /**
      * Get transaksi statistics
@@ -335,6 +433,44 @@ class TransaksiService
                 ->where('status', 'selesai')
                 ->sum('total_harga'),
             'total_pendapatan_year' => Transaksi::whereDate('created_at', '>=', $thisYear)
+                ->where('status', 'selesai')
+                ->sum('total_harga')
+        ];
+    }
+
+    /**
+     * Get transaksi statistics by cabang
+     */
+    public function getTransaksiStatisticsByCabang($cabangId)
+    {
+        $today = Carbon::today();
+        $thisMonth = Carbon::now()->startOfMonth();
+        $thisYear = Carbon::now()->startOfYear();
+
+        return [
+            'total' => Transaksi::where('cabang_id', $cabangId)->count(),
+            'today' => Transaksi::where('cabang_id', $cabangId)
+                ->whereDate('created_at', $today)->count(),
+            'this_month' => Transaksi::where('cabang_id', $cabangId)
+                ->whereDate('created_at', '>=', $thisMonth)->count(),
+            'this_year' => Transaksi::where('cabang_id', $cabangId)
+                ->whereDate('created_at', '>=', $thisYear)->count(),
+            'pending' => Transaksi::where('cabang_id', $cabangId)
+                ->where('status', 'pending')->count(),
+            'selesai' => Transaksi::where('cabang_id', $cabangId)
+                ->where('status', 'selesai')->count(),
+            'dibatalkan' => Transaksi::where('cabang_id', $cabangId)
+                ->where('status', 'dibatalkan')->count(),
+            'total_pendapatan_today' => Transaksi::where('cabang_id', $cabangId)
+                ->whereDate('created_at', $today)
+                ->where('status', 'selesai')
+                ->sum('total_harga'),
+            'total_pendapatan_month' => Transaksi::where('cabang_id', $cabangId)
+                ->whereDate('created_at', '>=', $thisMonth)
+                ->where('status', 'selesai')
+                ->sum('total_harga'),
+            'total_pendapatan_year' => Transaksi::where('cabang_id', $cabangId)
+                ->whereDate('created_at', '>=', $thisYear)
                 ->where('status', 'selesai')
                 ->sum('total_harga')
         ];
