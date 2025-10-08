@@ -376,49 +376,46 @@
                     </div>
                 </div>
 
-                <!-- Pengeluaran Bulan Ini (Compact) -->
-                <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border border-l-4 border-l-red-500">
+                <!-- Performa Cabang (Compact) -->
+                <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border border-l-4 border-l-indigo-500">
                     <div class="p-4">
                         <h6 class="font-bold text-slate-800 mb-3 flex items-center text-sm">
-                            <i class="fas fa-wallet text-red-600 mr-2"></i>
-                            Pengeluaran Bulan Ini
+                            <i class="fas fa-store text-indigo-600 mr-2"></i>
+                            Performa Cabang
                         </h6>
                         
-                        <div class="mb-3">
-                            <h5 class="mb-1 font-bold text-xl text-red-600">
-                                Rp {{ number_format($pengeluaran['total'], 0, ',', '.') }}
-                            </h5>
-                            <p class="text-xs text-slate-500 flex items-center">
-                                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium {{ $pengeluaran['is_increase'] ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' }}">
-                                    <i class="fas fa-arrow-{{ $pengeluaran['is_increase'] ? 'up' : 'down' }} mr-1"></i>
-                                    {{ abs($pengeluaran['percentage']) }}%
-                                </span>
-                                <span class="ml-1">vs bulan lalu</span>
-                            </p>
-                        </div>
-                        
-                        @if($pengeluaran['breakdown']->count() > 0)
+                        @if($performaCabang->count() > 0)
                         <div class="space-y-2">
-                            @foreach($pengeluaran['breakdown']->take(3) as $index => $item)
-                            <div>
-                                <div class="flex items-center justify-between mb-1">
-                                    <span class="text-xs font-medium text-slate-700">{{ Str::limit($item['nama'], 15) }}</span>
-                                    <span class="text-xs font-bold text-slate-800">{{ $item['percentage'] }}%</span>
-                                </div>
-                                <div class="w-full bg-gray-200 rounded-full h-1.5">
-                                    <div class="h-1.5 rounded-full" 
-                                         style="width: {{ $item['percentage'] }}%; background: linear-gradient(to right, 
-                                         @if($index == 0) #f87171, #ef4444
-                                         @elseif($index == 1) #fb923c, #f97316
-                                         @else #f472b6, #ec4899
-                                         @endif);">
+                            @foreach($performaCabang->take(3) as $index => $cabang)
+                            <div class="flex items-center justify-between p-2 rounded-lg {{ $index == 0 ? 'bg-gradient-to-r from-indigo-50 to-blue-50 border border-indigo-200' : 'bg-gray-50' }}">
+                                <div class="flex items-center flex-1">
+                                    <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-xs font-bold {{ $index == 0 ? 'bg-indigo-100 text-indigo-800' : ($index == 1 ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800') }} mr-2">
+                                        {{ $index + 1 }}
+                                    </span>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="font-semibold text-xs text-slate-800 truncate">{{ $cabang['nama_cabang'] }}</div>
+                                        <div class="text-xs text-slate-500">{{ $cabang['jumlah_transaksi'] }} transaksi</div>
                                     </div>
+                                </div>
+                                <div class="text-right ml-2">
+                                    <div class="text-xs font-bold text-green-600">Rp {{ number_format($cabang['pendapatan'] / 1000, 0) }}k</div>
                                 </div>
                             </div>
                             @endforeach
                         </div>
+                        
+                        @if($performaCabang->count() > 3)
+                        <div class="mt-3 pt-2 border-t">
+                            <p class="text-xs text-slate-600 text-center">
+                                +{{ $performaCabang->count() - 3 }} cabang lainnya
+                            </p>
+                        </div>
+                        @endif
                         @else
-                        <p class="text-xs text-slate-500 text-center py-2">Belum ada data</p>
+                        <div class="text-center py-4">
+                            <div class="text-3xl mb-2">🏪</div>
+                            <p class="text-xs text-slate-500">Belum ada data cabang</p>
+                        </div>
                         @endif
                     </div>
                 </div>
@@ -561,80 +558,6 @@
                         </p>
                     </div>
                     @endif
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bottom Row - Branch Performance -->
-    <div class="grid grid-cols-1 gap-6">
-        <!-- Performa Cabang (Bulan Ini) Card - Full Width -->
-        <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border h-full border-l-4 border-l-blue-500">
-            <div class="p-4 pb-3 mb-0 bg-white border-b border-gray-100 rounded-t-2xl">
-                <div class="flex items-center justify-between mb-2">
-                    <h6 class="mb-0 font-bold text-slate-800">Performa Cabang (Bulan Ini)</h6>
-                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                        {{ date('F Y') }}
-                    </span>
-                </div>
-                <p class="text-sm leading-normal text-slate-500 mb-0">
-                    <i class="fa fa-chart-line text-blue-500 mr-1"></i>
-                    <span class="font-semibold">Perbandingan performa antar cabang</span>
-                </p>
-            </div>
-            <div class="flex-auto p-4">
-                <div class="overflow-x-auto">
-                <table class="w-full text-sm align-middle min-w-[600px]">
-                        <thead class="align-bottom">
-                            <tr class="border-b border-gray-200">
-                                <th class="pb-3 pl-2 pr-4 text-left font-semibold text-slate-700">Nama Cabang</th>
-                                <th class="pb-3 px-4 text-center font-semibold text-slate-700">Total Pendapatan</th>
-                                <th class="pb-3 px-4 text-center font-semibold text-slate-700">Jumlah Transaksi</th>
-                                <th class="pb-3 px-4 text-center font-semibold text-slate-700">Rata-rata per Transaksi</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-100">
-                            @foreach($performaCabang as $index => $cabang)
-                            <tr class="hover:bg-gray-50 transition-colors duration-200">
-                                <td class="py-3 pl-2 pr-4">
-                                    <div class="flex items-center">
-                                        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold {{ $index == 0 ? 'bg-blue-100 text-blue-800' : ($index == 1 ? 'bg-green-100 text-green-800' : 'bg-purple-100 text-purple-800') }} mr-3">
-                                            {{ $index + 1 }}
-                                        </span>
-                                        <div>
-                                            <div class="font-medium text-slate-800">{{ $cabang['nama_cabang'] }}</div>
-                                            <div class="text-xs text-slate-500">{{ $cabang['alamat'] }}</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="py-3 px-4 text-center">
-                                    <span class="font-medium text-slate-800">Rp {{ number_format($cabang['pendapatan'], 0, ',', '.') }}</span>
-                                </td>
-                                <td class="py-3 px-4 text-center">
-                                    <span class="font-medium text-slate-700">{{ $cabang['jumlah_transaksi'] }}</span>
-                                </td>
-                                <td class="py-3 px-4 text-center">
-                                    <span class="font-medium text-green-600">Rp {{ number_format($cabang['rata_rata'], 0, ',', '.') }}</span>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                        <tfoot class="border-t-2 border-slate-200">
-                            <tr class="bg-slate-50">
-                                <td class="py-3 pl-2 pr-4 font-bold text-slate-800">
-                                    Total Semua Cabang
-                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-slate-200 text-slate-600 ml-2">
-                                        {{ $performaCabang->count() }} Cabang
-                                    </span>
-                                </td>
-                                <td class="py-3 px-4 text-center font-bold text-slate-800">Rp {{ number_format($performaCabang->sum('pendapatan'), 0, ',', '.') }}</td>
-                                <td class="py-3 px-4 text-center font-bold text-slate-800">{{ $performaCabang->sum('jumlah_transaksi') }}</td>
-                                <td class="py-3 px-4 text-center font-bold text-green-600">
-                                    Rp {{ $performaCabang->sum('jumlah_transaksi') > 0 ? number_format($performaCabang->sum('pendapatan') / $performaCabang->sum('jumlah_transaksi'), 0, ',', '.') : 0 }}
-                                </td>
-                            </tr>
-                        </tfoot>
-                </table>
                 </div>
             </div>
         </div>
