@@ -417,17 +417,21 @@ class DashboardService
      */
     public function getTargetAchievement()
     {
-        $targetBulanan = 50000000; // Could be from settings/database
+        $targetBulanan = \App\Models\Setting::get('target_bulanan', 50000000);
         $startOfMonth = Carbon::now()->startOfMonth();
         $endOfMonth = Carbon::now()->endOfMonth();
+        $today = Carbon::now();
 
         $pendapatanBulanan = Transaksi::whereBetween('tanggal_transaksi', [$startOfMonth, $endOfMonth])
             ->where('status', 'selesai')
             ->sum('total_harga');
 
-        $percentage = round(($pendapatanBulanan / $targetBulanan) * 100, 1);
+        $percentage = $targetBulanan > 0 ? round(($pendapatanBulanan / $targetBulanan) * 100, 1) : 0;
         $sisa = $targetBulanan - $pendapatanBulanan;
-        $sisaHari = Carbon::now()->diffInDays($endOfMonth) + 1;
+
+        // Hitung sisa hari dari hari ini sampai akhir bulan (inclusive)
+        $sisaHari = $today->day == $endOfMonth->day ? 1 : ($endOfMonth->day - $today->day + 1);
+
         $perluPerHari = $sisaHari > 0 ? $sisa / $sisaHari : 0;
 
         return [
@@ -436,7 +440,7 @@ class DashboardService
             'percentage' => $percentage,
             'sisa' => $sisa,
             'sisa_hari' => $sisaHari,
-            'perlu_per_hari' => $perluPerHari,
+            'perlu_per_hari' => max(0, $perluPerHari), // Pastikan tidak negatif
             'status' => $percentage >= 100 ? 'achieved' : ($percentage >= 70 ? 'on_track' : 'behind'),
         ];
     }

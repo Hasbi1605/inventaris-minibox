@@ -14,6 +14,7 @@ use App\Http\Controllers\LaporanController;
 Route::get('/', [DashboardController::class, 'index'])->name('home');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::post('/dashboard/update-target', [DashboardController::class, 'updateTarget'])->name('dashboard.update-target');
 
 // Kelola Layanan Routes
 Route::resource('kelola-layanan', KelolaLayananController::class);

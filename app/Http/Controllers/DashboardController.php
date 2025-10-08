@@ -54,4 +54,32 @@ class DashboardController extends Controller
             'kapsterUtilization'
         ));
     }
+
+    /**
+     * Update target bulanan
+     */
+    public function updateTarget(Request $request)
+    {
+        $request->validate([
+            'target_bulanan' => 'required|integer|min:0'
+        ]);
+
+        try {
+            \App\Models\Setting::set(
+                'target_bulanan',
+                $request->target_bulanan,
+                'Target pendapatan bulanan'
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Target bulanan berhasil diperbarui'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal memperbarui target: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }

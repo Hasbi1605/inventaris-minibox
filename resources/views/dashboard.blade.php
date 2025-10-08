@@ -219,11 +219,11 @@
 <!-- Main Content - Restructured with flex-col -->
 <div class="flex flex-col gap-6">
     <!-- Top Row -->
-    <div class="grid grid-cols-1 lg:grid-cols-[7fr_5fr] gap-6 min-h-[400px] auto-rows-fr">
+    <div class="grid grid-cols-1 lg:grid-cols-[7fr_5fr] gap-6 items-start">
         <!-- Top-Left Column - Financial Overview -->
-        <div class="flex flex-col gap-6 min-h-0">
+        <div class="flex flex-col gap-6 h-full">
             <!-- Grafik Pendapatan Harian Chart -->
-            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border">
+            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border flex-shrink-0">
                 <div class="p-4 pb-3 mb-0 bg-white border-b border-gray-100 rounded-t-2xl">
                     <div class="flex items-center justify-between mb-2">
                         <h6 class="mb-0 font-bold text-slate-800">Grafik Pendapatan Harian</h6>
@@ -244,37 +244,72 @@
             </div>
             
             <!-- Grid 2x2 Mini Cards - Financial Summary -->
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-2 gap-4 flex-1">
                 <!-- Target Bulanan (Compact) -->
                 <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border border-l-4 border-l-purple-500">
-                    <div class="p-4">
-                        <h6 class="font-bold text-slate-800 mb-3 flex items-center text-sm">
-                            <i class="fas fa-bullseye text-purple-600 mr-2"></i>
-                            Target Bulanan
-                        </h6>
-                        <div class="mb-3">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="text-xs font-medium text-slate-600">Tercapai</span>
-                                <span class="text-xs font-bold text-green-600">Rp {{ number_format($targetAchievement['tercapai'], 0, ',', '.') }}</span>
-                            </div>
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-xs font-medium text-slate-600">Target</span>
-                                <span class="text-xs font-bold text-slate-800">Rp {{ number_format($targetAchievement['target'], 0, ',', '.') }}</span>
-                            </div>
+                    <div class="flex-1 flex flex-col">
+                        <!-- Header with Edit Button -->
+                        <div class="flex items-center justify-between px-4 pt-3 pb-2 border-b border-gray-100">
+                            <h6 class="mb-0 font-bold text-slate-800 flex items-center text-sm">
+                                <i class="fas fa-bullseye text-purple-600 mr-2"></i>
+                                Target Bulanan
+                            </h6>
+                            <button onclick="openEditTargetModal()" class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-lg bg-purple-100 text-purple-700 hover:bg-purple-200 transition-all duration-200">
+                                <i class="fas fa-edit mr-1"></i>
+                                Edit
+                            </button>
                         </div>
+                        <br>
                         
-                        <div class="relative mb-3">
-                            <div class="w-full bg-gray-200 rounded-full h-5">
-                                <div class="bg-gradient-to-r from-green-400 to-green-600 h-5 rounded-full flex items-center justify-center text-xs font-bold text-white" style="width: {{ min($targetAchievement['percentage'], 100) }}%">
-                                    {{ number_format($targetAchievement['percentage'], 1) }}%
+                        <!-- Content Body -->
+                        <div class="flex-1 flex flex-col px-4 pt-3 pb-3">
+                            <!-- Stats Grid -->
+                            <div class="grid grid-cols-2 gap-2 mb-2.5">
+                                <div class="p-2 bg-green-50 rounded-lg border border-green-200">
+                                    <span class="text-xs font-medium text-slate-600 block mb-0.5">Tercapai</span>
+                                    <span class="text-xs font-bold text-green-700">Rp {{ number_format($targetAchievement['tercapai'] / 1000000, 1) }}jt</span>
+                                </div>
+                                <div class="p-2 bg-purple-50 rounded-lg border border-purple-200">
+                                    <span class="text-xs font-medium text-slate-600 block mb-0.5">Target</span>
+                                    <span class="text-xs font-bold text-purple-700" id="currentTarget">Rp {{ number_format($targetAchievement['target'] / 1000000, 0) }}jt</span>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="p-2 rounded-lg {{ $targetAchievement['status'] == 'achieved' ? 'bg-green-50' : ($targetAchievement['status'] == 'on_track' ? 'bg-blue-50' : 'bg-orange-50') }}">
-                            <div class="text-xs text-slate-600">
-                                <span class="font-bold text-orange-600">Rp {{ number_format($targetAchievement['perlu_per_hari'], 0, ',', '.') }}/hari</span> 
-                                untuk {{ $targetAchievement['sisa_hari'] }} hari
+                            
+                            <!-- Progress Bar with Better Visibility -->
+                            <div class="mb-2.5">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-xs font-semibold text-slate-700">Progress</span>
+                                    <span class="text-xs font-bold {{ $targetAchievement['percentage'] >= 70 ? 'text-green-600' : ($targetAchievement['percentage'] >= 40 ? 'text-blue-600' : 'text-orange-600') }}">
+                                        {{ number_format($targetAchievement['percentage'], 1) }}%
+                                    </span>
+                                </div>
+                                <div class="relative">
+                                    <div class="w-full bg-gray-200 rounded-full h-7 overflow-hidden shadow-inner">
+                                        <div class="h-7 rounded-full transition-all duration-500 relative overflow-hidden
+                                            {{ $targetAchievement['percentage'] >= 70 ? 'bg-gradient-to-r from-green-400 to-green-600' : ($targetAchievement['percentage'] >= 40 ? 'bg-gradient-to-r from-blue-400 to-blue-600' : 'bg-gradient-to-r from-orange-400 to-orange-600') }}" 
+                                            style="width: {{ min($targetAchievement['percentage'], 100) }}%; min-width: {{ $targetAchievement['percentage'] > 0 ? '12%' : '0%' }}">
+                                            <!-- Shine effect -->
+                                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-20"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Target Harian Info -->
+                            <div class="mt-auto">
+                                <div class="p-2 rounded-lg {{ $targetAchievement['status'] == 'achieved' ? 'bg-green-50 border border-green-200' : ($targetAchievement['status'] == 'on_track' ? 'bg-blue-50 border border-blue-200' : 'bg-orange-50 border border-orange-200') }}">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-calendar-day text-orange-600 mr-1.5 text-xs"></i>
+                                            <span class="text-xs font-semibold text-slate-700">Target Harian</span>
+                                        </div>
+                                        <span class="text-xs font-bold text-orange-600">Rp {{ number_format($targetAchievement['perlu_per_hari'] / 1000, 0) }}k</span>
+                                    </div>
+                                    <div class="flex items-center text-xs text-slate-600">
+                                        <i class="far fa-clock mr-1"></i>
+                                        <span>{{ (int) $targetAchievement['sisa_hari'] }} hari tersisa bulan ini</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -282,11 +317,17 @@
 
                 <!-- Top Kapster Hari Ini (Compact) -->
                 <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border border-l-4 border-l-yellow-500">
-                    <div class="p-4">
-                        <h6 class="font-bold text-slate-800 mb-3 flex items-center text-sm">
-                            <i class="fas fa-trophy text-yellow-500 mr-2"></i>
-                            Top Kapster Hari Ini
-                        </h6>
+                    <div class="flex-1 flex flex-col">
+                        <!-- Header -->
+                        <div class="flex items-center justify-between px-4 pt-3 pb-2 border-b border-gray-100">
+                            <h6 class="mb-0 font-bold text-slate-800 flex items-center text-sm">
+                                <i class="fas fa-trophy text-yellow-500 mr-2"></i>
+                                Top Kapster Hari Ini
+                            </h6>
+                        </div>
+                        
+                        <!-- Content Body -->
+                        <div class="flex-1 flex flex-col px-4 pt-3 pb-3">
                         
                         @if($topKapster['has_data'])
                         <div class="space-y-2">
@@ -326,16 +367,23 @@
                             <p class="text-xs text-slate-500">Belum ada transaksi</p>
                         </div>
                         @endif
+                        </div>
                     </div>
                 </div>
 
                 <!-- Cash Flow Hari Ini (Compact) -->
                 <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border border-l-4 border-l-blue-500">
-                    <div class="p-4">
-                        <h6 class="font-bold text-slate-800 mb-3 flex items-center text-sm">
-                            <i class="fas fa-coins text-blue-600 mr-2"></i>
-                            Cash Flow Hari Ini
-                        </h6>
+                    <div class="flex-1 flex flex-col">
+                        <!-- Header -->
+                        <div class="flex items-center justify-between px-4 pt-3 pb-2 border-b border-gray-100">
+                            <h6 class="mb-0 font-bold text-slate-800 flex items-center text-sm">
+                                <i class="fas fa-coins text-blue-600 mr-2"></i>
+                                Cash Flow Hari Ini
+                            </h6>
+                        </div>
+                        
+                        <!-- Content Body -->
+                        <div class="flex-1 flex flex-col px-4 pt-3 pb-3">
                         
                         <div class="space-y-2 mb-3">
                             <div class="flex items-center justify-between p-2 bg-green-50 rounded-lg">
@@ -373,16 +421,23 @@
                             </div>
                         </div>
                         @endif
+                        </div>
                     </div>
                 </div>
 
                 <!-- Performa Cabang (Compact) -->
                 <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border border-l-4 border-l-indigo-500">
-                    <div class="p-4">
-                        <h6 class="font-bold text-slate-800 mb-3 flex items-center text-sm">
-                            <i class="fas fa-store text-indigo-600 mr-2"></i>
-                            Performa Cabang
-                        </h6>
+                    <div class="flex-1 flex flex-col">
+                        <!-- Header -->
+                        <div class="flex items-center justify-between px-4 pt-3 pb-2 border-b border-gray-100">
+                            <h6 class="mb-0 font-bold text-slate-800 flex items-center text-sm">
+                                <i class="fas fa-store text-indigo-600 mr-2"></i>
+                                Performa Cabang
+                            </h6>
+                        </div>
+                        
+                        <!-- Content Body -->
+                        <div class="flex-1 flex flex-col px-4 pt-3 pb-3">
                         
                         @if($performaCabang->count() > 0)
                         <div class="space-y-2">
@@ -417,17 +472,18 @@
                             <p class="text-xs text-slate-500">Belum ada data cabang</p>
                         </div>
                         @endif
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Top-Right Column - Services & Activity -->
-        <div class="flex flex-col gap-6 min-h-0">
+        <div class="flex flex-col gap-6">
             <!-- Layanan Terlaris Card -->
-            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border" style="flex: 1;">
+            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border flex-1">
                 <!-- Header -->
-                <div class="p-4 pb-3 mb-0 bg-white border-b border-gray-100 rounded-t-2xl">
+                <div class="p-4 pb-3 mb-0 bg-white border-b border-gray-100 rounded-t-2xl flex-shrink-0">
                     <div class="flex items-center justify-between mb-2">
                         <h6 class="mb-0 font-bold text-slate-800">Layanan Terlaris</h6>
                         <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
@@ -441,7 +497,7 @@
                 </div>
 
                 <!-- Content -->
-                <div class="flex-auto p-4" id="services-content">
+                <div class="flex-1 p-4 overflow-y-auto" id="services-content">
                     @if($layananTerlaris['has_data'])
                     <!-- Data Available State -->
                     <div id="services-data" class="h-full flex flex-col items-center justify-start pt-6">
@@ -492,9 +548,9 @@
             </div>
 
             <!-- Aktivitas Transaksi Terakhir Card -->
-            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border" style="flex: 1;">
+            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border flex-1">
                 <!-- Header -->
-                <div class="p-4 pb-3 mb-0 bg-white border-b border-gray-100 rounded-t-2xl">
+                <div class="p-4 pb-3 mb-0 bg-white border-b border-gray-100 rounded-t-2xl flex-shrink-0">
                     <div class="flex items-center justify-between mb-2">
                         <h6 class="mb-0 font-bold text-slate-800">Aktivitas Transaksi Terakhir</h6>
                         <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
@@ -508,34 +564,31 @@
                 </div>
 
                 <!-- Content -->
-                <div class="flex flex-col flex-auto min-h-0 p-4" id="transaction-content">
+                <div class="flex-1 p-4 overflow-y-auto" id="transaction-content">
                     @if($transaksiTerakhir['has_data'])
                     <!-- Data Available State -->
-                    <div class="flex flex-col h-full min-h-0">
-                        <!-- Timeline with Scroll -->
-                        <div class="flex-auto min-h-0 overflow-y-auto pr-2 space-y-4">
-                            @foreach($transaksiTerakhir['data'] as $item)
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0 mr-3">
-                                    <span class="inline-flex items-center justify-center w-2.5 h-2.5 rounded-full {{ $item['type'] == 'income' ? 'bg-green-500' : 'bg-red-500' }}"></span>
+                    <div class="space-y-4">
+                        @foreach($transaksiTerakhir['data'] as $item)
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 mr-3">
+                                <span class="inline-flex items-center justify-center w-2.5 h-2.5 rounded-full {{ $item['type'] == 'income' ? 'bg-green-500' : 'bg-red-500' }}"></span>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="text-sm font-medium text-slate-800 mb-1">
+                                    <span class="font-bold {{ $item['type'] == 'income' ? 'text-green-600' : 'text-red-600' }}">
+                                        {{ $item['type'] == 'income' ? '+' : '-' }}Rp {{ number_format($item['amount'], 0, ',', '.') }}
+                                    </span> - {{ $item['description'] }}
                                 </div>
-                                <div class="flex-1 min-w-0">
-                                    <div class="text-sm font-medium text-slate-800 mb-1">
-                                        <span class="font-bold {{ $item['type'] == 'income' ? 'text-green-600' : 'text-red-600' }}">
-                                            {{ $item['type'] == 'income' ? '+' : '-' }}Rp {{ number_format($item['amount'], 0, ',', '.') }}
-                                        </span> - {{ $item['description'] }}
-                                    </div>
-                                    <div class="text-xs text-slate-500">
-                                        <i class="fa fa-calendar mr-1"></i>
-                                        {{ $item['date_relative'] }}
-                                    </div>
+                                <div class="text-xs text-slate-500">
+                                    <i class="fa fa-calendar mr-1"></i>
+                                    {{ $item['date_relative'] }}
                                 </div>
                             </div>
-                            @endforeach
                         </div>
+                        @endforeach
                         
                         <!-- Footer Action -->
-                        <div class="mt-auto pt-3 border-t border-gray-100">
+                        <div class="pt-3 border-t border-gray-100 flex-shrink-0">
                             <div class="text-center">
                                 <a href="{{ route('kelola-transaksi.index') }}" class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200">
                                     <i class="fa fa-list mr-2"></i>
@@ -564,6 +617,78 @@
     </div>
 </div>
 
+<!-- Popup Edit Target Bulanan (Quick Actions Style) -->
+<div id="editTargetPopup" class="hidden absolute z-50">
+    <div class="w-80 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden">
+        <!-- Header -->
+        <div class="px-4 py-3 bg-gradient-to-r from-purple-50 to-indigo-50 border-b border-gray-100">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-tl from-purple-600 to-indigo-400 mr-2">
+                        <i class="fas fa-bullseye text-white text-sm"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-800">Edit Target Bulanan</h3>
+                        <p class="text-xs text-slate-500">Atur target pendapatan</p>
+                    </div>
+                </div>
+                <button onclick="closeEditTargetPopup()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Body -->
+        <form id="editTargetForm" class="p-4">
+            <div class="mb-4">
+                <label for="targetBulanan" class="block text-xs font-semibold text-slate-700 mb-2">
+                    Target Pendapatan Bulanan
+                </label>
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500 text-xs font-semibold">Rp</span>
+                    <input type="text" 
+                           id="targetBulanan" 
+                           name="target_bulanan" 
+                           class="w-full pl-9 pr-3 py-2 text-sm border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all font-semibold text-slate-800"
+                           placeholder="50.000.000"
+                           value="{{ number_format($targetAchievement['target'], 0, ',', '.') }}"
+                           required>
+                </div>
+                <p class="mt-1 text-xs text-slate-500">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    Gunakan titik (.) sebagai pemisah ribuan
+                </p>
+            </div>
+
+            <!-- Preview -->
+            <div class="mb-4 p-3 bg-purple-50 rounded-lg border border-purple-200">
+                <div class="flex justify-between items-center mb-1">
+                    <span class="text-xs font-medium text-slate-600">Target Saat Ini:</span>
+                    <span class="text-xs font-bold text-slate-800">Rp {{ number_format($targetAchievement['target'], 0, ',', '.') }}</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-xs font-medium text-slate-600">Target Baru:</span>
+                    <span id="newTargetPreview" class="text-xs font-bold text-purple-600">Rp {{ number_format($targetAchievement['target'], 0, ',', '.') }}</span>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex gap-2">
+                <button type="button" 
+                        onclick="closeEditTargetPopup()" 
+                        class="flex-1 px-3 py-2 text-xs font-semibold text-slate-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all duration-200">
+                    <i class="fas fa-times mr-1"></i>
+                    Batal
+                </button>
+                <button type="submit" 
+                        class="flex-1 px-3 py-2 text-xs font-semibold text-white bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl">
+                    <i class="fas fa-save mr-1"></i>
+                    Simpan
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 
 </div>
 </div>
@@ -989,6 +1114,132 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     } else {
         console.error('Some elements not found!');
+    }
+});
+
+// Popup Functions for Edit Target (Quick Actions Style)
+function openEditTargetModal() {
+    const popup = document.getElementById('editTargetPopup');
+    const button = event.currentTarget;
+    const rect = button.getBoundingClientRect();
+    
+    // Position popup below the button
+    popup.style.position = 'fixed';
+    popup.style.top = (rect.bottom + 8) + 'px';
+    popup.style.left = rect.left + 'px';
+    
+    // Show popup
+    popup.classList.remove('hidden');
+    
+    // Adjust if popup goes off screen
+    setTimeout(() => {
+        const popupRect = popup.getBoundingClientRect();
+        if (popupRect.right > window.innerWidth) {
+            popup.style.left = (window.innerWidth - popupRect.width - 16) + 'px';
+        }
+        if (popupRect.bottom > window.innerHeight) {
+            popup.style.top = (rect.top - popupRect.height - 8) + 'px';
+        }
+    }, 10);
+}
+
+function closeEditTargetPopup() {
+    document.getElementById('editTargetPopup').classList.add('hidden');
+}
+
+// Format number input with thousand separator
+document.addEventListener('DOMContentLoaded', function() {
+    const targetInput = document.getElementById('targetBulanan');
+    const newTargetPreview = document.getElementById('newTargetPreview');
+    
+    if (targetInput) {
+        // Format on input
+        targetInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\./g, ''); // Remove dots
+            value = value.replace(/\D/g, ''); // Remove non-digits
+            
+            if (value) {
+                // Format with thousand separator
+                const formatted = parseInt(value).toLocaleString('id-ID');
+                e.target.value = formatted;
+                
+                // Update preview
+                if (newTargetPreview) {
+                    newTargetPreview.textContent = 'Rp ' + formatted;
+                }
+            } else {
+                if (newTargetPreview) {
+                    newTargetPreview.textContent = 'Rp 0';
+                }
+            }
+        });
+    }
+    
+    // Handle form submission
+    const editTargetForm = document.getElementById('editTargetForm');
+    if (editTargetForm) {
+        editTargetForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const targetValue = targetInput.value.replace(/\./g, '');
+            
+            if (!targetValue || parseInt(targetValue) <= 0) {
+                alert('Target harus lebih dari 0!');
+                return;
+            }
+            
+            // Show loading
+            const submitBtn = editTargetForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Menyimpan...';
+            
+            // Send AJAX request
+            fetch('{{ route("dashboard.update-target") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    target_bulanan: parseInt(targetValue)
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show success message
+                    alert('Target bulanan berhasil diperbarui!');
+                    
+                    // Reload page to reflect changes
+                    window.location.reload();
+                } else {
+                    throw new Error(data.message || 'Gagal menyimpan target');
+                }
+            })
+            .catch(error => {
+                alert('Error: ' + error.message);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            });
+        });
+    }
+});
+
+// Close popup when clicking outside
+document.addEventListener('click', function(e) {
+    const popup = document.getElementById('editTargetPopup');
+    const editButton = document.querySelector('button[onclick="openEditTargetModal()"]');
+    
+    if (popup && !popup.contains(e.target) && editButton && !editButton.contains(e.target)) {
+        popup.classList.add('hidden');
+    }
+});
+
+// Close popup on ESC key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeEditTargetPopup();
     }
 });
 </script>
