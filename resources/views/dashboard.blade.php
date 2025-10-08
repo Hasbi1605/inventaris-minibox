@@ -37,37 +37,67 @@
 </div>
 @endif
 
-<!-- Quick Actions -->
+<!-- Quick Actions Dropdown -->
 <div class="mb-6">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <a href="{{ route('kelola-transaksi.create') }}" class="flex items-center justify-left p-4 bg-gradient-to-tl from-green-600 to-lime-400 text-white rounded-xl shadow-md hover:scale-105 transition-all">
-            <i class="fas fa-plus-circle text-2xl mr-3"></i>
-            <div>
-                <div class="font-bold text-sm">Transaksi Baru</div>
-                <div class="text-xs opacity-90">Buat transaksi</div>
+    <div class="relative inline-block">
+        <button id="quickActionsBtn" type="button" class="">
+            <i class="fas fa-bolt mr-2 text-lg"></i>
+            <span>Quick Actions</span>
+            <i class="fas fa-chevron-down ml-2 text-sm transition-transform duration-300" id="quickActionsChevron"></i>
+        </button>
+        
+        <!-- Dropdown Menu -->
+        <div id="quickActionsMenu" class="hidden absolute left-0 mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-100 z-50 overflow-hidden">
+            <div class="p-2">
+                <div class="px-3 py-2 border-b border-gray-100">
+                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Pilih Aksi Cepat</p>
+                </div>
+                
+                <a href="{{ route('kelola-transaksi.create') }}" class="flex items-center px-3 py-3 mt-1 rounded-lg hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 transition-all duration-200 group">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-tl from-green-600 to-lime-400 group-hover:scale-110 transition-transform duration-200">
+                        <i class="fas fa-plus-circle text-white text-lg"></i>
+                    </div>
+                    <div class="ml-3 flex-1">
+                        <div class="text-sm font-semibold text-slate-700 group-hover:text-green-600">Transaksi Baru</div>
+                        <div class="text-xs text-slate-500">Buat transaksi penjualan baru</div>
+                    </div>
+                    <i class="fas fa-chevron-right text-slate-300 group-hover:text-green-500 text-sm"></i>
+                </a>
+                
+                <a href="{{ route('kelola-pengeluaran.create') }}" class="flex items-center px-3 py-3 mt-1 rounded-lg hover:bg-gradient-to-r hover:from-orange-50 hover:to-amber-50 transition-all duration-200 group">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-tl from-red-600 to-yellow-400 group-hover:scale-110 transition-transform duration-200">
+                        <i class="fas fa-wallet text-white text-lg"></i>
+                    </div>
+                    <div class="ml-3 flex-1">
+                        <div class="text-sm font-semibold text-slate-700 group-hover:text-orange-600">Catat Pengeluaran</div>
+                        <div class="text-xs text-slate-500">Input pengeluaran operasional</div>
+                    </div>
+                    <i class="fas fa-chevron-right text-slate-300 group-hover:text-orange-500 text-sm"></i>
+                </a>
+                
+                <a href="{{ route('kelola-kapster.create') }}" class="flex items-center px-3 py-3 mt-1 rounded-lg hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 transition-all duration-200 group">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-tl from-blue-600 to-cyan-400 group-hover:scale-110 transition-transform duration-200">
+                        <i class="fas fa-user-plus text-white text-lg"></i>
+                    </div>
+                    <div class="ml-3 flex-1">
+                        <div class="text-sm font-semibold text-slate-700 group-hover:text-blue-600">Tambah Kapster</div>
+                        <div class="text-xs text-slate-500">Daftarkan kapster baru</div>
+                    </div>
+                    <i class="fas fa-chevron-right text-slate-300 group-hover:text-blue-500 text-sm"></i>
+                </a>
+                
+                <a href="{{ route('kelola-inventaris.create') }}" class="flex items-center px-3 py-3 mt-1 rounded-lg hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 transition-all duration-200 group">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-tl from-green-600 to-yellow-400 group-hover:scale-110 transition-transform duration-200">
+                        <i class="fas fa-box text-white text-lg"></i>
+                    </div>
+                    <div class="ml-3 flex-1">
+                        <div class="text-sm font-semibold text-slate-700 group-hover:text-purple-600">Update Stok</div>
+                        <div class="text-xs text-slate-500">Kelola inventaris barang</div>
+                    </div>
+                    <i class="fas fa-chevron-right text-slate-300 group-hover:text-purple-500 text-sm"></i>
+                </a>
             </div>
-        </a>
-        <a href="{{ route('kelola-pengeluaran.create') }}" class="flex items-center justify-left p-4 bg-gradient-to-tl from-green-600 to-lime-400 text-white rounded-xl shadow-md hover:scale-105 transition-all">
-            <i class="fas fa-wallet text-2xl mr-3"></i>
-            <div>
-                <div class="font-bold text-sm">Catat Pengeluaran</div>
-                <div class="text-xs opacity-90">Input pengeluaran</div>
-            </div>
-        </a>
-        <a href="{{ route('kelola-kapster.create') }}" class="flex items-center justify-left p-4 bg-gradient-to-tl from-green-600 to-lime-400 text-white rounded-xl shadow-md hover:scale-105 transition-all">
-            <i class="fas fa-user-plus text-2xl mr-3"></i>
-            <div>
-                <div class="font-bold text-sm">Tambah Kapster</div>
-                <div class="text-xs opacity-90">Kapster baru</div>
-            </div>
-        </a>
-        <a href="{{ route('kelola-inventaris.create') }}" class="flex items-center justify-left p-4 bg-gradient-to-tl from-green-600 to-lime-400 text-white rounded-xl shadow-md hover:scale-105 transition-all">
-            <i class="fas fa-box text-2xl mr-3"></i>
-            <div>
-                <div class="font-bold text-sm">Update Stok</div>
-                <div class="text-xs opacity-90">Kelola inventaris</div>
-            </div>
-        </a>
+        </div>
     </div>
 </div>
 
@@ -186,157 +216,11 @@
     </div>
 </div>
 
-<!-- Row 2: Target Achievement & Top Kapster & Cash Flow -->
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-    <!-- Target Achievement -->
-    <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
-        <div class="p-6">
-            <h6 class="font-bold text-slate-800 mb-4 flex items-center">
-                <i class="fas fa-bullseye text-purple-600 mr-2"></i>
-                Target Bulanan
-            </h6>
-            <div class="mb-4">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-sm font-medium text-slate-600">Target</span>
-                    <span class="text-sm font-bold text-slate-800">Rp {{ number_format($targetAchievement['target'], 0, ',', '.') }}</span>
-                </div>
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-sm font-medium text-slate-600">Tercapai</span>
-                    <span class="text-sm font-bold text-green-600">Rp {{ number_format($targetAchievement['tercapai'], 0, ',', '.') }}</span>
-                </div>
-            </div>
-            
-            <div class="relative">
-                <div class="w-full bg-gray-200 rounded-full h-6 mb-2">
-                    <div class="bg-gradient-to-r from-green-400 to-green-600 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style="width: {{ min($targetAchievement['percentage'], 100) }}%">
-                        {{ number_format($targetAchievement['percentage'], 1) }}%
-                    </div>
-                </div>
-            </div>
-            
-            <div class="mt-4 p-3 rounded-lg {{ $targetAchievement['status'] == 'achieved' ? 'bg-green-50' : ($targetAchievement['status'] == 'on_track' ? 'bg-blue-50' : 'bg-orange-50') }}">
-                <div class="text-xs text-slate-600">Sisa: <span class="font-bold">Rp {{ number_format($targetAchievement['sisa'], 0, ',', '.') }}</span></div>
-                <div class="text-xs text-slate-600">{{ $targetAchievement['sisa_hari'] }} hari lagi</div>
-                <div class="text-xs text-slate-600 mt-1">Perlu: <span class="font-bold text-orange-600">Rp {{ number_format($targetAchievement['perlu_per_hari'], 0, ',', '.') }}/hari</span></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Top Kapster Hari Ini -->
-    <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
-        <div class="p-6">
-            <h6 class="font-bold text-slate-800 mb-4 flex items-center">
-                <i class="fas fa-trophy text-yellow-500 mr-2"></i>
-                Top Kapster Hari Ini
-            </h6>
-            
-            @if($topKapster['has_data'])
-            <div class="space-y-3">
-                @foreach($topKapster['top_3'] as $index => $kapster)
-                <div class="flex items-center justify-between p-3 rounded-lg {{ $index == 0 ? 'bg-gradient-to-r from-yellow-50 to-yellow-100 border border-yellow-200' : 'bg-gray-50' }}">
-                    <div class="flex items-center">
-                        @if($index == 0)
-                            <span class="text-2xl mr-3">🥇</span>
-                        @elseif($index == 1)
-                            <span class="text-2xl mr-3">🥈</span>
-                        @elseif($index == 2)
-                            <span class="text-2xl mr-3">🥉</span>
-                        @endif
-                        <div>
-                            <div class="font-semibold text-sm text-slate-800">{{ $kapster['nama'] }}</div>
-                            <div class="text-xs text-slate-500">{{ $kapster['cabang'] }}</div>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-sm font-bold text-green-600">{{ $kapster['total_transaksi'] }} transaksi</div>
-                        <div class="text-xs text-slate-600">Rp {{ number_format($kapster['total_pendapatan'], 0, ',', '.') }}</div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-            
-            @if($topKapster['tidak_aktif']->count() > 0)
-            <div class="mt-4 p-3 bg-orange-50 border-l-4 border-orange-500 rounded">
-                <p class="text-xs text-orange-700">
-                    <i class="fas fa-exclamation-triangle mr-1"></i>
-                    <span class="font-semibold">{{ $topKapster['tidak_aktif']->count() }} kapster</span> belum ada transaksi hari ini
-                </p>
-            </div>
-            @endif
-            @else
-            <div class="text-center py-6">
-                <div class="text-4xl mb-2">😴</div>
-                <p class="text-sm text-slate-500">Belum ada transaksi hari ini</p>
-            </div>
-            @endif
-        </div>
-    </div>
-
-    <!-- Cash Flow Summary -->
-    <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
-        <div class="p-6">
-            <h6 class="font-bold text-slate-800 mb-4 flex items-center">
-                <i class="fas fa-coins text-blue-600 mr-2"></i>
-                Cash Flow Hari Ini
-            </h6>
-            
-            <div class="space-y-3 mb-4">
-                <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200">
-                    <div class="flex items-center">
-                        <i class="fas fa-arrow-down text-green-600 text-xl mr-3"></i>
-                        <span class="text-sm font-medium text-slate-700">Kas Masuk</span>
-                    </div>
-                    <span class="text-sm font-bold text-green-600">Rp {{ number_format($cashFlow['kas_masuk'], 0, ',', '.') }}</span>
-                </div>
-                
-                <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg border border-red-200">
-                    <div class="flex items-center">
-                        <i class="fas fa-arrow-up text-red-600 text-xl mr-3"></i>
-                        <span class="text-sm font-medium text-slate-700">Kas Keluar</span>
-                    </div>
-                    <span class="text-sm font-bold text-red-600">Rp {{ number_format($cashFlow['kas_keluar'], 0, ',', '.') }}</span>
-                </div>
-                
-                <div class="flex items-center justify-between p-3 bg-{{ $cashFlow['is_positive'] ? 'blue' : 'orange' }}-50 rounded-lg border-2 border-{{ $cashFlow['is_positive'] ? 'blue' : 'orange' }}-300">
-                    <div class="flex items-center">
-                        <i class="fas fa-balance-scale text-{{ $cashFlow['is_positive'] ? 'blue' : 'orange' }}-600 text-xl mr-3"></i>
-                        <span class="text-sm font-bold text-slate-700">Net Flow</span>
-                    </div>
-                    <span class="text-base font-bold text-{{ $cashFlow['is_positive'] ? 'blue' : 'orange' }}-600">
-                        Rp {{ number_format($cashFlow['net_flow'], 0, ',', '.') }}
-                    </span>
-                </div>
-            </div>
-            
-            @if($cashFlow['metode_pembayaran']->count() > 0)
-            <div class="border-t pt-3">
-                <p class="text-xs font-semibold text-slate-600 mb-2">Metode Pembayaran:</p>
-                <div class="space-y-2">
-                    @foreach($cashFlow['metode_pembayaran'] as $metode)
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs text-slate-600 capitalize">
-                            @if($metode['metode'] == 'cash') 💵
-                            @elseif($metode['metode'] == 'transfer') 💳
-                            @elseif($metode['metode'] == 'e-wallet') 📱
-                            @else 💰
-                            @endif
-                            {{ $metode['metode'] }}
-                        </span>
-                        <span class="text-xs font-bold text-slate-700">{{ $metode['percentage'] }}%</span>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
-            @endif
-        </div>
-    </div>
-</div>
-
 <!-- Main Content - Restructured with flex-col -->
 <div class="flex flex-col gap-6">
     <!-- Top Row -->
     <div class="grid grid-cols-1 lg:grid-cols-[7fr_5fr] gap-6 min-h-[400px] auto-rows-fr">
-        <!-- Top-Left Column -->
+        <!-- Top-Left Column - Financial Overview -->
         <div class="flex flex-col gap-6 min-h-0">
             <!-- Grafik Pendapatan Harian Chart -->
             <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border">
@@ -359,83 +243,192 @@
                 </div>
             </div>
             
-            <!-- Pengeluaran Bulan Ini Card -->
-            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border border-l-4 border-l-red-500">
-                <div class="p-4 pb-3 mb-0 bg-white border-b border-gray-100 rounded-t-2xl">
-                    <div class="flex items-center justify-between mb-2">
-                        <h6 class="mb-0 font-bold text-slate-800">Pengeluaran Bulan Ini</h6>
-                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium {{ $pengeluaran['is_increase'] ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' }}">
-                            <i class="fas fa-arrow-{{ $pengeluaran['is_increase'] ? 'up' : 'down' }} mr-1"></i>
-                            {{ abs($pengeluaran['percentage']) }}%
-                        </span>
-                    </div>
-                    <p class="text-sm leading-normal text-slate-500 mb-0">
-                        <i class="fa fa-info-circle text-slate-400 mr-1"></i>
-                        <span class="font-semibold">{{ $pengeluaran['is_increase'] ? 'Naik' : 'Turun' }} {{ abs($pengeluaran['percentage']) }}% dibanding bulan lalu</span>
-                    </p>
-                </div>
-                <div class="flex-auto p-4">
-                    <div class="flex flex-row -mx-3 mb-6">
-                        <div class="flex-none w-2/3 max-w-full px-3">
-                            <div>
-                                <h5 class="mb-1 font-bold text-2xl text-red-600">
-                                    Rp {{ number_format($pengeluaran['total'], 0, ',', '.') }}
-                                </h5>
-                                <p class="mt-1 text-xs text-slate-500">
-                                    <i class="fa fa-info-circle text-slate-400 mr-1"></i>
-                                    Total pengeluaran bulan {{ date('F Y') }}
-                                </p>
+            <!-- Grid 2x2 Mini Cards - Financial Summary -->
+            <div class="grid grid-cols-2 gap-4">
+                <!-- Target Bulanan (Compact) -->
+                <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border border-l-4 border-l-purple-500">
+                    <div class="p-4">
+                        <h6 class="font-bold text-slate-800 mb-3 flex items-center text-sm">
+                            <i class="fas fa-bullseye text-purple-600 mr-2"></i>
+                            Target Bulanan
+                        </h6>
+                        <div class="mb-3">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-xs font-medium text-slate-600">Tercapai</span>
+                                <span class="text-xs font-bold text-green-600">Rp {{ number_format($targetAchievement['tercapai'], 0, ',', '.') }}</span>
+                            </div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs font-medium text-slate-600">Target</span>
+                                <span class="text-xs font-bold text-slate-800">Rp {{ number_format($targetAchievement['target'], 0, ',', '.') }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="relative mb-3">
+                            <div class="w-full bg-gray-200 rounded-full h-5">
+                                <div class="bg-gradient-to-r from-green-400 to-green-600 h-5 rounded-full flex items-center justify-center text-xs font-bold text-white" style="width: {{ min($targetAchievement['percentage'], 100) }}%">
+                                    {{ number_format($targetAchievement['percentage'], 1) }}%
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-2 rounded-lg {{ $targetAchievement['status'] == 'achieved' ? 'bg-green-50' : ($targetAchievement['status'] == 'on_track' ? 'bg-blue-50' : 'bg-orange-50') }}">
+                            <div class="text-xs text-slate-600">
+                                <span class="font-bold text-orange-600">Rp {{ number_format($targetAchievement['perlu_per_hari'], 0, ',', '.') }}/hari</span> 
+                                untuk {{ $targetAchievement['sisa_hari'] }} hari
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Breakdown pengeluaran -->
-                    @if($pengeluaran['breakdown']->count() > 0)
-                    <div class="space-y-3">
-                        @foreach($pengeluaran['breakdown']->take(4) as $index => $item)
-                        <div>
-                            <div class="flex items-center justify-between mb-2">
+                </div>
+
+                <!-- Top Kapster Hari Ini (Compact) -->
+                <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border border-l-4 border-l-yellow-500">
+                    <div class="p-4">
+                        <h6 class="font-bold text-slate-800 mb-3 flex items-center text-sm">
+                            <i class="fas fa-trophy text-yellow-500 mr-2"></i>
+                            Top Kapster Hari Ini
+                        </h6>
+                        
+                        @if($topKapster['has_data'])
+                        <div class="space-y-2">
+                            @foreach($topKapster['top_3'] as $index => $kapster)
+                            <div class="flex items-center justify-between p-2 rounded-lg {{ $index == 0 ? 'bg-gradient-to-r from-yellow-50 to-yellow-100' : 'bg-gray-50' }}">
                                 <div class="flex items-center">
-                                    <span class="text-lg mr-3">
-                                        @if($index == 0) 👔
-                                        @elseif($index == 1) 📦
-                                        @elseif($index == 2) ⚙️
-                                        @else 📊
-                                        @endif
-                                    </span>
-                                    <span class="text-sm font-medium text-slate-700">{{ $item['nama'] }}</span>
+                                    @if($index == 0)
+                                        <span class="text-lg mr-2">🥇</span>
+                                    @elseif($index == 1)
+                                        <span class="text-lg mr-2">🥈</span>
+                                    @else
+                                        <span class="text-lg mr-2">🥉</span>
+                                    @endif
+                                    <div>
+                                        <div class="font-semibold text-xs text-slate-800">{{ $kapster['nama'] }}</div>
+                                        <div class="text-xs text-slate-500">{{ $kapster['cabang'] }}</div>
+                                    </div>
                                 </div>
                                 <div class="text-right">
-                                    <span class="text-sm font-bold text-slate-800">Rp {{ number_format($item['total'], 0, ',', '.') }}</span>
-                                    <span class="text-xs text-slate-500 ml-1">({{ $item['percentage'] }}%)</span>
+                                    <div class="text-xs font-bold text-green-600">{{ $kapster['total_transaksi'] }}x</div>
                                 </div>
                             </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
-                                <div class="h-2 rounded-full" 
-                                     style="width: {{ $item['percentage'] }}%; background: linear-gradient(to right, 
-                                     @if($index == 0) #f87171, #ef4444
-                                     @elseif($index == 1) #fb923c, #f97316
-                                     @elseif($index == 2) #f472b6, #ec4899
-                                     @else #a78bfa, #8b5cf6
-                                     @endif);">
-                                </div>
+                            @endforeach
+                        </div>
+                        
+                        @if($topKapster['tidak_aktif']->count() > 0)
+                        <div class="mt-3 p-2 bg-orange-50 border-l-2 border-orange-500 rounded">
+                            <p class="text-xs text-orange-700">
+                                <i class="fas fa-exclamation-triangle mr-1"></i>
+                                {{ $topKapster['tidak_aktif']->count() }} kapster belum aktif
+                            </p>
+                        </div>
+                        @endif
+                        @else
+                        <div class="text-center py-4">
+                            <div class="text-3xl mb-2">😴</div>
+                            <p class="text-xs text-slate-500">Belum ada transaksi</p>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Cash Flow Hari Ini (Compact) -->
+                <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border border-l-4 border-l-blue-500">
+                    <div class="p-4">
+                        <h6 class="font-bold text-slate-800 mb-3 flex items-center text-sm">
+                            <i class="fas fa-coins text-blue-600 mr-2"></i>
+                            Cash Flow Hari Ini
+                        </h6>
+                        
+                        <div class="space-y-2 mb-3">
+                            <div class="flex items-center justify-between p-2 bg-green-50 rounded-lg">
+                                <span class="text-xs font-medium text-slate-700">Kas Masuk</span>
+                                <span class="text-xs font-bold text-green-600">Rp {{ number_format($cashFlow['kas_masuk'], 0, ',', '.') }}</span>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-2 bg-red-50 rounded-lg">
+                                <span class="text-xs font-medium text-slate-700">Kas Keluar</span>
+                                <span class="text-xs font-bold text-red-600">Rp {{ number_format($cashFlow['kas_keluar'], 0, ',', '.') }}</span>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-2 bg-{{ $cashFlow['is_positive'] ? 'blue' : 'orange' }}-50 rounded-lg border-2 border-{{ $cashFlow['is_positive'] ? 'blue' : 'orange' }}-300">
+                                <span class="text-xs font-bold text-slate-700">Net Flow</span>
+                                <span class="text-sm font-bold text-{{ $cashFlow['is_positive'] ? 'blue' : 'orange' }}-600">
+                                    Rp {{ number_format($cashFlow['net_flow'], 0, ',', '.') }}
+                                </span>
                             </div>
                         </div>
-                        @endforeach
+                        
+                        @if($cashFlow['metode_pembayaran']->count() > 0)
+                        <div class="pt-2 border-t">
+                            <p class="text-xs font-semibold text-slate-600 mb-1">Metode:</p>
+                            <div class="flex gap-2 flex-wrap">
+                                @foreach($cashFlow['metode_pembayaran'] as $metode)
+                                <span class="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">
+                                    @if($metode['metode'] == 'cash') 💵
+                                    @elseif($metode['metode'] == 'transfer') 💳
+                                    @elseif($metode['metode'] == 'e-wallet') 📱
+                                    @else 💰
+                                    @endif
+                                    {{ $metode['percentage'] }}%
+                                </span>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
                     </div>
-                    @else
-                    <div class="text-center py-4">
-                        <p class="text-sm text-slate-500">Belum ada data pengeluaran bulan ini</p>
+                </div>
+
+                <!-- Pengeluaran Bulan Ini (Compact) -->
+                <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border border-l-4 border-l-red-500">
+                    <div class="p-4">
+                        <h6 class="font-bold text-slate-800 mb-3 flex items-center text-sm">
+                            <i class="fas fa-wallet text-red-600 mr-2"></i>
+                            Pengeluaran Bulan Ini
+                        </h6>
+                        
+                        <div class="mb-3">
+                            <h5 class="mb-1 font-bold text-xl text-red-600">
+                                Rp {{ number_format($pengeluaran['total'], 0, ',', '.') }}
+                            </h5>
+                            <p class="text-xs text-slate-500 flex items-center">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium {{ $pengeluaran['is_increase'] ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' }}">
+                                    <i class="fas fa-arrow-{{ $pengeluaran['is_increase'] ? 'up' : 'down' }} mr-1"></i>
+                                    {{ abs($pengeluaran['percentage']) }}%
+                                </span>
+                                <span class="ml-1">vs bulan lalu</span>
+                            </p>
+                        </div>
+                        
+                        @if($pengeluaran['breakdown']->count() > 0)
+                        <div class="space-y-2">
+                            @foreach($pengeluaran['breakdown']->take(3) as $index => $item)
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-xs font-medium text-slate-700">{{ Str::limit($item['nama'], 15) }}</span>
+                                    <span class="text-xs font-bold text-slate-800">{{ $item['percentage'] }}%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-1.5">
+                                    <div class="h-1.5 rounded-full" 
+                                         style="width: {{ $item['percentage'] }}%; background: linear-gradient(to right, 
+                                         @if($index == 0) #f87171, #ef4444
+                                         @elseif($index == 1) #fb923c, #f97316
+                                         @else #f472b6, #ec4899
+                                         @endif);">
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                        @else
+                        <p class="text-xs text-slate-500 text-center py-2">Belum ada data</p>
+                        @endif
                     </div>
-                    @endif
                 </div>
             </div>
         </div>
 
-        <!-- Top-Right Column -->
-        <div class="flex flex-col min-h-0">
+        <!-- Top-Right Column - Services & Activity -->
+        <div class="flex flex-col gap-6 min-h-0">
             <!-- Layanan Terlaris Card -->
-            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border h-full">
+            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border" style="flex: 1;">
                 <!-- Header -->
                 <div class="p-4 pb-3 mb-0 bg-white border-b border-gray-100 rounded-t-2xl">
                     <div class="flex items-center justify-between mb-2">
@@ -454,10 +447,10 @@
                 <div class="flex-auto p-4" id="services-content">
                     @if($layananTerlaris['has_data'])
                     <!-- Data Available State -->
-                    <div id="services-data" class="h-full flex flex-col items-center justify-start pt-12">
+                    <div id="services-data" class="h-full flex flex-col items-center justify-start pt-6">
                         <!-- Chart Section -->
-                        <div class="flex items-center justify-center mb-10">
-                            <div class="relative w-full max-w-[240px]">
+                        <div class="flex items-center justify-center mb-6">
+                            <div class="relative w-full max-w-[200px]">
                                 <div class="aspect-square relative">
                                     <canvas id="chart-services" class="w-full h-full"></canvas>
                                     <!-- Center Value -->
@@ -473,14 +466,14 @@
                         </div>
 
                         <!-- Legend Section -->
-                        <div id="services-legend" class="space-y-3 w-full px-4">
+                        <div id="services-legend" class="space-y-2 w-full px-2">
                             @foreach($layananTerlaris['data'] as $index => $layanan)
-                            <div class="flex items-center justify-between p-3 rounded text-sm transition-colors duration-200 {{ $index == 0 ? 'bg-blue-50 border-l-2 border-blue-500' : 'hover:bg-gray-50' }}">
+                            <div class="flex items-center justify-between p-2 rounded text-sm transition-colors duration-200 {{ $index == 0 ? 'bg-blue-50 border-l-2 border-blue-500' : 'hover:bg-gray-50' }}">
                                 <div class="flex items-center">
-                                    <div class="w-3.5 h-3.5 rounded-full mr-3 flex-shrink-0" style="background-color: {{ $layanan['color'] }}"></div>
-                                    <span class="font-medium text-slate-700">{{ $layanan['label'] }}</span>
+                                    <div class="w-3 h-3 rounded-full mr-2 flex-shrink-0" style="background-color: {{ $layanan['color'] }}"></div>
+                                    <span class="font-medium text-slate-700 text-xs">{{ $layanan['label'] }}</span>
                                 </div>
-                                <span class="font-bold text-slate-800">{{ $layanan['value'] }}%</span>
+                                <span class="font-bold text-slate-800 text-xs">{{ $layanan['value'] }}%</span>
                             </div>
                             @endforeach
                         </div>
@@ -500,12 +493,82 @@
                     @endif
                 </div>
             </div>
+
+            <!-- Aktivitas Transaksi Terakhir Card -->
+            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border" style="flex: 1;">
+                <!-- Header -->
+                <div class="p-4 pb-3 mb-0 bg-white border-b border-gray-100 rounded-t-2xl">
+                    <div class="flex items-center justify-between mb-2">
+                        <h6 class="mb-0 font-bold text-slate-800">Aktivitas Transaksi Terakhir</h6>
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            Real-time
+                        </span>
+                    </div>
+                    <p class="text-sm leading-normal text-slate-500 mb-0">
+                        <i class="fa fa-clock text-blue-500 mr-1"></i>
+                        5 aktivitas terbaru dalam sistem
+                    </p>
+                </div>
+
+                <!-- Content -->
+                <div class="flex flex-col flex-auto min-h-0 p-4" id="transaction-content">
+                    @if($transaksiTerakhir['has_data'])
+                    <!-- Data Available State -->
+                    <div class="flex flex-col h-full min-h-0">
+                        <!-- Timeline with Scroll -->
+                        <div class="flex-auto min-h-0 overflow-y-auto pr-2 space-y-4">
+                            @foreach($transaksiTerakhir['data'] as $item)
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 mr-3">
+                                    <span class="inline-flex items-center justify-center w-2.5 h-2.5 rounded-full {{ $item['type'] == 'income' ? 'bg-green-500' : 'bg-red-500' }}"></span>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-sm font-medium text-slate-800 mb-1">
+                                        <span class="font-bold {{ $item['type'] == 'income' ? 'text-green-600' : 'text-red-600' }}">
+                                            {{ $item['type'] == 'income' ? '+' : '-' }}Rp {{ number_format($item['amount'], 0, ',', '.') }}
+                                        </span> - {{ $item['description'] }}
+                                    </div>
+                                    <div class="text-xs text-slate-500">
+                                        <i class="fa fa-calendar mr-1"></i>
+                                        {{ $item['date_relative'] }}
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                        
+                        <!-- Footer Action -->
+                        <div class="mt-auto pt-3 border-t border-gray-100">
+                            <div class="text-center">
+                                <a href="{{ route('kelola-transaksi.index') }}" class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200">
+                                    <i class="fa fa-list mr-2"></i>
+                                    Lihat Semua Transaksi
+                                    <i class="fa fa-arrow-right ml-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    @else
+                    <!-- Empty State -->
+                    <div class="h-full flex flex-col items-center justify-center text-center py-6">
+                        <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                            <i class="fa fa-receipt text-2xl text-gray-400"></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-slate-700 mb-2">Belum Ada Transaksi</h3>
+                        <p class="text-sm text-slate-500 max-w-xs">
+                            Belum ada aktivitas transaksi yang tercatat. 
+                            Transaksi akan muncul di sini setelah ada aktivitas.
+                        </p>
+                    </div>
+                    @endif
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Bottom Row -->
-    <div class="grid grid-cols-1 lg:grid-cols-[7fr_5fr] gap-6 min-h-[500px] auto-rows-fr">
-        <!-- Performa Cabang (Bulan Ini) Card -->
+    <!-- Bottom Row - Branch Performance -->
+    <div class="grid grid-cols-1 gap-6">
+        <!-- Performa Cabang (Bulan Ini) Card - Full Width -->
         <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border h-full border-l-4 border-l-blue-500">
             <div class="p-4 pb-3 mb-0 bg-white border-b border-gray-100 rounded-t-2xl">
                 <div class="flex items-center justify-between mb-2">
@@ -575,76 +638,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Aktivitas Transaksi Terakhir Card -->
-        <div class="relative h-full min-h-0 flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border">
-            <!-- Header -->
-            <div class="p-4 pb-3 mb-0 bg-white border-b border-gray-100 rounded-t-2xl">
-                <div class="flex items-center justify-between mb-2">
-                    <h6 class="mb-0 font-bold text-slate-800">Aktivitas Transaksi Terakhir</h6>
-                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                        Real-time
-                    </span>
-                </div>
-                <p class="text-sm leading-normal text-slate-500 mb-0">
-                    <i class="fa fa-clock text-blue-500 mr-1"></i>
-                    5 aktivitas terbaru dalam sistem
-                </p>
-            </div>
-
-            <!-- Content -->
-            <div class="flex flex-col flex-auto min-h-0 p-4" id="transaction-content">
-                @if($transaksiTerakhir['has_data'])
-                <!-- Data Available State -->
-                <div class="flex flex-col h-full min-h-0">
-                    <!-- Timeline with Scroll -->
-                    <div class="flex-auto min-h-0 overflow-y-auto pr-2 space-y-5">
-                        @foreach($transaksiTerakhir['data'] as $item)
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0 mr-4">
-                                <span class="inline-flex items-center justify-center w-3 h-3 rounded-full {{ $item['type'] == 'income' ? 'bg-green-500' : 'bg-red-500' }}"></span>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <div class="text-sm font-medium text-slate-800 mb-1">
-                                    <span class="font-bold {{ $item['type'] == 'income' ? 'text-green-600' : 'text-red-600' }}">
-                                        {{ $item['type'] == 'income' ? '+' : '-' }}Rp {{ number_format($item['amount'], 0, ',', '.') }}
-                                    </span> - {{ $item['description'] }}
-                                </div>
-                                <div class="text-xs text-slate-500">
-                                    <i class="fa fa-calendar mr-1"></i>
-                                    {{ $item['date_relative'] }}
-                                </div>
-                            </div>
-                        </div>
-                        @endforeach
-                    </div>
-                    
-                    <!-- Footer Action -->
-                    <div class="mt-auto pt-4 border-t border-gray-100">
-                        <div class="text-center">
-                            <a href="{{ route('kelola-transaksi.index') }}" class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200">
-                                <i class="fa fa-list mr-2"></i>
-                                Lihat Semua Transaksi
-                                <i class="fa fa-arrow-right ml-2"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                @else
-                <!-- Empty State -->
-                <div class="h-full flex flex-col items-center justify-center text-center py-8">
-                    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                        <i class="fa fa-receipt text-2xl text-gray-400"></i>
-                    </div>
-                    <h3 class="text-lg font-medium text-slate-700 mb-2">Belum Ada Transaksi</h3>
-                    <p class="text-sm text-slate-500 max-w-xs">
-                        Belum ada aktivitas transaksi yang tercatat. 
-                        Transaksi akan muncul di sini setelah ada aktivitas.
-                    </p>
-                </div>
-                @endif
-            </div>
-        </div>
     </div>
 </div>
 
@@ -656,71 +649,154 @@
 @push('scripts')
 <script src="{{ asset('assets/js/plugins/chartjs.min.js') }}"></script>
 <script>
-// Chart.js Line Chart Configuration for Daily Revenue
+// Chart.js Horizontal Bar Chart Configuration for Daily Revenue
 var ctx = document.getElementById("chart-lines").getContext("2d");
 
 // Data from backend
 var grafikData = @json($grafikPendapatan);
 
+// Find max value and current day index
+var maxValue = Math.max(...grafikData.data);
+var today = new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short' });
+
+// Create dynamic colors - highlight max and today
+var backgroundColors = grafikData.data.map((value, index) => {
+    if (value === maxValue && value > 0) {
+        return 'rgba(34, 197, 94, 1)'; // Brightest for highest
+    } else if (grafikData.labels[index] === today) {
+        return 'rgba(59, 130, 246, 0.8)'; // Blue for today
+    } else if (value === 0) {
+        return 'rgba(203, 213, 225, 0.5)'; // Gray for no data
+    } else {
+        return 'rgba(34, 197, 94, 0.7)'; // Normal green
+    }
+});
+
+var borderColors = grafikData.data.map((value, index) => {
+    if (value === maxValue && value > 0) {
+        return '#16a34a';
+    } else if (grafikData.labels[index] === today) {
+        return '#2563eb';
+    } else if (value === 0) {
+        return '#cbd5e1';
+    } else {
+        return '#22c55e';
+    }
+});
+
 new Chart(ctx, {
-    type: "line",
+    type: "bar",
     data: {
         labels: grafikData.labels,
         datasets: [{
             label: "Pendapatan Harian",
-            tension: 0.4,
-            borderWidth: 3,
-            pointRadius: 4,
-            pointHoverRadius: 6,
-            borderColor: "#22c55e",
-            backgroundColor: "rgba(34, 197, 94, 0.1)",
             data: grafikData.data,
-            fill: true
+            backgroundColor: backgroundColors,
+            borderColor: borderColors,
+            borderWidth: 2,
+            borderRadius: 8,
+            barThickness: 'flex',
+            maxBarThickness: 35,
+            minBarLength: 2
         }],
     },
     options: {
+        indexAxis: 'y',
         responsive: true,
         maintainAspectRatio: false,
+        layout: {
+            padding: {
+                right: 80, // Space for labels
+                left: 10,
+                top: 5,
+                bottom: 5
+            }
+        },
         plugins: {
             legend: {
                 display: false,
             },
             tooltip: {
+                enabled: true,
                 callbacks: {
+                    title: function(context) {
+                        return context[0].label;
+                    },
                     label: function(context) {
-                        return 'Pendapatan: Rp ' + context.parsed.y.toLocaleString('id-ID');
+                        var value = context.parsed.x;
+                        if (value === 0) {
+                            return 'Tidak ada transaksi';
+                        }
+                        
+                        // Calculate percentage change
+                        var index = context.dataIndex;
+                        if (index > 0 && grafikData.data[index - 1] > 0) {
+                            var prevValue = grafikData.data[index - 1];
+                            var change = ((value - prevValue) / prevValue * 100).toFixed(1);
+                            var changeText = change >= 0 ? '↑ +' + change + '%' : '↓ ' + change + '%';
+                            return [
+                                'Pendapatan: Rp ' + value.toLocaleString('id-ID'),
+                                'Perubahan: ' + changeText
+                            ];
+                        }
+                        return 'Pendapatan: Rp ' + value.toLocaleString('id-ID');
+                    },
+                    footer: function(context) {
+                        var value = context[0].parsed.x;
+                        if (value === maxValue && value > 0) {
+                            return '🏆 Pendapatan Tertinggi';
+                        } else if (context[0].label === today) {
+                            return '📅 Hari Ini';
+                        }
+                        return '';
                     }
-                }
+                },
+                backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                titleColor: 'white',
+                bodyColor: 'white',
+                footerColor: '#fbbf24',
+                borderColor: 'rgba(34, 197, 94, 0.5)',
+                borderWidth: 1,
+                cornerRadius: 8,
+                padding: 12,
+                displayColors: true,
+                boxPadding: 6
+            },
+            datalabels: {
+                display: false
             }
         },
         interaction: {
             intersect: false,
-            mode: 'index',
+            mode: 'nearest',
         },
         scales: {
-            y: {
+            x: {
+                beginAtZero: true,
                 grid: {
                     drawBorder: false,
                     display: true,
                     drawOnChartArea: true,
                     drawTicks: false,
                     borderDash: [5, 5],
-                    color: 'rgba(0, 0, 0, .1)'
+                    color: 'rgba(0, 0, 0, .08)'
                 },
                 ticks: {
-                    suggestedMin: 0,
-                    beginAtZero: true,
                     padding: 10,
-                    fontSize: 11,
-                    fontColor: "#64748b",
-                    lineHeight: 2,
                     color: "#64748b",
+                    font: {
+                        size: 11
+                    },
                     callback: function(value) {
-                        return 'Rp ' + (value / 1000000).toFixed(1) + 'jt';
+                        if (value === 0) return 'Rp 0';
+                        if (value >= 1000000) {
+                            return 'Rp ' + (value / 1000000).toFixed(1) + 'jt';
+                        }
+                        return 'Rp ' + (value / 1000).toFixed(0) + 'k';
                     }
                 },
             },
-            x: {
+            y: {
                 grid: {
                     drawBorder: false,
                     display: false,
@@ -729,14 +805,81 @@ new Chart(ctx, {
                 },
                 ticks: {
                     display: true,
-                    color: "#64748b",
-                    padding: 10,
-                    fontSize: 11,
-                    lineHeight: 2
+                    color: function(context) {
+                        var label = context.tick.label;
+                        if (label === today) {
+                            return '#2563eb'; // Blue for today
+                        }
+                        return '#64748b';
+                    },
+                    padding: 12,
+                    font: function(context) {
+                        var label = context.tick.label;
+                        if (label === today) {
+                            return {
+                                size: 12,
+                                weight: 'bold'
+                            };
+                        }
+                        return {
+                            size: 11,
+                            weight: 'normal'
+                        };
+                    },
+                    callback: function(value, index) {
+                        var label = this.getLabelForValue(value);
+                        var dataValue = grafikData.data[index];
+                        
+                        // Add indicator for today
+                        if (label === today) {
+                            return '📍 ' + label;
+                        }
+                        
+                        // Add indicator for highest
+                        if (dataValue === maxValue && dataValue > 0) {
+                            return '⭐ ' + label;
+                        }
+                        
+                        // Add indicator for no data
+                        if (dataValue === 0) {
+                            return '○ ' + label;
+                        }
+                        
+                        return label;
+                    }
                 },
             },
         },
+        animation: {
+            duration: 1000,
+            easing: 'easeInOutQuart'
+        }
     },
+    plugins: [{
+        afterDatasetDraw: function(chart) {
+            var ctx = chart.ctx;
+            chart.data.datasets.forEach(function(dataset, i) {
+                var meta = chart.getDatasetMeta(i);
+                if (!meta.hidden) {
+                    meta.data.forEach(function(element, index) {
+                        var dataValue = dataset.data[index];
+                        if (dataValue > 0) {
+                            ctx.fillStyle = '#1e293b';
+                            ctx.font = 'bold 11px sans-serif';
+                            ctx.textAlign = 'left';
+                            ctx.textBaseline = 'middle';
+                            
+                            var position = element.tooltipPosition();
+                            var label = 'Rp ' + (dataValue / 1000000).toFixed(2) + 'jt';
+                            
+                            // Draw label at the end of bar
+                            ctx.fillText(label, position.x + 8, position.y);
+                        }
+                    });
+                }
+            });
+        }
+    }]
 });
 
 // Chart.js Donut Chart Configuration for Services
@@ -878,5 +1021,52 @@ new Chart(ctxDaily, {
     }
 });
 @endif
+
+</script>
+
+<script>
+// Quick Actions Dropdown Toggle
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM Loaded - Quick Actions Script Running');
+    
+    const quickActionsBtn = document.getElementById('quickActionsBtn');
+    const quickActionsMenu = document.getElementById('quickActionsMenu');
+    const quickActionsChevron = document.getElementById('quickActionsChevron');
+    
+    console.log('Button:', quickActionsBtn);
+    console.log('Menu:', quickActionsMenu);
+    console.log('Chevron:', quickActionsChevron);
+    
+    if (quickActionsBtn && quickActionsMenu && quickActionsChevron) {
+        console.log('All elements found! Setting up event listeners...');
+        
+        // Toggle dropdown
+        quickActionsBtn.addEventListener('click', function(e) {
+            console.log('Button clicked!');
+            e.preventDefault();
+            e.stopPropagation();
+            quickActionsMenu.classList.toggle('hidden');
+            quickActionsChevron.classList.toggle('rotate-180');
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!quickActionsBtn.contains(e.target) && !quickActionsMenu.contains(e.target)) {
+                quickActionsMenu.classList.add('hidden');
+                quickActionsChevron.classList.remove('rotate-180');
+            }
+        });
+        
+        // Close dropdown when pressing Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                quickActionsMenu.classList.add('hidden');
+                quickActionsChevron.classList.remove('rotate-180');
+            }
+        });
+    } else {
+        console.error('Some elements not found!');
+    }
+});
 </script>
 @endpush
