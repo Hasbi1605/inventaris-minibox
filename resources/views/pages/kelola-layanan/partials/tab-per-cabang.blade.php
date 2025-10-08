@@ -34,7 +34,7 @@
                             </div>
                         </div>
                         <div class="text-right ml-4">
-                            <div class="flex w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-blue-600 to-cyan-400 items-center justify-center shadow-soft-md">
+                            <div class="flex w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400 items-center justify-center shadow-soft-md">
                                 <i class="fas fa-check-circle text-lg text-white"></i>
                             </div>
                         </div>
@@ -55,7 +55,7 @@
                             </div>
                         </div>
                         <div class="text-right ml-4">
-                            <div class="flex w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-600 to-pink-400 items-center justify-center shadow-soft-md">
+                            <div class="flex w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400 items-center justify-center shadow-soft-md">
                                 <i class="fas fa-arrow-up text-lg text-white"></i>
                             </div>
                         </div>
@@ -76,7 +76,7 @@
                             </div>
                         </div>
                         <div class="text-right ml-4">
-                            <div class="flex w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-yellow-600 to-orange-400 items-center justify-center shadow-soft-md">
+                            <div class="flex w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400 items-center justify-center shadow-soft-md">
                                 <i class="fas fa-arrow-down text-lg text-white"></i>
                             </div>
                         </div>
@@ -128,9 +128,9 @@
                                     Rp {{ number_format($hargaCabang, 0, ',', '.') }}
                                 </span>
                                 @if($cabangLayanan && $cabangLayanan->pivot->harga != $item->harga)
-                                    <span class="block text-xxs text-slate-400 mt-1">
+{{--                                     <span class="block text-xxs text-slate-400 mt-1">
                                         Base: Rp {{ number_format($item->harga, 0, ',', '.') }}
-                                    </span>
+                                    </span> --}}
                                 @endif
                             </td>
                             <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
@@ -162,6 +162,16 @@
                                        title="Edit Layanan">
                                         <i class="fas fa-edit"></i>
                                     </a>
+                                     <!-- Tombol Delete -->
+                                    <form action="{{ route('kelola-layanan.destroy', $item->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Apakah Anda yakin ingin menghapus layanan {{ $item->nama_layanan }}?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" 
+                                                class="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-white bg-gradient-to-tl from-red-600 to-yellow-400 rounded-lg hover:scale-102 hover:shadow-soft-xs transition-all duration-200 shadow-soft-md"
+                                                title="Hapus Layanan">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>

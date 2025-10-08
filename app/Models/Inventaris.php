@@ -65,9 +65,15 @@ class Inventaris extends Model
     }
 
     // Relasi dengan kategori
-    public function kategoriRelasi()
+    public function kategori()
     {
         return $this->belongsTo(Kategori::class, 'kategori_id');
+    }
+
+    // Alias untuk backward compatibility
+    public function kategoriRelasi()
+    {
+        return $this->kategori();
     }
 
     // Relasi dengan cabang
@@ -97,6 +103,6 @@ class Inventaris extends Model
     // Accessor untuk nama kategori
     public function getNamaKategoriAttribute()
     {
-        return $this->kategoriRelasi ? $this->kategoriRelasi->nama_kategori : $this->kategori;
+        return $this->kategori ? $this->kategori->nama_kategori : ($this->attributes['kategori'] ?? '-');
     }
 }

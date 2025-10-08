@@ -186,8 +186,9 @@ class PengeluaranService
             $jumlahPengeluaran = Pengeluaran::count();
 
             // Kategori pengeluaran terbanyak
-            $kategoriTerbanyak = Pengeluaran::selectRaw('kategori, COUNT(*) as count')
-                ->groupBy('kategori')
+            $kategoriTerbanyak = Pengeluaran::with('kategori')
+                ->selectRaw('kategori_id, COUNT(*) as count')
+                ->groupBy('kategori_id')
                 ->orderBy('count', 'desc')
                 ->first();
 
@@ -199,14 +200,14 @@ class PengeluaranService
 
             // Rata-rata pengeluaran per hari bulan ini
             $hariDalamBulan = $now->daysInMonth;
-            $rataRataHarian = $pengeluaranBulanIni / $hariDalamBulan;
+            $rataRataHarian = $hariDalamBulan > 0 ? $pengeluaranBulanIni / $hariDalamBulan : 0;
 
             return [
-                'total_pengeluaran' => $totalPengeluaran,
-                'pengeluaran_bulan_ini' => $pengeluaranBulanIni,
-                'pengeluaran_hari_ini' => $pengeluaranHariIni,
-                'jumlah_pengeluaran' => $jumlahPengeluaran,
-                'kategori_terbanyak' => $kategoriTerbanyak?->kategori ?? 'Belum ada data',
+                'total_pengeluaran' => $totalPengeluaran ?? 0,
+                'pengeluaran_bulan_ini' => $pengeluaranBulanIni ?? 0,
+                'pengeluaran_hari_ini' => $pengeluaranHariIni ?? 0,
+                'jumlah_pengeluaran' => $jumlahPengeluaran ?? 0,
+                'kategori_terbanyak' => $kategoriTerbanyak?->kategori?->nama_kategori ?? 'Belum ada data',
                 'pengeluaran_terbesar' => $pengeluaranTerbesar?->jumlah ?? 0,
                 'rata_rata_harian' => round($rataRataHarian, 0),
             ];
@@ -227,13 +228,14 @@ class PengeluaranService
     /**
      * Get pengeluaran by kategori
      *
-     * @param string $kategori
+     * @param int $kategoriId
      * @return Collection
      */
-    public function getPengeluaranByKategori(string $kategori): Collection
+    public function getPengeluaranByKategori(int $kategoriId): Collection
     {
         try {
-            return Pengeluaran::where('kategori', $kategori)
+            return Pengeluaran::with('kategori')
+                ->where('kategori_id', $kategoriId)
                 ->orderBy('tanggal_pengeluaran', 'desc')
                 ->get();
         } catch (\Exception $e) {
@@ -264,10 +266,10 @@ class PengeluaranService
     /**
      * Get monthly expense summary
      *
-     * @param int $year
+     * @param int|null $year
      * @return array
      */
-    public function getMonthlyExpenseSummary(int $year = null): array
+    public function getMonthlyExpenseSummary(?int $year = null): array
     {
         try {
             $year = $year ?? Carbon::now()->year;

@@ -1,15 +1,15 @@
 @extends('layouts.admin')
 
-@section('title', 'Laporan')
-@section('page-title', 'Laporan')
+@section('title', 'Laporan Lengkap')
+@section('page-title', 'Laporan Lengkap')
 
 @section('content')
 <div class="w-full max-w-full min-h-screen">
     <!-- Page Header -->
     <div class="flex flex-wrap items-center justify-between mb-6">
         <div>
-            <h4 class="mb-0 font-bold text-slate-700">Laporan</h4>
-            <p class="mb-0 text-sm text-slate-500">Analisis pendapatan, layanan, dan operasional barbershop</p>
+            <h4 class="mb-0 font-bold text-slate-700">Laporan Lengkap</h4>
+            <p class="mb-0 text-sm text-slate-500">Analisis komprehensif gaji, keuangan, dan operasional barbershop</p>
         </div>
         <div class="flex space-x-2">
             <button id="export-pdf-btn" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-red-600 to-yellow-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
@@ -46,7 +46,7 @@
 
         <!-- Total Pengeluaran -->
         <div class="w-full">
-            <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-board h-full">
+            <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border h-full">
                 <div class="flex-auto p-4">
                     <div class="flex flex-row items-center justify-between">
                         <div class="flex-1">
@@ -56,7 +56,7 @@
                             </div>
                         </div>
                         <div class="text-right ml-4">
-                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400 flex items-center justify-center shadow-soft-md">
+                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-red-600 to-orange-400 flex items-center justify-center shadow-soft-md">
                                 <i class="fas fa-shopping-cart text-lg text-white"></i>
                             </div>
                         </div>
@@ -108,171 +108,165 @@
         </div>
     </div>
 
-    <!-- Filter & Search -->
+    <!-- Filter Section -->
     <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
-        <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
-            <h6 class="font-bold">Filter Laporan</h6>
-            <p class="text-sm leading-normal text-slate-400">Pilih periode dan cabang untuk melihat laporan</p>
-        </div>
-        <div class="flex-auto p-6">
-            <div class="grid grid-cols-1 gap-6">
-                <!-- Quick Date Range -->
-                <div>
-                    <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Periode Cepat</label>
-                    <div class="flex flex-wrap gap-2">
-                        <button class="quick-date-btn active px-4 py-2 text-sm font-medium text-white bg-gradient-to-tl from-blue-600 to-cyan-400 rounded-lg transition-all hover:scale-102" data-period="today">Hari Ini</button>
-                        <button class="quick-date-btn px-4 py-2 text-sm font-medium text-slate-700 bg-gray-100 rounded-lg transition-all hover:bg-gray-200" data-period="this-week">Minggu Ini</button>
-                        <button class="quick-date-btn px-4 py-2 text-sm font-medium text-slate-700 bg-gray-100 rounded-lg transition-all hover:bg-gray-200" data-period="this-month">Bulan Ini</button>
-                        <button class="quick-date-btn px-4 py-2 text-sm font-medium text-slate-700 bg-gray-100 rounded-lg transition-all hover:bg-gray-200" data-period="this-year">Tahun Ini</button>
-                        <button class="quick-date-btn px-4 py-2 text-sm font-medium text-slate-700 bg-gray-100 rounded-lg transition-all hover:bg-gray-200" data-period="custom">Kustom</button>
-                    </div>
-                </div>
-                
-                <!-- Custom Date Range -->
-                <div id="custom-date-range" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 hidden">
+        <div class="p-6">
+            <h6 class="font-bold mb-4">Filter Laporan</h6>
+            <form method="GET" action="{{ route('laporan') }}" id="filter-form">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div>
-                        <label for="start-date" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Tanggal Mulai</label>
-                        <input type="date" id="start-date" class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow" value="{{ date('Y-m-01') }}">
+                        <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                            <i class="fas fa-calendar mr-1"></i>Bulan
+                        </label>
+                        <select name="bulan" id="bulan" class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none">
+                            @for($i = 1; $i <= 12; $i++)
+                                <option value="{{ $i }}" {{ $bulan == $i ? 'selected' : '' }}>{{ \Carbon\Carbon::create()->month($i)->format('F') }}</option>
+                            @endfor
+                        </select>
                     </div>
                     <div>
-                        <label for="end-date" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Tanggal Akhir</label>
-                        <input type="date" id="end-date" class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow" value="{{ date('Y-m-d') }}">
+                        <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                            <i class="fas fa-calendar-alt mr-1"></i>Tahun
+                        </label>
+                        <select name="tahun" id="tahun" class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none">
+                            @for($i = date('Y'); $i >= date('Y') - 5; $i--)
+                                <option value="{{ $i }}" {{ $tahun == $i ? 'selected' : '' }}>{{ $i }}</option>
+                            @endfor
+                        </select>
                     </div>
                     <div>
-                        <label for="branch-filter" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Filter Cabang</label>
-                        <select id="branch-filter" class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow">
-                            <option value="all">Semua Cabang</option>
-                            @foreach($cabang as $item)
-                                <option value="{{ $item->id }}">{{ $item->nama_cabang }}</option>
+                        <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                            <i class="fas fa-store mr-1"></i>Cabang
+                        </label>
+                        <select name="cabang_id" id="cabang_id" class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none">
+                            <option value="">Semua Cabang</option>
+                            @foreach($cabangList as $cabang)
+                                <option value="{{ $cabang->id }}" {{ $cabangId == $cabang->id ? 'selected' : '' }}>{{ $cabang->nama_cabang }}</option>
                             @endforeach
                         </select>
                     </div>
+                    <div class="flex items-end">
+                        <button type="submit" class="inline-block w-full px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-600 to-cyan-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md hover:scale-102 active:opacity-85">
+                            <i class="fas fa-filter mr-2"></i>Terapkan Filter
+                        </button>
+                    </div>
                 </div>
-                
-                <div class="flex justify-end space-x-2">
-                    <button type="button" id="reset-filter-btn" class="inline-block px-6 py-3 font-bold text-center text-slate-700 uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-gray-100 to-gray-200 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
-                        <i class="fas fa-undo mr-2"></i>Reset
-                    </button>
-                    <button type="button" id="apply-filter-btn" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-600 to-cyan-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
-                        <i class="fas fa-filter mr-2"></i>Terapkan Filter
-                    </button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 
     <!-- Tab Navigation -->
     <div class="mb-6">
         <div class="border-b border-gray-200">
-            <nav class="-mb-px flex space-x-8" aria-label="Tabs">
-                <button class="tab-btn active whitespace-nowrap py-4 px-1 border-b-2 border-blue-500 font-medium text-sm text-blue-600" data-tab="pendapatan">
-                    <i class="fas fa-chart-line mr-2"></i>Laporan Pendapatan
+            <nav class="flex space-x-4 overflow-x-auto" aria-label="Tabs">
+                <button class="tab-button active whitespace-nowrap py-4 px-6 border-b-2 border-blue-500 font-medium text-sm text-blue-600" data-tab="gaji">
+                    <i class="fas fa-hand-holding-usd mr-2"></i>Gaji & Komisi
                 </button>
-                <button class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="layanan">
-                    <i class="fas fa-cut mr-2"></i>Layanan & Produk
+                <button class="tab-button whitespace-nowrap py-4 px-6 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="keuangan">
+                    <i class="fas fa-chart-pie mr-2"></i>Laba Rugi
                 </button>
-                <button class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="operasional">
-                    <i class="fas fa-cogs mr-2"></i>Operasional
+                <button class="tab-button whitespace-nowrap py-4 px-6 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="cabang">
+                    <i class="fas fa-store-alt mr-2"></i>Per Cabang
+                </button>
+                <button class="tab-button whitespace-nowrap py-4 px-6 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="layanan">
+                    <i class="fas fa-cut mr-2"></i>Layanan
+                </button>
+                <button class="tab-button whitespace-nowrap py-4 px-6 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="inventaris">
+                    <i class="fas fa-box mr-2"></i>Inventaris
+                </button>
+                <button class="tab-button whitespace-nowrap py-4 px-6 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="cashflow">
+                    <i class="fas fa-money-bill-wave mr-2"></i>Cash Flow
+                </button>
+                <button class="tab-button whitespace-nowrap py-4 px-6 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="customer">
+                    <i class="fas fa-users mr-2"></i>Customer
                 </button>
             </nav>
         </div>
     </div>
 
-    <!-- Tab Content -->
-    <div class="tab-content">
-        <!-- Tab Pendapatan -->
-        <div id="tab-pendapatan" class="tab-panel active">
-            @include('pages.laporan.partials.pendapatan')
+    <!-- Tab Contents -->
+    <div class="tab-contents">
+        <!-- Tab 1: Gaji & Komisi Kapster -->
+        <div class="tab-content active" id="tab-gaji">
+            @include('pages.laporan.partials.gaji-kapster')
         </div>
 
-        <!-- Tab Layanan & Produk -->
-        <div id="tab-layanan" class="tab-panel hidden">
-            @include('pages.laporan.partials.layanan')
+        <!-- Tab 2: Laporan Keuangan (Laba Rugi) -->
+        <div class="tab-content hidden" id="tab-keuangan">
+            @include('pages.laporan.partials.keuangan')
         </div>
 
-        <!-- Tab Operasional -->
-        <div id="tab-operasional" class="tab-panel hidden">
-            @include('pages.laporan.partials.operasional')
+        <!-- Tab 3: Laporan Per Cabang -->
+        <div class="tab-content hidden" id="tab-cabang">
+            @include('pages.laporan.partials.cabang')
+        </div>
+
+        <!-- Tab 4: Laporan Layanan -->
+        <div class="tab-content hidden" id="tab-layanan">
+            @include('pages.laporan.partials.layanan-detail')
+        </div>
+
+        <!-- Tab 5: Laporan Inventaris -->
+        <div class="tab-content hidden" id="tab-inventaris">
+            @include('pages.laporan.partials.inventaris')
+        </div>
+
+        <!-- Tab 6: Cash Flow -->
+        <div class="tab-content hidden" id="tab-cashflow">
+            @include('pages.laporan.partials.cashflow')
+        </div>
+
+        <!-- Tab 7: Customer Behavior -->
+        <div class="tab-content hidden" id="tab-customer">
+            @include('pages.laporan.partials.customer')
         </div>
     </div>
 </div>
-
 @endsection
 
-@section('scripts')
+@push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Tab functionality
-        const tabBtns = document.querySelectorAll('.tab-btn');
-        const tabPanels = document.querySelectorAll('.tab-panel');
+// Tab switching functionality
+document.querySelectorAll('.tab-button').forEach(button => {
+    button.addEventListener('click', function() {
+        const tabName = this.dataset.tab;
         
-        tabBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const targetTab = this.getAttribute('data-tab');
-                
-                tabBtns.forEach(b => {
-                    b.classList.remove('active', 'border-blue-500', 'text-blue-600');
-                    b.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
-                });
-                tabPanels.forEach(p => p.classList.add('hidden'));
-                
-                this.classList.add('active', 'border-blue-500', 'text-blue-600');
-                this.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
-                
-                document.getElementById('tab-' + targetTab).classList.remove('hidden');
-            });
+        // Remove active class from all buttons and contents
+        document.querySelectorAll('.tab-button').forEach(btn => {
+            btn.classList.remove('active', 'border-blue-500', 'text-blue-600');
+            btn.classList.add('border-transparent', 'text-gray-500');
         });
-
-        // Quick date range functionality
-        const quickDateBtns = document.querySelectorAll('.quick-date-btn');
-        const customDateRange = document.getElementById('custom-date-range');
-        
-        quickDateBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const period = this.getAttribute('data-period');
-                
-                quickDateBtns.forEach(b => {
-                    b.classList.remove('active', 'bg-gradient-to-tl', 'from-blue-600', 'to-cyan-400', 'text-white');
-                    b.classList.add('bg-gray-100', 'text-slate-700');
-                });
-                
-                this.classList.add('active', 'bg-gradient-to-tl', 'from-blue-600', 'to-cyan-400', 'text-white');
-                this.classList.remove('bg-gray-100', 'text-slate-700');
-                
-                if (period === 'custom') {
-                    customDateRange.classList.remove('hidden');
-                } else {
-                    customDateRange.classList.add('hidden');
-                }
-            });
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.add('hidden');
+            content.classList.remove('active');
         });
         
-        // Reset filter button
-        const resetFilterBtn = document.getElementById('reset-filter-btn');
-        if (resetFilterBtn) {
-            resetFilterBtn.addEventListener('click', function() {
-                // Reset to default period (today)
-                quickDateBtns.forEach(b => {
-                    b.classList.remove('active', 'bg-gradient-to-tl', 'from-blue-600', 'to-cyan-400', 'text-white');
-                    b.classList.add('bg-gray-100', 'text-slate-700');
-                });
-                quickDateBtns[0].classList.add('active', 'bg-gradient-to-tl', 'from-blue-600', 'to-cyan-400', 'text-white');
-                quickDateBtns[0].classList.remove('bg-gray-100', 'text-slate-700');
-                customDateRange.classList.add('hidden');
-                
-                // Reset branch filter
-                document.getElementById('branch-filter').value = 'all';
-            });
-        }
-        
-        // Apply filter button
-        const applyFilterBtn = document.getElementById('apply-filter-btn');
-        if (applyFilterBtn) {
-            applyFilterBtn.addEventListener('click', function() {
-                // Here you can add AJAX call to fetch filtered data
-                console.log('Filter applied');
-            });
-        }
+        // Add active class to clicked button and corresponding content
+        this.classList.add('active', 'border-blue-500', 'text-blue-600');
+        this.classList.remove('border-transparent', 'text-gray-500');
+        document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+        document.getElementById(`tab-${tabName}`).classList.add('active');
     });
+});
+
+// Auto-submit filter form on change
+document.getElementById('bulan').addEventListener('change', function() {
+    document.getElementById('filter-form').submit();
+});
+document.getElementById('tahun').addEventListener('change', function() {
+    document.getElementById('filter-form').submit();
+});
+document.getElementById('cabang_id').addEventListener('change', function() {
+    document.getElementById('filter-form').submit();
+});
+
+// Export functionality
+document.getElementById('export-pdf-btn').addEventListener('click', function() {
+    alert('Export PDF functionality will be implemented');
+});
+
+document.getElementById('export-excel-btn').addEventListener('click', function() {
+    alert('Export Excel functionality will be implemented');
+});
 </script>
-@endsection
+@endpush

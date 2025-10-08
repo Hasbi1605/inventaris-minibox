@@ -49,6 +49,9 @@ Route::get('/kelola-kategori/by-jenis', [KategoriController::class, 'getByJenis'
 
 // Laporan Routes
 Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
+Route::get('/laporan/gaji-kapster', [LaporanController::class, 'getGajiKapster'])->name('laporan.gaji-kapster');
+Route::get('/laporan/keuangan', [LaporanController::class, 'getKeuangan'])->name('laporan.keuangan');
+Route::get('/laporan/slip-gaji/{kapster}', [LaporanController::class, 'exportSlipGaji'])->name('laporan.slip-gaji');
 
 // Auth routes placeholder
 Route::get('/login', function () {

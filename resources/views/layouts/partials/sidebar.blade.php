@@ -19,7 +19,7 @@
             <div class="flex items-center justify-center pt-2">
                 <a class="flex items-center text-sm whitespace-nowrap text-slate-700" href="{{ route('dashboard') }}">
                     <img src="{{ asset('assets/img/logos/logo-barber.png') }}" class="sidebar-logo-img h-8 w-8 transition-all duration-300 ease-nav-brand flex-shrink-0" alt="main_logo" />
-                    <span class="sidebar-text ml-3 font-semibold transition-all duration-300 ease-nav-brand">Inventaris Barbershop</span>
+                    <span class="sidebar-text ml-3 font-semibold transition-all duration-300 ease-nav-brand">Minibox Barbershop</span>
                 </a>
             </div>
         </div>
