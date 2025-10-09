@@ -87,7 +87,7 @@
                 </a>
                 
                 <a href="{{ route('kelola-inventaris.create') }}" class="flex items-center px-3 py-3 mt-1 rounded-lg hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 transition-all duration-200 group">
-                    <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-tl from-purple-600 to-pink-400 group-hover:scale-110 transition-transform duration-200">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-tl from-green-600 to-lime-400 group-hover:scale-110 transition-transform duration-200">
                         <i class="fas fa-box text-white text-lg"></i>
                     </div>
                     <div class="ml-3 flex-1">

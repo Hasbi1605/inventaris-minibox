@@ -53,6 +53,9 @@ Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
 Route::get('/laporan/gaji-kapster', [LaporanController::class, 'getGajiKapster'])->name('laporan.gaji-kapster');
 Route::get('/laporan/keuangan', [LaporanController::class, 'getKeuangan'])->name('laporan.keuangan');
 Route::get('/laporan/slip-gaji/{kapster}', [LaporanController::class, 'exportSlipGaji'])->name('laporan.slip-gaji');
+Route::get('/laporan/export-all-slip', [LaporanController::class, 'exportAllSlipGaji'])->name('laporan.export-all-slip');
+Route::get('/laporan/export-pdf', [LaporanController::class, 'exportLaporanPDF'])->name('laporan.export-pdf');
+Route::get('/laporan/export-excel', [LaporanController::class, 'exportLaporanExcel'])->name('laporan.export-excel');
 
 // Auth routes placeholder
 Route::get('/login', function () {
