@@ -37,15 +37,15 @@ class KelolaTransaksiController extends Controller
         // Get all cabang untuk tab
         $cabangList = $this->cabangService->getAllCabangForDropdown();
 
-        // Get semua transaksi (tanpa filter cabang) untuk tab "Semua Cabang"
-        $semuaTransaksi = $this->transaksiService->getAllTransaksi($filters);
+        // Get semua transaksi (tanpa filter cabang) untuk tab "Semua Cabang" with pagination
+        $semuaTransaksi = $this->transaksiService->getAllTransaksi($filters, 10);
 
-        // Get transaksi per cabang
+        // Get transaksi per cabang with pagination
         $transaksiPerCabang = [];
         $statisticsPerCabang = [];
         foreach ($cabangList as $cabang) {
             $filtersCabang = array_merge($filters, ['cabang_id' => $cabang->id]);
-            $transaksiPerCabang[$cabang->id] = $this->transaksiService->getAllTransaksi($filtersCabang);
+            $transaksiPerCabang[$cabang->id] = $this->transaksiService->getAllTransaksi($filtersCabang, 10);
             $statisticsPerCabang[$cabang->id] = $this->transaksiService->getTransaksiStatisticsByCabang($cabang->id);
         }
 

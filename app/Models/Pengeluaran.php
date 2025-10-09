@@ -47,7 +47,7 @@ class Pengeluaran extends Model
     {
         $colors = [
             'operasional' => 'from-blue-600 to-cyan-400',
-            'inventaris' => 'from-green-600 to-lime-400',
+            'inventaris' => 'from-blue-600 to-cyan-400',
             'promosi' => 'from-purple-600 to-pink-400',
             'maintenance' => 'from-orange-600 to-yellow-400',
             'gaji' => 'from-indigo-600 to-blue-400',

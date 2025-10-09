@@ -8,7 +8,7 @@
         <div class="px-8 py-6 pt-8 relative">
             <!-- Toggle Button - positioned dynamically based on sidebar state -->
             <div class="sidebar-toggle-container">
-                <button id="sidebar-toggle" class="sidebar-toggle-btn flex h-6 w-6 items-center justify-center rounded-md bg-gray-50 hover:bg-gray-100 border border-gray-200 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2" aria-label="Toggle sidebar">
+                <button id="sidebar-toggle" class="sidebar-toggle-btn flex h-6 w-6 items-center justify-center rounded-md bg-gray-50 hover:bg-gray-100 border border-gray-200 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" aria-label="Toggle sidebar">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="arrow-icon transition-transform duration-300">
                         <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
@@ -26,7 +26,7 @@
         
         <!-- Expand Button for Collapsed State -->
         <div id="expand-button" class="absolute -right-3 top-2 z-50 opacity-0 invisible transition-all duration-300">
-            <button class="flex h-6 w-6 items-center justify-center rounded-md bg-white shadow-lg border border-gray-200 hover:bg-gray-50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2" aria-label="Expand sidebar">
+            <button class="flex h-6 w-6 items-center justify-center rounded-md bg-white shadow-lg border border-gray-200 hover:bg-gray-50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" aria-label="Expand sidebar">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -41,7 +41,7 @@
             <!-- Dashboard -->
             <li class="mt-0.5 w-full relative">
                 <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('dashboard', 'home') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('dashboard') }}">
-                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('dashboard', 'home') ? 'bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-2xl' : 'bg-white' }}">
+                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('dashboard', 'home') ? 'bg-gradient-to-tl from-blue-600 to-cyan-400 shadow-soft-2xl' : 'bg-white' }}">
                         <svg width="12px" height="12px" viewBox="0 0 45 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <title>shop</title>
                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -61,34 +61,10 @@
                 </a>
             </li>
 
-            <!-- Kelola Layanan -->
-            <li class="mt-0.5 w-full relative">
-                <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('kelola-layanan.*') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('kelola-layanan.index') }}">
-                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('kelola-layanan.*') ? 'bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-2xl' : 'bg-white' }}">
-                        <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                            <title>office</title>
-                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <g transform="translate(-1869.000000, -293.000000)" fill="{{ request()->routeIs('kelola-layanan.*') ? '#FFFFFF' : '#1f2937' }}" fill-rule="nonzero">
-                                    <g transform="translate(1716.000000, 291.000000)">
-                                        <g id="office" transform="translate(153.000000, 2.000000)">
-                                            <path d="M12.25,17.5 L8.75,17.5 L8.75,1.75 C8.75,0.78225 9.53225,0 10.5,0 L31.5,0 C32.46775,0 33.25,0.78225 33.25,1.75 L33.25,12.25 L29.75,12.25 L29.75,3.5 L12.25,3.5 L12.25,17.5 Z"></path>
-                                            <path d="M40.25,14 L24.5,14 C23.53225,14 22.75,14.78225 22.75,15.75 L22.75,26.25 L19.25,26.25 L19.25,22.75 L40.25,22.75 L40.25,14 Z"></path>
-                                            <path d="M0,38.5 L0,33.25 L42,33.25 L42,38.5 L0,38.5 Z"></path>
-                                        </g>
-                                    </g>
-                                </g>
-                            </g>
-                        </svg>
-                    </div>
-                    <span class="sidebar-text ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Kelola Layanan</span>
-                    <div class="sidebar-tooltip">Kelola Layanan</div>
-                </a>
-            </li>
-
-            <!-- Kelola Transaksi -->
+              <!-- Kelola Transaksi -->
             <li class="mt-0.5 w-full relative">
                 <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('kelola-transaksi.*') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('kelola-transaksi.index') }}">
-                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('kelola-transaksi.*') ? 'bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-2xl' : 'bg-white' }}">
+                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('kelola-transaksi.*') ? 'bg-gradient-to-tl from-blue-600 to-cyan-400 shadow-soft-2xl' : 'bg-white' }}">
                         <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <title>credit-card</title>
                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -108,34 +84,10 @@
                 </a>
             </li>
 
-            <!-- Kelola Pengeluaran -->
-            <li class="mt-0.5 w-full relative">
-                <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('kelola-pengeluaran.*') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('kelola-pengeluaran.index') }}">
-                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('kelola-pengeluaran.*') ? 'bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-2xl' : 'bg-white' }}">
-                        <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                            <title>box-3d-50</title>
-                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <g transform="translate(-2319.000000, -291.000000)" fill="{{ request()->routeIs('kelola-pengeluaran.*') ? '#FFFFFF' : '#1f2937' }}" fill-rule="nonzero">
-                                    <g transform="translate(1716.000000, 291.000000)">
-                                        <g transform="translate(603.000000, 0.000000)">
-                                            <path d="M22.7597136,19.3090182 L38.8987031,11.2395234 C39.3926816,10.9925342 39.592906,10.3918611 39.3459167,9.89788265 C39.249157,9.70436312 39.0922432,9.5474493 38.8987261,9.45068932 L20.2741875,0.1378125 L20.2741875,0.1378125 C19.905375,-0.04725 19.469625,-0.04725 19.0995,0.1378125 L3.1011696,8.13815822 C2.60720568,8.38517662 2.40701679,8.98586148 2.6540352,9.4798254 C2.75080129,9.67332903 2.90771305,9.83023153 3.10122239,9.9269862 L21.8652864,19.3090182 C22.1468139,19.4497819 22.4781861,19.4497819 22.7597136,19.3090182 Z"></path>
-                                            <path d="M20.2741875,21.7715625 L20.2741875,39.9488125 C20.2741875,40.4973375 20.7256625,40.9488125 21.2741875,40.9488125 C21.4979855,40.9488125 21.7130356,40.8739431 21.8892462,40.7365463 L39.076,31.1885 C39.6269998,30.8994177 40.0014377,30.3251688 40.0000023,29.7040236 L40.0000023,13.2675 C40.0000023,12.7189751 39.5485273,12.2675 39.0000023,12.2675 C38.7762043,12.2675 38.5611542,12.3423693 38.3849436,12.4797661 L21.1946875,22.0270625 C20.7473125,22.2806875 20.5005,22.7650625 20.5005,23.2885 L20.2741875,21.7715625 Z"></path>
-                                            <path d="M0.999997744,13.2675 L0.999997744,29.7040236 C0.998562226,30.3251688 1.37300008,30.8994177 1.92400003,31.1885 L19.1119998,40.7365463 C19.2882104,40.8739431 19.5032605,40.9488125 19.7270585,40.9488125 C20.2755835,40.9488125 20.7270585,40.4973375 20.7270585,39.9488125 L20.7270585,21.7715625 L20.5006459,23.2885 C20.5006459,22.7650625 20.2539334,22.2806875 19.8065584,22.0270625 L2.61615,12.4797661 C2.43989937,12.3423693 2.22485061,12.2675 2.00105263,12.2675 C1.45252766,12.2675 1.00105263,12.7189751 1.00105263,13.2675 L0.999997744,13.2675 Z"></path>
-                                        </g>
-                                    </g>
-                                </g>
-                            </g>
-                        </svg>
-                    </div>
-                    <span class="sidebar-text ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Kelola Pengeluaran</span>
-                    <div class="sidebar-tooltip">Kelola Pengeluaran</div>
-                </a>
-            </li>
-
-            <!-- Kelola Inventaris -->
+             <!-- Kelola Inventaris -->
             <li class="mt-0.5 w-full relative">
                 <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('kelola-inventaris.*') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('kelola-inventaris.index') }}">
-                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('kelola-inventaris.*') ? 'bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-2xl' : 'bg-white' }}">
+                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('kelola-inventaris.*') ? 'bg-gradient-to-tl from-blue-600 to-cyan-400 shadow-soft-2xl' : 'bg-white' }}">
                         <svg width="12px" height="12px" viewBox="0 0 40 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <title>settings</title>
                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -156,10 +108,61 @@
                 </a>
             </li>
 
+
+            <!-- Kelola Layanan -->
+            <li class="mt-0.5 w-full relative">
+                <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('kelola-layanan.*') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('kelola-layanan.index') }}">
+                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('kelola-layanan.*') ? 'bg-gradient-to-tl from-blue-600 to-cyan-400 shadow-soft-2xl' : 'bg-white' }}">
+                        <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <title>office</title>
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g transform="translate(-1869.000000, -293.000000)" fill="{{ request()->routeIs('kelola-layanan.*') ? '#FFFFFF' : '#1f2937' }}" fill-rule="nonzero">
+                                    <g transform="translate(1716.000000, 291.000000)">
+                                        <g id="office" transform="translate(153.000000, 2.000000)">
+                                            <path d="M12.25,17.5 L8.75,17.5 L8.75,1.75 C8.75,0.78225 9.53225,0 10.5,0 L31.5,0 C32.46775,0 33.25,0.78225 33.25,1.75 L33.25,12.25 L29.75,12.25 L29.75,3.5 L12.25,3.5 L12.25,17.5 Z"></path>
+                                            <path d="M40.25,14 L24.5,14 C23.53225,14 22.75,14.78225 22.75,15.75 L22.75,26.25 L19.25,26.25 L19.25,22.75 L40.25,22.75 L40.25,14 Z"></path>
+                                            <path d="M0,38.5 L0,33.25 L42,33.25 L42,38.5 L0,38.5 Z"></path>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                    </div>
+                    <span class="sidebar-text ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Kelola Layanan</span>
+                    <div class="sidebar-tooltip">Kelola Layanan</div>
+                </a>
+            </li>
+
+          
+            <!-- Kelola Pengeluaran -->
+            <li class="mt-0.5 w-full relative">
+                <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('kelola-pengeluaran.*') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('kelola-pengeluaran.index') }}">
+                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('kelola-pengeluaran.*') ? 'bg-gradient-to-tl from-blue-600 to-cyan-400 shadow-soft-2xl' : 'bg-white' }}">
+                        <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <title>box-3d-50</title>
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g transform="translate(-2319.000000, -291.000000)" fill="{{ request()->routeIs('kelola-pengeluaran.*') ? '#FFFFFF' : '#1f2937' }}" fill-rule="nonzero">
+                                    <g transform="translate(1716.000000, 291.000000)">
+                                        <g transform="translate(603.000000, 0.000000)">
+                                            <path class="color-background" d="M22.7597136,19.3090182 L38.8987031,11.2395234 C39.3926816,10.9925342 39.592906,10.3918611 39.3459167,9.89788265 C39.249157,9.70436312 39.0922432,9.5474453 38.8987261,9.45068056 L20.2741875,0.1378125 L20.2741875,0.1378125 C19.905375,-0.04725 19.469625,-0.04725 19.0995,0.1378125 L3.1011696,8.13815822 C2.60720568,8.38517662 2.40701679,8.98586148 2.6540352,9.4798254 C2.75080129,9.67332903 2.90771305,9.83023153 3.10122239,9.9269862 L21.8652864,19.3090182 C22.1468139,19.4497819 22.4781861,19.4497819 22.7597136,19.3090182 Z"></path>
+                                            <path class="color-background" d="M23.625,22.429159 L23.625,39.8805372 C23.625,40.4328219 24.0727153,40.8805372 24.625,40.8805372 C24.7802551,40.8805372 24.9333778,40.8443874 25.0722402,40.7749511 L41.2741875,32.673375 L41.2741875,32.673375 C41.719125,32.4515625 42,31.9974375 42,31.5 L42,14.241659 C42,13.6893742 41.5522847,13.241659 41,13.241659 C40.8447549,13.241659 40.6916418,13.2778041 40.5527864,13.3472318 L24.1777864,21.5347318 C23.8390024,21.7041238 23.625,22.0503869 23.625,22.429159 Z" opacity="0.7"></path>
+                                            <path class="color-background" d="M20.4472136,21.5347318 L1.4472136,12.0347318 C0.953235098,11.7877425 0.352562058,11.9879669 0.105572809,12.4819454 C0.0361450918,12.6208008 6.47121774e-16,12.7739139 0,12.929159 L0,30.1875 L0,30.1875 C0,30.6849375 0.280875,31.1390625 0.7258125,31.3608125 L16.9277864,39.7749511 C17.4217648,40.0219404 18.0224379,39.821716 18.2694272,39.3277375 C18.3388196,39.1888821 18.375,39.0357689 18.375,38.8805372 L18.375,22.429159 C18.375,22.0503869 18.1609976,21.7041238 17.8222136,21.5347318 Z" opacity="0.7"></path>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                    </div>
+                    <span class="sidebar-text ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Kelola Pengeluaran</span>
+                    <div class="sidebar-tooltip">Kelola Pengeluaran</div>
+                </a>
+            </li>
+
+           
             <!-- Kelola Cabang -->
             <li class="mt-0.5 w-full relative">
                 <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('kelola-cabang.*') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('kelola-cabang.index') }}">
-                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('kelola-cabang.*') ? 'bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-2xl' : 'bg-white' }}">
+                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('kelola-cabang.*') ? 'bg-gradient-to-tl from-blue-600 to-cyan-400 shadow-soft-2xl' : 'bg-white' }}">
                         <svg width="12px" height="12px" viewBox="0 0 46 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <title>customer-support</title>
                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -183,7 +186,7 @@
             <!-- Kelola Kapster -->
             <li class="mt-0.5 w-full relative">
                 <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('kelola-kapster.*') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('kelola-kapster.index') }}">
-                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('kelola-kapster.*') ? 'bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-2xl' : 'bg-white' }}">
+                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('kelola-kapster.*') ? 'bg-gradient-to-tl from-blue-600 to-cyan-400 shadow-soft-2xl' : 'bg-white' }}">
                         <i class="fas fa-user-tie text-sm {{ request()->routeIs('kelola-kapster.*') ? 'text-white' : 'text-slate-700' }}"></i>
                     </div>
                     <span class="sidebar-text ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Kelola Kapster</span>
@@ -194,7 +197,7 @@
             <!-- Kelola Kategori -->
             <li class="mt-0.5 w-full relative">
                 <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('kelola-kategori.*') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('kelola-kategori.index') }}">
-                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('kelola-kategori.*') ? 'bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-2xl' : 'bg-white' }}">
+                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('kelola-kategori.*') ? 'bg-gradient-to-tl from-blue-600 to-cyan-400 shadow-soft-2xl' : 'bg-white' }}">
                         <i class="fas fa-tags text-sm {{ request()->routeIs('kelola-kategori.*') ? 'text-white' : 'text-slate-700' }}"></i>
                     </div>
                     <span class="sidebar-text ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Kelola Kategori</span>
@@ -205,7 +208,7 @@
             <!-- Laporan -->
             <li class="mt-0.5 w-full relative">
                 <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg px-4 transition-all duration-200 {{ request()->routeIs('laporan') ? 'bg-white shadow-soft-xl font-semibold text-slate-700' : 'hover:bg-white/10' }}" href="{{ route('laporan') }}">
-                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('laporan') ? 'bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-2xl' : 'bg-white' }}">
+                    <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5 {{ request()->routeIs('laporan') ? 'bg-gradient-to-tl from-blue-600 to-cyan-400 shadow-soft-2xl' : 'bg-white' }}">
                         <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <title>chart-bar-32</title>
                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">

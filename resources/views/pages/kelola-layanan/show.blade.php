@@ -13,7 +13,7 @@
         </div>
         <div class="flex space-x-2">
             <a href="{{ route('kelola-layanan.edit', $layanan->id) }}" 
-                class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-green-600 to-lime-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-600 to-cyan-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
                 <i class="fas fa-edit mr-2"></i>
                 Edit Layanan
             </a>
@@ -51,7 +51,7 @@
                 <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
                     <div class="flex items-center justify-between">
                         <h6 class="font-bold">Informasi Layanan</h6>
-                        <span class="bg-gradient-to-tl {{ $layanan->status == 'aktif' ? 'from-green-600 to-lime-400' : 'from-slate-600 to-slate-400' }} px-3 text-xs rounded-1.8 py-1.5 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                        <span class="bg-gradient-to-tl {{ $layanan->status == 'aktif' ? 'from-blue-600 to-cyan-400' : 'from-slate-600 to-slate-400' }} px-3 text-xs rounded-1.8 py-1.5 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
                             {{ ucfirst($layanan->status) }}
                         </span>
                     </div>
@@ -151,7 +151,7 @@
                     <div class="space-y-3 mt-4">
                         <!-- Edit Action -->
                         <a href="{{ route('kelola-layanan.edit', $layanan->id) }}" 
-                            class="flex items-center justify-center w-full px-4 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-green-600 to-lime-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                            class="flex items-center justify-center w-full px-4 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-600 to-cyan-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
                             <i class="fas fa-edit mr-2"></i>
                             Edit Layanan
                         </a>

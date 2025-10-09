@@ -220,19 +220,19 @@ class DashboardService
      */
     public function getPerformaCabang()
     {
-        $startOfMonth = Carbon::now()->startOfMonth();
-        $endOfMonth = Carbon::now()->endOfMonth();
+        // Changed from monthly to daily performance
+        $today = Carbon::today();
 
         $cabangList = Cabang::all();
 
-        $data = $cabangList->map(function ($cabang) use ($startOfMonth, $endOfMonth) {
+        $data = $cabangList->map(function ($cabang) use ($today) {
             $pendapatan = Transaksi::where('cabang_id', $cabang->id)
-                ->whereBetween('tanggal_transaksi', [$startOfMonth, $endOfMonth])
+                ->whereDate('tanggal_transaksi', $today)
                 ->where('status', 'selesai')
                 ->sum('total_harga');
 
             $jumlahTransaksi = Transaksi::where('cabang_id', $cabang->id)
-                ->whereBetween('tanggal_transaksi', [$startOfMonth, $endOfMonth])
+                ->whereDate('tanggal_transaksi', $today)
                 ->where('status', 'selesai')
                 ->count();
 

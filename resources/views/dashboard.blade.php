@@ -41,7 +41,7 @@
 <div class="mb-6">
     <div class="relative inline-block">
         <button id="quickActionsBtn" type="button" class="">
-            <i class="fas fa-bolt mr-2 text-lg"></i>
+            <i class="fas fa-bolt mr-2 text-blue-600"></i>
             <span>Quick Actions</span>
             <i class="fas fa-chevron-down ml-2 text-sm transition-transform duration-300" id="quickActionsChevron"></i>
         </button>
@@ -54,7 +54,7 @@
                 </div>
                 
                 <a href="{{ route('kelola-transaksi.create') }}" class="flex items-center px-3 py-3 mt-1 rounded-lg hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 transition-all duration-200 group">
-                    <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-tl from-green-600 to-lime-400 group-hover:scale-110 transition-transform duration-200">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-tl from-blue-600 to-cyan-400 group-hover:scale-110 transition-transform duration-200">
                         <i class="fas fa-plus-circle text-white text-lg"></i>
                     </div>
                     <div class="ml-3 flex-1">
@@ -87,7 +87,7 @@
                 </a>
                 
                 <a href="{{ route('kelola-inventaris.create') }}" class="flex items-center px-3 py-3 mt-1 rounded-lg hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 transition-all duration-200 group">
-                    <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-tl from-green-600 to-yellow-400 group-hover:scale-110 transition-transform duration-200">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-tl from-purple-600 to-pink-400 group-hover:scale-110 transition-transform duration-200">
                         <i class="fas fa-box text-white text-lg"></i>
                     </div>
                     <div class="ml-3 flex-1">
@@ -118,11 +118,10 @@
                                     {{ abs($statistics['pendapatan_hari_ini']['percentage']) }}%
                                 </span>
                             </h5>
-                            <p class="text-xs text-slate-500 mt-1">vs kemarin: Rp {{ number_format($statistics['pendapatan_hari_ini']['vs_yesterday'], 0, ',', '.') }}</p>
                         </div>
                     </div>
                     <div class="text-right ml-4">
-                        <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400">
+                        <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-blue-600 to-cyan-400">
                             <i class="ni ni-money-coins text-lg relative top-3.5 text-white"></i>
                         </div>
                     </div>
@@ -146,11 +145,10 @@
                                     {{ abs($statistics['transaksi_hari_ini']['percentage']) }}%
                                 </span>
                             </h5>
-                            <p class="text-xs text-slate-500 mt-1">vs kemarin: {{ $statistics['transaksi_hari_ini']['vs_yesterday'] }} transaksi</p>
                         </div>
                     </div>
                     <div class="text-right ml-4">
-                        <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400">
+                        <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-blue-600 to-cyan-400">
                             <i class="ni ni-scissors text-lg relative top-3.5 text-white"></i>
                         </div>
                     </div>
@@ -174,11 +172,10 @@
                                     {{ abs($statistics['pendapatan_bulanan']['percentage']) }}%
                                 </span>
                             </h5>
-                            <p class="text-xs text-slate-500 mt-1">vs bulan lalu</p>
                         </div>
                     </div>
                     <div class="text-right ml-4">
-                        <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400">
+                        <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-blue-600 to-cyan-400">
                             <i class="ni ni-chart-bar-32 text-lg relative top-3.5 text-white"></i>
                         </div>
                     </div>
@@ -202,11 +199,10 @@
                                     {{ abs($statistics['transaksi_bulanan']['percentage']) }}%
                                 </span>
                             </h5>
-                            <p class="text-xs text-slate-500 mt-1">vs bulan lalu</p>
                         </div>
                     </div>
                     <div class="text-right ml-4">
-                        <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400">
+                        <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-blue-600 to-cyan-400">
                             <i class="ni ni-archive-2 text-lg relative top-3.5 text-white"></i>
                         </div>
                     </div>
@@ -232,7 +228,7 @@
                         </span>
                     </div>
                     <p class="text-sm leading-normal text-slate-500 mb-0">
-                        <i class="fa fa-chart-line text-green-500 mr-1"></i>
+                        <i class="fa fa-chart-line text-blue-500 mr-1"></i>
                         <span class="font-semibold">Trend pendapatan minggu ini</span>
                     </p>
                 </div>
@@ -246,32 +242,31 @@
             <!-- Grid 2x2 Mini Cards - Financial Summary -->
             <div class="grid grid-cols-2 gap-4 flex-1">
                 <!-- Target Bulanan (Compact) -->
-                <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border border-l-4 border-l-purple-500">
+                <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border border-l-4 border-l-blue-500">
                     <div class="flex-1 flex flex-col">
                         <!-- Header with Edit Button -->
                         <div class="flex items-center justify-between px-4 pt-3 pb-2 border-b border-gray-100">
                             <h6 class="mb-0 font-bold text-slate-800 flex items-center text-sm">
-                                <i class="fas fa-bullseye text-purple-600 mr-2"></i>
+                                <i class="fas fa-bullseye text-blue-600 mr-2"></i>
                                 Target Bulanan
                             </h6>
-                            <button onclick="openEditTargetModal()" class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-lg bg-purple-100 text-purple-700 hover:bg-purple-200 transition-all duration-200">
+                            <button onclick="openEditTargetModal()" class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 transition-all duration-200">
                                 <i class="fas fa-edit mr-1"></i>
                                 Edit
                             </button>
                         </div>
-                        <br>
                         
                         <!-- Content Body -->
                         <div class="flex-1 flex flex-col px-4 pt-3 pb-3">
                             <!-- Stats Grid -->
                             <div class="grid grid-cols-2 gap-2 mb-2.5">
-                                <div class="p-2 bg-green-50 rounded-lg border border-green-200">
+                                <div class="p-2 bg-gray-50 rounded-lg border border-gray-200">
                                     <span class="text-xs font-medium text-slate-600 block mb-0.5">Tercapai</span>
-                                    <span class="text-xs font-bold text-green-700">Rp {{ number_format($targetAchievement['tercapai'] / 1000000, 1) }}jt</span>
+                                    <span class="text-xs font-bold text-slate-800">Rp {{ number_format($targetAchievement['tercapai'] / 1000000, 1) }}jt</span>
                                 </div>
-                                <div class="p-2 bg-purple-50 rounded-lg border border-purple-200">
+                                <div class="p-2 bg-gray-50 rounded-lg border border-gray-200">
                                     <span class="text-xs font-medium text-slate-600 block mb-0.5">Target</span>
-                                    <span class="text-xs font-bold text-purple-700" id="currentTarget">Rp {{ number_format($targetAchievement['target'] / 1000000, 0) }}jt</span>
+                                    <span class="text-xs font-bold text-slate-800" id="currentTarget">Rp {{ number_format($targetAchievement['target'] / 1000000, 0) }}jt</span>
                                 </div>
                             </div>
                             
@@ -279,31 +274,29 @@
                             <div class="mb-2.5">
                                 <div class="flex items-center justify-between mb-1">
                                     <span class="text-xs font-semibold text-slate-700">Progress</span>
-                                    <span class="text-xs font-bold {{ $targetAchievement['percentage'] >= 70 ? 'text-green-600' : ($targetAchievement['percentage'] >= 40 ? 'text-blue-600' : 'text-orange-600') }}">
+                                    <span class="text-xs font-bold text-blue-600">
                                         {{ number_format($targetAchievement['percentage'], 1) }}%
                                     </span>
                                 </div>
                                 <div class="relative">
-                                    <div class="w-full bg-gray-200 rounded-full h-7 overflow-hidden shadow-inner">
-                                        <div class="h-7 rounded-full transition-all duration-500 relative overflow-hidden
-                                            {{ $targetAchievement['percentage'] >= 70 ? 'bg-gradient-to-r from-green-400 to-green-600' : ($targetAchievement['percentage'] >= 40 ? 'bg-gradient-to-r from-blue-400 to-blue-600' : 'bg-gradient-to-r from-orange-400 to-orange-600') }}" 
+                                    <div class="w-full bg-gray-200 rounded-full h-6 overflow-hidden">
+                                        <div class="h-6 rounded-full transition-all duration-500 bg-gradient-to-r from-blue-500 to-blue-600" 
                                             style="width: {{ min($targetAchievement['percentage'], 100) }}%; min-width: {{ $targetAchievement['percentage'] > 0 ? '12%' : '0%' }}">
-                                            <!-- Shine effect -->
-                                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-20"></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <br>
                             
                             <!-- Target Harian Info -->
-                            <div class="mt-auto">
-                                <div class="p-2 rounded-lg {{ $targetAchievement['status'] == 'achieved' ? 'bg-green-50 border border-green-200' : ($targetAchievement['status'] == 'on_track' ? 'bg-blue-50 border border-blue-200' : 'bg-orange-50 border border-orange-200') }}">
+                            <div class="mt-3">
+                                <div class="p-2 rounded-lg bg-blue-50 border border-blue-200">
                                     <div class="flex items-center justify-between mb-1">
                                         <div class="flex items-center">
-                                            <i class="fas fa-calendar-day text-orange-600 mr-1.5 text-xs"></i>
+                                            <i class="fas fa-calendar-day text-blue-600 mr-1.5 text-xs"></i>
                                             <span class="text-xs font-semibold text-slate-700">Target Harian</span>
                                         </div>
-                                        <span class="text-xs font-bold text-orange-600">Rp {{ number_format($targetAchievement['perlu_per_hari'] / 1000, 0) }}k</span>
+                                        <span class="text-xs font-bold text-green-600">Rp {{ number_format($targetAchievement['perlu_per_hari'] / 1000, 0) }}k</span>
                                     </div>
                                     <div class="flex items-center text-xs text-slate-600">
                                         <i class="far fa-clock mr-1"></i>
@@ -316,12 +309,12 @@
                 </div>
 
                 <!-- Top Kapster Hari Ini (Compact) -->
-                <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border border-l-4 border-l-yellow-500">
+                <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border border-l-4 border-l-blue-500">
                     <div class="flex-1 flex flex-col">
                         <!-- Header -->
                         <div class="flex items-center justify-between px-4 pt-3 pb-2 border-b border-gray-100">
                             <h6 class="mb-0 font-bold text-slate-800 flex items-center text-sm">
-                                <i class="fas fa-trophy text-yellow-500 mr-2"></i>
+                                <i class="fas fa-trophy text-blue-600 mr-2"></i>
                                 Top Kapster Hari Ini
                             </h6>
                         </div>
@@ -332,29 +325,25 @@
                         @if($topKapster['has_data'])
                         <div class="space-y-2">
                             @foreach($topKapster['top_3'] as $index => $kapster)
-                            <div class="flex items-center justify-between p-2 rounded-lg {{ $index == 0 ? 'bg-gradient-to-r from-yellow-50 to-yellow-100' : 'bg-gray-50' }}">
+                            <div class="flex items-center justify-between p-2 rounded-lg {{ $index == 0 ? 'bg-blue-50' : 'bg-gray-50' }}">
                                 <div class="flex items-center">
-                                    @if($index == 0)
-                                        <span class="text-lg mr-2">🥇</span>
-                                    @elseif($index == 1)
-                                        <span class="text-lg mr-2">🥈</span>
-                                    @else
-                                        <span class="text-lg mr-2">🥉</span>
-                                    @endif
+                                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold mr-2 {{ $index == 0 ? 'bg-blue-100 text-blue-700' : ($index == 1 ? 'bg-gray-200 text-gray-700' : 'bg-gray-200 text-gray-700') }}">
+                                        {{ $index + 1 }}
+                                    </span>
                                     <div>
                                         <div class="font-semibold text-xs text-slate-800">{{ $kapster['nama'] }}</div>
                                         <div class="text-xs text-slate-500">{{ $kapster['cabang'] }}</div>
                                     </div>
                                 </div>
                                 <div class="text-right">
-                                    <div class="text-xs font-bold text-green-600">{{ $kapster['total_transaksi'] }}x</div>
+                                    <div class="text-xs font-bold text-slate-700">{{ $kapster['total_transaksi'] }}x</div>
                                 </div>
                             </div>
                             @endforeach
                         </div>
                         
                         @if($topKapster['tidak_aktif']->count() > 0)
-                        <div class="mt-3 p-2 bg-orange-50 border-l-2 border-orange-500 rounded">
+                        <div class="mt-3 p-2 bg-orange-50 border-l-2 border-orange-400 rounded">
                             <p class="text-xs text-orange-700">
                                 <i class="fas fa-exclamation-triangle mr-1"></i>
                                 {{ $topKapster['tidak_aktif']->count() }} kapster belum aktif
@@ -363,7 +352,7 @@
                         @endif
                         @else
                         <div class="text-center py-4">
-                            <div class="text-3xl mb-2">😴</div>
+                            <div class="text-3xl mb-2">👥</div>
                             <p class="text-xs text-slate-500">Belum ada transaksi</p>
                         </div>
                         @endif
@@ -386,36 +375,31 @@
                         <div class="flex-1 flex flex-col px-4 pt-3 pb-3">
                         
                         <div class="space-y-2 mb-3">
-                            <div class="flex items-center justify-between p-2 bg-green-50 rounded-lg">
+                            <div class="flex items-center justify-between p-2 bg-gray-50 rounded-lg border border-gray-200">
                                 <span class="text-xs font-medium text-slate-700">Kas Masuk</span>
                                 <span class="text-xs font-bold text-green-600">Rp {{ number_format($cashFlow['kas_masuk'], 0, ',', '.') }}</span>
                             </div>
                             
-                            <div class="flex items-center justify-between p-2 bg-red-50 rounded-lg">
+                            <div class="flex items-center justify-between p-2 bg-gray-50 rounded-lg border border-gray-200">
                                 <span class="text-xs font-medium text-slate-700">Kas Keluar</span>
                                 <span class="text-xs font-bold text-red-600">Rp {{ number_format($cashFlow['kas_keluar'], 0, ',', '.') }}</span>
                             </div>
                             
-                            <div class="flex items-center justify-between p-2 bg-{{ $cashFlow['is_positive'] ? 'blue' : 'orange' }}-50 rounded-lg border-2 border-{{ $cashFlow['is_positive'] ? 'blue' : 'orange' }}-300">
+                            <div class="flex items-center justify-between p-2 bg-blue-50 rounded-lg border border-blue-200">
                                 <span class="text-xs font-bold text-slate-700">Net Flow</span>
-                                <span class="text-sm font-bold text-{{ $cashFlow['is_positive'] ? 'blue' : 'orange' }}-600">
+                                <span class="text-sm font-bold text-blue-600">
                                     Rp {{ number_format($cashFlow['net_flow'], 0, ',', '.') }}
                                 </span>
                             </div>
                         </div>
                         
                         @if($cashFlow['metode_pembayaran']->count() > 0)
-                        <div class="pt-2 border-t">
-                            <p class="text-xs font-semibold text-slate-600 mb-1">Metode:</p>
+                        <div class="pt-2 border-t border-gray-200">
+                            <p class="text-xs font-semibold text-slate-600 mb-1.5">Metode Pembayaran:</p>
                             <div class="flex gap-2 flex-wrap">
                                 @foreach($cashFlow['metode_pembayaran'] as $metode)
-                                <span class="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">
-                                    @if($metode['metode'] == 'cash') 💵
-                                    @elseif($metode['metode'] == 'transfer') 💳
-                                    @elseif($metode['metode'] == 'e-wallet') 📱
-                                    @else 💰
-                                    @endif
-                                    {{ $metode['percentage'] }}%
+                                <span class="text-xs bg-gray-100 text-slate-700 px-2 py-1 rounded font-medium">
+                                    {{ ucfirst($metode['metode']) }}: {{ $metode['percentage'] }}%
                                 </span>
                                 @endforeach
                             </div>
@@ -426,14 +410,16 @@
                 </div>
 
                 <!-- Performa Cabang (Compact) -->
-                <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border border-l-4 border-l-indigo-500">
+                <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border border-l-4 border-l-blue-500">
                     <div class="flex-1 flex flex-col">
                         <!-- Header -->
                         <div class="flex items-center justify-between px-4 pt-3 pb-2 border-b border-gray-100">
-                            <h6 class="mb-0 font-bold text-slate-800 flex items-center text-sm">
-                                <i class="fas fa-store text-indigo-600 mr-2"></i>
-                                Performa Cabang
-                            </h6>
+                            <div>
+                                <h6 class="mb-0 font-bold text-slate-800 flex items-center text-sm">
+                                    <i class="fas fa-store text-blue-600 mr-2"></i>
+                                    Performa Cabang Hari Ini
+                                </h6>
+                            </div>
                         </div>
                         
                         <!-- Content Body -->
@@ -442,9 +428,9 @@
                         @if($performaCabang->count() > 0)
                         <div class="space-y-2">
                             @foreach($performaCabang->take(3) as $index => $cabang)
-                            <div class="flex items-center justify-between p-2 rounded-lg {{ $index == 0 ? 'bg-gradient-to-r from-indigo-50 to-blue-50 border border-indigo-200' : 'bg-gray-50' }}">
+                            <div class="flex items-center justify-between p-2 rounded-lg {{ $index == 0 ? 'bg-blue-50' : 'bg-gray-50' }}">
                                 <div class="flex items-center flex-1">
-                                    <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-xs font-bold {{ $index == 0 ? 'bg-indigo-100 text-indigo-800' : ($index == 1 ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800') }} mr-2">
+                                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold mr-2 {{ $index == 0 ? 'bg-blue-100 text-blue-700' : 'bg-gray-200 text-gray-700' }}">
                                         {{ $index + 1 }}
                                     </span>
                                     <div class="flex-1 min-w-0">
@@ -453,14 +439,14 @@
                                     </div>
                                 </div>
                                 <div class="text-right ml-2">
-                                    <div class="text-xs font-bold text-green-600">Rp {{ number_format($cabang['pendapatan'] / 1000, 0) }}k</div>
+                                    <div class="text-xs font-bold text-slate-700">Rp {{ number_format($cabang['pendapatan'] / 1000, 0) }}k</div>
                                 </div>
                             </div>
                             @endforeach
                         </div>
                         
                         @if($performaCabang->count() > 3)
-                        <div class="mt-3 pt-2 border-t">
+                        <div class="mt-3 pt-2 border-t border-gray-200">
                             <p class="text-xs text-slate-600 text-center">
                                 +{{ $performaCabang->count() - 3 }} cabang lainnya
                             </p>
@@ -469,7 +455,7 @@
                         @else
                         <div class="text-center py-4">
                             <div class="text-3xl mb-2">🏪</div>
-                            <p class="text-xs text-slate-500">Belum ada data cabang</p>
+                            <p class="text-xs text-slate-500">Belum ada transaksi hari ini</p>
                         </div>
                         @endif
                         </div>
@@ -567,7 +553,7 @@
                 <div class="flex-1 p-4 overflow-y-auto" id="transaction-content">
                     @if($transaksiTerakhir['has_data'])
                     <!-- Data Available State -->
-                    <div class="space-y-4">
+                    <div class="space-y-4 ">
                         @foreach($transaksiTerakhir['data'] as $item)
                         <div class="flex items-start">
                             <div class="flex-shrink-0 mr-3">
@@ -576,11 +562,11 @@
                             <div class="flex-1 min-w-0">
                                 <div class="text-sm font-medium text-slate-800 mb-1">
                                     <span class="font-bold {{ $item['type'] == 'income' ? 'text-green-600' : 'text-red-600' }}">
-                                        {{ $item['type'] == 'income' ? '+' : '-' }}Rp {{ number_format($item['amount'], 0, ',', '.') }}
+                                        {{ $item['type'] == 'income' ? '' : '' }}Rp {{ number_format($item['amount'], 0, ',', '.') }}
                                     </span> - {{ $item['description'] }}
                                 </div>
                                 <div class="text-xs text-slate-500">
-                                    <i class="fa fa-calendar mr-1"></i>
+                                    <i class=""></i>
                                     {{ $item['date_relative'] }}
                                 </div>
                             </div>
@@ -645,30 +631,46 @@
                     Target Pendapatan Bulanan
                 </label>
                 <div class="relative">
-                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500 text-xs font-semibold">Rp</span>
+                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-600 text-sm font-semibold pointer-events-none">Rp</span>
                     <input type="text" 
                            id="targetBulanan" 
                            name="target_bulanan" 
-                           class="w-full pl-9 pr-3 py-2 text-sm border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all font-semibold text-slate-800"
+                           class="w-full pl-11 pr-4 py-2.5 text-sm border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all font-semibold text-slate-800 tracking-wide"
                            placeholder="50.000.000"
                            value="{{ number_format($targetAchievement['target'], 0, ',', '.') }}"
                            required>
                 </div>
-                <p class="mt-1 text-xs text-slate-500">
+                <p class="mt-1.5 text-xs text-slate-500">
                     <i class="fas fa-info-circle mr-1"></i>
                     Gunakan titik (.) sebagai pemisah ribuan
                 </p>
             </div>
 
             <!-- Preview -->
-            <div class="mb-4 p-3 bg-purple-50 rounded-lg border border-purple-200">
-                <div class="flex justify-between items-center mb-1">
-                    <span class="text-xs font-medium text-slate-600">Target Saat Ini:</span>
-                    <span class="text-xs font-bold text-slate-800">Rp {{ number_format($targetAchievement['target'], 0, ',', '.') }}</span>
+            <div class="mb-4 p-4 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg border border-purple-200">
+                <div class="flex justify-between items-center mb-3 pb-3 border-b border-purple-200">
+                    <div class="flex items-center">
+                        <span class="text-xs font-medium text-slate-600">
+                            <i class="fas fa-tag mr-1.5 text-slate-400"></i>
+                            Target Saat Ini
+                        </span>
+                    </div>
+                    <span class="text-base font-bold text-slate-800 tracking-wide tabular-nums">Rp {{ number_format($targetAchievement['target'], 0, ',', '.') }}</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-xs font-medium text-slate-600">Target Baru:</span>
-                    <span id="newTargetPreview" class="text-xs font-bold text-purple-600">Rp {{ number_format($targetAchievement['target'], 0, ',', '.') }}</span>
+                    <div class="flex items-center">
+                        <span class="text-xs font-medium text-purple-700">
+                            <i class="fas fa-arrow-right mr-1.5"></i>
+                            Target Baru
+                        </span>
+                    </div>
+                    <span id="newTargetPreview" class="text-base font-bold text-purple-600 transition-all duration-300 tracking-wide tabular-nums">Rp {{ number_format($targetAchievement['target'], 0, ',', '.') }}</span>
+                </div>
+                <div id="targetDifference" class="mt-3 pt-3 border-t border-purple-200 text-center hidden">
+                    <div class="inline-flex items-center justify-center gap-1.5">
+                        <span id="differenceLabel" class="text-xs font-medium text-slate-600"></span>
+                        <span id="differenceAmount" class="text-xs font-bold tabular-nums"></span>
+                    </div>
                 </div>
             </div>
 
@@ -710,25 +712,25 @@ var today = new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'sho
 // Create dynamic colors - highlight max and today
 var backgroundColors = grafikData.data.map((value, index) => {
     if (value === maxValue && value > 0) {
-        return 'rgba(34, 197, 94, 1)'; // Brightest for highest
+        return 'rgba(34, 197, 94, 1)'; // GREEN for highest (positive achievement)
     } else if (grafikData.labels[index] === today) {
-        return 'rgba(59, 130, 246, 0.8)'; // Blue for today
+        return 'rgba(59, 130, 246, 0.8)'; // BLUE for today
     } else if (value === 0) {
         return 'rgba(203, 213, 225, 0.5)'; // Gray for no data
     } else {
-        return 'rgba(34, 197, 94, 0.7)'; // Normal green
+        return 'rgba(59, 130, 246, 0.6)'; // Light BLUE for normal days
     }
 });
 
 var borderColors = grafikData.data.map((value, index) => {
     if (value === maxValue && value > 0) {
-        return '#16a34a';
+        return '#16a34a'; // GREEN border for highest
     } else if (grafikData.labels[index] === today) {
-        return '#2563eb';
+        return '#2563eb'; // BLUE border for today
     } else if (value === 0) {
         return '#cbd5e1';
     } else {
-        return '#22c55e';
+        return '#3b82f6'; // BLUE border for normal
     }
 });
 
@@ -821,6 +823,7 @@ new Chart(ctx, {
         scales: {
             x: {
                 beginAtZero: true,
+                max: 300000, // Set max to 300k
                 grid: {
                     drawBorder: false,
                     display: true,
@@ -835,6 +838,7 @@ new Chart(ctx, {
                     font: {
                         size: 11
                     },
+                    stepSize: 50000, // Step every 50k: 0, 50k, 100k, 150k, 200k, 250k, 300k
                     callback: function(value) {
                         if (value === 0) return 'Rp 0';
                         if (value >= 1000000) {
@@ -1151,6 +1155,10 @@ function closeEditTargetPopup() {
 document.addEventListener('DOMContentLoaded', function() {
     const targetInput = document.getElementById('targetBulanan');
     const newTargetPreview = document.getElementById('newTargetPreview');
+    const targetDifference = document.getElementById('targetDifference');
+    const differenceLabel = document.getElementById('differenceLabel');
+    const differenceAmount = document.getElementById('differenceAmount');
+    const currentTarget = {{ $targetAchievement['target'] }};
     
     if (targetInput) {
         // Format on input
@@ -1159,19 +1167,59 @@ document.addEventListener('DOMContentLoaded', function() {
             value = value.replace(/\D/g, ''); // Remove non-digits
             
             if (value) {
-                // Format with thousand separator
-                const formatted = parseInt(value).toLocaleString('id-ID');
+                // Format with thousand separator using Indonesian locale
+                const numValue = parseInt(value);
+                const formatted = numValue.toLocaleString('id-ID');
                 e.target.value = formatted;
                 
-                // Update preview
+                // Update preview with animation
                 if (newTargetPreview) {
-                    newTargetPreview.textContent = 'Rp ' + formatted;
+                    newTargetPreview.classList.add('scale-110', 'opacity-80');
+                    setTimeout(() => {
+                        newTargetPreview.textContent = 'Rp ' + formatted;
+                        newTargetPreview.classList.remove('scale-110', 'opacity-80');
+                    }, 150);
+                }
+                
+                // Calculate and show difference
+                if (targetDifference && differenceLabel && differenceAmount) {
+                    const difference = numValue - currentTarget;
+                    
+                    if (difference !== 0) {
+                        targetDifference.classList.remove('hidden');
+                        
+                        const formattedDiff = Math.abs(difference).toLocaleString('id-ID');
+                        
+                        if (difference > 0) {
+                            // Increase
+                            differenceLabel.textContent = 'Kenaikan:';
+                            differenceLabel.className = 'text-xs font-medium text-green-600';
+                            differenceAmount.className = 'text-xs font-bold tabular-nums text-green-600';
+                            differenceAmount.innerHTML = '<i class="fas fa-arrow-up text-[10px] mr-1"></i>Rp ' + formattedDiff;
+                        } else {
+                            // Decrease
+                            differenceLabel.textContent = 'Penurunan:';
+                            differenceLabel.className = 'text-xs font-medium text-red-600';
+                            differenceAmount.className = 'text-xs font-bold tabular-nums text-red-600';
+                            differenceAmount.innerHTML = '<i class="fas fa-arrow-down text-[10px] mr-1"></i>Rp ' + formattedDiff;
+                        }
+                    } else {
+                        targetDifference.classList.add('hidden');
+                    }
                 }
             } else {
                 if (newTargetPreview) {
                     newTargetPreview.textContent = 'Rp 0';
                 }
+                if (targetDifference) {
+                    targetDifference.classList.add('hidden');
+                }
             }
+        });
+        
+        // Format on focus - select all for easy editing
+        targetInput.addEventListener('focus', function(e) {
+            e.target.select();
         });
     }
     

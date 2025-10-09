@@ -30,14 +30,14 @@ class KelolaLayananController extends Controller
         // Get all cabang untuk tab
         $cabangList = $this->cabangService->getAllCabangForDropdown();
 
-        // Get semua layanan (untuk tab "Semua Cabang")
-        $semuaLayanan = $this->layananService->getAllLayananWithCabang($filters);
+        // Get semua layanan (untuk tab "Semua Cabang") with pagination
+        $semuaLayanan = $this->layananService->getAllLayananWithCabang($filters, 10);
 
-        // Get layanan per cabang
+        // Get layanan per cabang with pagination
         $layananPerCabang = [];
         $statisticsPerCabang = [];
         foreach ($cabangList as $cabang) {
-            $layananPerCabang[$cabang->id] = $this->layananService->getLayananByCabang($cabang->id, $filters);
+            $layananPerCabang[$cabang->id] = $this->layananService->getLayananByCabang($cabang->id, $filters, 10);
             $statisticsPerCabang[$cabang->id] = $this->layananService->getLayananStatisticsByCabang($cabang->id);
         }
 

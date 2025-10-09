@@ -12,11 +12,11 @@
             <p class="mb-0 text-sm text-slate-500">Informasi lengkap pengeluaran: {{ $pengeluaran->nama_pengeluaran }}</p>
         </div>
         <div class="flex space-x-2">
-            <a href="{{ route('kelola-pengeluaran.edit', $pengeluaran->id) }}" 
-                class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-green-600 to-lime-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+    {{--         <a href="{{ route('kelola-pengeluaran.edit', $pengeluaran->id) }}" 
+                class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-600 to-cyan-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
                 <i class="fas fa-edit mr-2"></i>
                 Edit Pengeluaran
-            </a>
+            </a> --}}
             <a href="{{ route('kelola-pengeluaran.index') }}" 
                 class="inline-block px-6 py-3 font-bold text-center text-slate-700 uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-gray-100 to-gray-200 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
                 <i class="fas fa-arrow-left mr-2"></i>
@@ -141,7 +141,7 @@
                 <div class="flex-auto px-6 pt-0 pb-6">
                     <div class="space-y-3 mt-4">
                         <a href="{{ route('kelola-pengeluaran.edit', $pengeluaran->id) }}" 
-                            class="flex items-center justify-center w-full px-4 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-green-600 to-lime-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                            class="flex items-center justify-center w-full px-4 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-600 to-cyan-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
                             <i class="fas fa-edit mr-2"></i>
                             Edit Pengeluaran
                         </a>

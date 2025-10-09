@@ -44,7 +44,7 @@
     pointer-events: auto;
     z-index: 10;
     font-size: 12px;
-    border: 1.5px solid #16a34a !important;
+    border: 1.5px solid #2563eb !important;
     background-color: #ffffff !important;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
@@ -54,17 +54,17 @@
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    border: 1.5px solid #16a34a !important;
+    border: 1.5px solid #2563eb !important;
     background-color: #ffffff !important;
-    box-shadow: 0 2px 4px 0 rgba(22, 163, 74, 0.1),
-        0 1px 2px 0 rgba(22, 163, 74, 0.06);
+    box-shadow: 0 2px 4px 0 rgba(37, 99, 235, 0.1),
+        0 1px 2px 0 rgba(37, 99, 235, 0.06);
 }
 
 /* Hover effect for collapsed state - consistent with expanded */
 .sidebar-collapsed .sidebar-toggle-btn:hover {
-    border-color: #15803d !important;
-    background-color: #f0fdf4 !important;
-    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2);
+    border-color: #1d4ed8 !important;
+    background-color: #eff6ff !important;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 
 /* Hide expand button when collapsed (we'll use the main toggle button instead) */
@@ -90,7 +90,7 @@
 
 /* Arrow icon hover effect */
 #sidebar-toggle:hover .arrow-icon {
-    color: #16a34a;
+    color: #2563eb;
 }
 
 /* Active state animation */
@@ -179,9 +179,9 @@
 /* Toggle button hover effects - consistent across states */
 .sidebar-toggle-btn:hover {
     transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2);
-    border-color: #15803d !important;
-    background-color: #f0fdf4 !important;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    border-color: #1d4ed8 !important;
+    background-color: #eff6ff !important;
 }
 
 .sidebar-toggle-btn:active {
@@ -190,9 +190,9 @@
 }
 
 .sidebar-toggle-btn:focus {
-    outline: 2px solid #16a34a;
+    outline: 2px solid #2563eb;
     outline-offset: 2px;
-    border-color: #16a34a !important;
+    border-color: #2563eb !important;
 }
 
 #expand-button button:hover {
@@ -210,7 +210,7 @@
 
 /* Improved hamburger animation */
 .sidebar-toggle-btn:hover .hamburger-line {
-    background-color: #16a34a;
+    background-color: #2563eb;
 }
 
 /* Menu item adjustments for collapsed state */
@@ -239,8 +239,6 @@
 /* Focus states for accessibility */
 .sidebar-toggle-btn:focus,
 #expand-button button:focus {
-    outline: 2px solid #10b981;
-    outline-offset: 2px;
 }
 
 /* Tooltip for collapsed sidebar */

@@ -13,7 +13,7 @@
         </div>
         <div>
             <a href="{{ route('kelola-kategori.create') }}" 
-                class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-green-600 to-lime-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-600 to-cyan-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
                 <i class="fas fa-plus mr-2"></i>
                 Tambah Kategori
             </a>
@@ -45,20 +45,31 @@
     </div>
 @endif
 
-<!-- Filter Section -->
+<!-- Collapsible Filter Section -->
 <div class="flex flex-wrap -mx-3 mb-6">
     <div class="flex-none w-full max-w-full px-3">
         <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border">
-            <div class="p-4 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
-                <h6 class="mb-2 font-semibold text-slate-800">
-                    <i class="fas fa-filter mr-2 text-slate-600"></i>
-                    Filter & Pencarian
-                </h6>
+            <div class="p-4 bg-white rounded-t-2xl cursor-pointer hover:bg-gray-50 transition-colors" onclick="toggleFilter()">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-filter text-slate-700 mr-3"></i>
+                        <h6 class="font-bold text-slate-700">Filter & Pencarian</h6>
+                        @if($jenisKategori || $includeInactive)
+                            <span class="ml-3 px-2 py-1 text-xs font-semibold text-white bg-blue-600 rounded-full">
+                                {{ collect([$jenisKategori, $includeInactive])->filter()->count() }} aktif
+                            </span>
+                        @endif
+                    </div>
+                    <i id="filter-icon" class="fas fa-chevron-down text-slate-700 transition-transform duration-200"></i>
+                </div>
             </div>
-            <div class="flex-auto p-4 pt-2">
+            <div id="filter-content" class="hidden border-t border-gray-200">
+                <div class="p-6">
                 <form method="GET" action="{{ route('kelola-kategori.index') }}" class="flex flex-wrap items-end gap-4">
                     <div class="flex-1 min-w-48">
-                        <label for="jenis" class="block text-sm font-medium text-slate-700 mb-2">Jenis Kategori</label>
+                        <label for="jenis" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                            <i class="fas fa-tags mr-1"></i>Jenis Kategori
+                        </label>
                         <select name="jenis" id="jenis" 
                                 class="form-select w-full text-sm focus:shadow-soft-primary-outline leading-5.6 ease-soft block appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none" 
                                 onchange="this.form.submit()">
@@ -73,7 +84,7 @@
                     <div class="flex items-end">
                         <div class="form-check min-h-6 pl-0 mb-0.5">
                             <input type="checkbox" name="include_inactive" id="include_inactive"
-                                   class="form-check-input w-4 h-4 ease-soft rounded checked:bg-gradient-to-tl checked:from-green-600 checked:to-lime-400 after:text-xxs after:font-awesome after:duration-250 after:ease-soft-in-out" 
+                                   class="form-check-input w-4 h-4 ease-soft rounded checked:bg-gradient-to-tl checked:from-blue-600 checked:to-cyan-400 after:text-xxs after:font-awesome after:duration-250 after:ease-soft-in-out" 
                                    value="1" 
                                    {{ $includeInactive ? 'checked' : '' }}
                                    onchange="this.form.submit()">
@@ -84,6 +95,7 @@
                         </div>
                     </div>
                 </form>
+                </div>
             </div>
         </div>
     </div>
@@ -99,10 +111,10 @@
         <div class="w-full max-w-full px-3 mb-6 lg:w-1/2 lg:flex-none">
             <!-- Kategori {{ $jenisLabel }} -->
             <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-soft-xl rounded-2xl bg-clip-border h-full">
-                <div class="flex items-center justify-between p-4 bg-gradient-to-r from-green-600 to-lime-400 text-white rounded-t-2xl">
+                <div class="flex items-center justify-between p-4 bg-gradient-to-r from-blue-600 to-cyan-400 text-white rounded-t-2xl">
                     <div class="flex items-center">
                         <div class="mr-3 flex h-10 w-10 items-center justify-center rounded-lg bg-white bg-opacity-25 text-center shadow-sm">
-                            <i class="fas {{ $jenis === 'inventaris' ? 'fa-boxes' : ($jenis === 'layanan' ? 'fa-cut' : ($jenis === 'pengeluaran' ? 'fa-money-bill-wave' : 'fa-tags')) }} text-green-700 text-base font-bold"></i>
+                            <i class="fas {{ $jenis === 'inventaris' ? 'fa-boxes' : ($jenis === 'layanan' ? 'fa-cut' : ($jenis === 'pengeluaran' ? 'fa-money-bill-wave' : 'fa-tags')) }} text-blue-700 text-base font-bold"></i>
                         </div>
                         <div>
                             <h6 class="mb-0 text-white font-semibold">{{ $jenisLabel }}</h6>
@@ -126,7 +138,7 @@
                                                 </div>
                                                 <div class="flex items-center gap-2 ml-4">
                                                     <a href="{{ route('kelola-kategori.edit', $kategori) }}" 
-                                                       class="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-white bg-gradient-to-tl from-green-600 to-lime-400 rounded-lg hover:scale-102 hover:shadow-soft-xs transition-all duration-200 shadow-soft-md" 
+                                                       class="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-white bg-gradient-to-tl from-blue-600 to-cyan-400 rounded-lg hover:scale-102 hover:shadow-soft-xs transition-all duration-200 shadow-soft-md" 
                                                        title="Edit">
                                                         <i class="fas fa-edit text-sm"></i>
                                                     </a>
@@ -179,4 +191,35 @@
     @endforeach
 </div>
 </div>
+
+@push('scripts')
+<script>
+function toggleFilter() {
+    const filterContent = document.getElementById('filter-content');
+    const filterIcon = document.getElementById('filter-icon');
+    
+    if (filterContent.classList.contains('hidden')) {
+        filterContent.classList.remove('hidden');
+        filterIcon.classList.add('fa-chevron-up');
+        filterIcon.classList.remove('fa-chevron-down');
+    } else {
+        filterContent.classList.add('hidden');
+        filterIcon.classList.remove('fa-chevron-up');
+        filterIcon.classList.add('fa-chevron-down');
+    }
+}
+
+// Auto hide alerts after 5 seconds
+setTimeout(function() {
+    const alerts = document.querySelectorAll('.relative.p-4.mb-4');
+    alerts.forEach(alert => {
+        if (alert.classList.contains('text-green-700') || alert.classList.contains('text-red-700')) {
+            alert.style.opacity = '0';
+            alert.style.transition = 'opacity 0.5s ease-in-out';
+            setTimeout(() => alert.remove(), 500);
+        }
+    });
+}, 5000);
+</script>
+@endpush
 @endsection

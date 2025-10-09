@@ -13,7 +13,7 @@
                             </div>
                         </div>
                         <div class="text-right ml-4">
-                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400 flex items-center justify-center shadow-soft-md">
+                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-blue-600 to-cyan-400 flex items-center justify-center shadow-soft-md">
                                 <i class="fas fa-cut text-lg text-white"></i>
                             </div>
                         </div>
@@ -34,7 +34,7 @@
                             </div>
                         </div>
                         <div class="text-right ml-4">
-                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400 flex items-center justify-center shadow-soft-md">
+                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-blue-600 to-cyan-400 flex items-center justify-center shadow-soft-md">
                                 <i class="fas fa-check-circle text-lg text-white"></i>
                             </div>
                         </div>
@@ -55,7 +55,7 @@
                             </div>
                         </div>
                         <div class="text-right ml-4">
-                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400 flex items-center justify-center shadow-soft-md">
+                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-blue-600 to-cyan-400 flex items-center justify-center shadow-soft-md">
                                 <i class="fas fa-money-bill-wave text-lg text-white"></i>
                             </div>
                         </div>
@@ -76,7 +76,7 @@
                             </div>
                         </div>
                         <div class="text-right ml-4">
-                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400 flex items-center justify-center shadow-soft-md">
+                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-blue-600 to-cyan-400 flex items-center justify-center shadow-soft-md">
                                 <i class="fas fa-building text-lg text-white"></i>
                             </div>
                         </div>
@@ -145,14 +145,14 @@
                                 <div class="flex justify-center items-center space-x-3">
                                     <!-- Tombol Lihat -->
                                     <a href="{{ route('kelola-layanan.show', $item->id) }}" 
-                                       class="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-white bg-gradient-to-tl from-blue-600 to-cyan-400 rounded-lg hover:scale-102 hover:shadow-soft-xs transition-all duration-200 shadow-soft-md"
+                                       class="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-white bg-gradient-to-tl from-green-600 to-lime-400 rounded-lg hover:scale-102 hover:shadow-soft-xs transition-all duration-200 shadow-soft-md"
                                        title="Lihat Detail">
                                         <i class="fas fa-eye"></i>
                                     </a>
                                     
                                     <!-- Tombol Edit -->
                                     <a href="{{ route('kelola-layanan.edit', $item->id) }}" 
-                                       class="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-white bg-gradient-to-tl from-green-600 to-lime-400 rounded-lg hover:scale-102 hover:shadow-soft-xs transition-all duration-200 shadow-soft-md"
+                                       class="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-white bg-gradient-to-tl from-blue-600 to-cyan-400 rounded-lg hover:scale-102 hover:shadow-soft-xs transition-all duration-200 shadow-soft-md"
                                        title="Edit Layanan">
                                         <i class="fas fa-edit"></i>
                                     </a>
@@ -186,7 +186,7 @@
         <!-- Pagination -->
         @if($layanan->hasPages())
         <div class="px-6 pb-6">
-            {{ $layanan->links() }}
+            {{ $layanan->appends(request()->query())->links() }}
         </div>
         @endif
     </div>

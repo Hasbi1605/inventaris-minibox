@@ -49,7 +49,7 @@
                                 <div>
                                     <label class="text-xs font-bold uppercase text-slate-400">Status</label>
                                     <div class="mt-1">
-                                        <span class="bg-gradient-to-tl {{ $kelola_kapster->status === 'aktif' ? 'from-green-600 to-lime-400' : 'from-red-600 to-rose-400' }} px-3 py-1 text-xs rounded-lg font-bold uppercase text-white">
+                                        <span class="bg-gradient-to-tl {{ $kelola_kapster->status === 'aktif' ? 'from-blue-600 to-cyan-400' : 'from-red-600 to-rose-400' }} px-3 py-1 text-xs rounded-lg font-bold uppercase text-white">
                                             {{ $kelola_kapster->status }}
                                         </span>
                                     </div>

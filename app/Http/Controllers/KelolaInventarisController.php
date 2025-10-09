@@ -33,19 +33,19 @@ class KelolaInventarisController extends Controller
         // Get statistics for all cabang (untuk tab semua cabang)
         $statisticsSemuaCabang = $this->inventarisService->getInventarisStatistics();
 
-        // Get all inventaris untuk semua cabang (produk + aset)
-        $semuaInventaris = $this->inventarisService->getAllInventaris($filters);
+        // Get all inventaris untuk semua cabang (produk + aset) with pagination
+        $semuaInventaris = $this->inventarisService->getAllInventaris($filters, 10);
 
         // Get data per cabang (gabungan produk + aset) + statistics per cabang
         $inventarisPerCabang = [];
         $statisticsPerCabang = [];
 
         foreach ($cabangList as $cabang) {
-            // Semua inventaris per cabang
+            // Semua inventaris per cabang with pagination
             $filtersCabang = array_merge($filters, [
                 'cabang_id' => $cabang->id
             ]);
-            $inventarisPerCabang[$cabang->id] = $this->inventarisService->getInventarisByCabang($filtersCabang);
+            $inventarisPerCabang[$cabang->id] = $this->inventarisService->getInventarisByCabang($filtersCabang, 10);
 
             // Statistics per cabang
             $statisticsPerCabang[$cabang->id] = $this->inventarisService->getInventarisStatistics($cabang->id);

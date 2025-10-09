@@ -9,7 +9,7 @@
                 </p>
             </div>
             <div class="flex space-x-2">
-                <button onclick="exportAllSlipGaji()" class="inline-block px-4 py-2 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-green-600 to-lime-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md hover:scale-102">
+                <button onclick="exportAllSlipGaji()" class="inline-block px-4 py-2 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-600 to-cyan-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md hover:scale-102">
                     <i class="fas fa-file-pdf mr-1"></i>Export Semua Slip
                 </button>
             </div>

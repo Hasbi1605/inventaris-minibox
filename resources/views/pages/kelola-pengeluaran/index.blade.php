@@ -13,7 +13,7 @@
         </div>
         <div>
             <a href="{{ route('kelola-pengeluaran.create') }}" 
-                class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-green-600 to-lime-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-600 to-cyan-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
                 <i class="fas fa-plus mr-2"></i>
                 Tambah Pengeluaran
             </a>
@@ -53,7 +53,7 @@
                             </div>
                         </div>
                         <div class="text-right ml-4">
-                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400 flex items-center justify-center shadow-soft-md">
+                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-blue-600 to-cyan-400 flex items-center justify-center shadow-soft-md">
                                 <i class="fas fa-wallet text-lg text-white"></i>
                             </div>
                         </div>
@@ -74,7 +74,7 @@
                             </div>
                         </div>
                         <div class="text-right ml-4">
-                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400 flex items-center justify-center shadow-soft-md">
+                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-blue-600 to-cyan-400 flex items-center justify-center shadow-soft-md">
                                 <i class="fas fa-calendar-alt text-lg text-white"></i>
                             </div>
                         </div>
@@ -95,7 +95,7 @@
                             </div>
                         </div>
                         <div class="text-right ml-4">
-                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400 flex items-center justify-center shadow-soft-md">
+                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-blue-600 to-cyan-400 flex items-center justify-center shadow-soft-md">
                                 <i class="fas fa-calendar-day text-lg text-white"></i>
                             </div>
                         </div>
@@ -116,7 +116,7 @@
                             </div>
                         </div>
                         <div class="text-right ml-4">
-                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-green-600 to-lime-400 flex items-center justify-center shadow-soft-md">
+                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-blue-600 to-cyan-400 flex items-center justify-center shadow-soft-md">
                                 <i class="fas fa-chart-line text-lg text-white"></i>
                             </div>
                         </div>
@@ -126,17 +126,31 @@
         </div>
     </div>
 
-    <!-- Filter & Search -->
+    <!-- Collapsible Filter & Search -->
     <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
-        <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
-            <h6 class="font-bold">Filter & Pencarian</h6>
+        <div class="p-4 bg-white rounded-t-2xl cursor-pointer hover:bg-gray-50 transition-colors" onclick="toggleFilter()">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <i class="fas fa-filter text-slate-700 mr-3"></i>
+                    <h6 class="font-bold text-slate-700">Filter & Pencarian</h6>
+                    @if(request('search') || request('kategori') || request('tanggal_dari') || request('tanggal_sampai') || request('jumlah_min') || request('jumlah_max'))
+                        <span class="ml-3 px-2 py-1 text-xs font-semibold text-white bg-blue-600 rounded-full">
+                            {{ collect([request('search'), request('kategori'), request('tanggal_dari'), request('tanggal_sampai'), request('jumlah_min'), request('jumlah_max')])->filter()->count() }} aktif
+                        </span>
+                    @endif
+                </div>
+                <i id="filter-icon" class="fas fa-chevron-down text-slate-700 transition-transform duration-200"></i>
+            </div>
         </div>
-        <div class="flex-auto p-6">
-            <form method="GET" action="{{ route('kelola-pengeluaran.index') }}">
+        <div id="filter-content" class="hidden border-t border-gray-200">
+            <div class="p-6">
+                <form method="GET" action="{{ route('kelola-pengeluaran.index') }}">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4">
                     <!-- Kategori -->
                     <div class="xl:col-span-1">
-                        <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Kategori</label>
+                        <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                            <i class="fas fa-tags mr-1"></i>Kategori
+                        </label>
                         <select name="kategori" class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow">
                             <option value="">Semua</option>
                             @foreach($categories as $id => $nama)
@@ -149,43 +163,54 @@
 
                     <!-- Tanggal Dari -->
                     <div class="xl:col-span-1">
-                        <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Dari Tanggal</label>
+                        <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                            <i class="fas fa-calendar-day mr-1"></i>Dari Tanggal
+                        </label>
                         <input type="date" name="tanggal_dari" value="{{ request('tanggal_dari') }}" class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow">
                     </div>
 
                     <!-- Tanggal Sampai -->
                     <div class="xl:col-span-1">
-                        <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Sampai Tanggal</label>
+                        <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                            <i class="fas fa-calendar-check mr-1"></i>Sampai Tanggal
+                        </label>
                         <input type="date" name="tanggal_sampai" value="{{ request('tanggal_sampai') }}" class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow">
                     </div>
 
                     <!-- Jumlah Min -->
                     <div class="xl:col-span-1">
-                        <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Jumlah Min</label>
+                        <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                            <i class="fas fa-arrow-down mr-1"></i>Jumlah Min
+                        </label>
                         <input type="number" name="jumlah_min" value="{{ request('jumlah_min') }}" placeholder="0" class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow">
                     </div>
 
                     <!-- Jumlah Max -->
                     <div class="xl:col-span-1">
-                        <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Jumlah Max</label>
+                        <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                            <i class="fas fa-arrow-up mr-1"></i>Jumlah Max
+                        </label>
                         <input type="number" name="jumlah_max" value="{{ request('jumlah_max') }}" placeholder="999999" class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow">
                     </div>
 
                     <!-- Pencarian -->
                     <div class="xl:col-span-2">
-                        <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Cari Deskripsi</label>
+                        <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                            <i class="fas fa-search mr-1"></i>Cari Deskripsi
+                        </label>
                         <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari..." class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow">
                     </div>
                 </div>
                 <div class="flex justify-end mt-4 space-x-2">
-                    <a href="{{ route('kelola-pengeluaran.index') }}" class="inline-block px-6 py-3 font-bold text-center text-slate-700 uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-gray-100 to-gray-200 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                    <a href="{{ route('kelola-pengeluaran.index') }}" class="inline-block px-6 py-2 font-bold text-center text-slate-700 uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-gray-100 to-gray-200 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs whitespace-nowrap">
                         <i class="fas fa-undo mr-2"></i>Reset
                     </a>
-                    <button type="submit" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-600 to-cyan-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
+                    <button type="submit" class="inline-block px-6 py-2 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-600 to-cyan-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs whitespace-nowrap">
                         <i class="fas fa-search mr-2"></i>Filter
                     </button>
                 </div>
             </form>
+            </div>
         </div>
     </div>
 
@@ -238,14 +263,14 @@
                                         <div class="flex justify-center items-center space-x-3">
                                             <!-- Tombol Lihat -->
                                             <a href="{{ route('kelola-pengeluaran.show', $item->id) }}" 
-                                               class="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-white bg-gradient-to-tl from-blue-600 to-cyan-400 rounded-lg hover:scale-102 hover:shadow-soft-xs transition-all duration-200 shadow-soft-md"
+                                               class="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-white bg-gradient-to-tl from-green-600 to-lime-400 rounded-lg hover:scale-102 hover:shadow-soft-xs transition-all duration-200 shadow-soft-md"
                                                title="Lihat Detail">
                                                 <i class="fas fa-eye"></i>
                                             </a>
                                             
                                             <!-- Tombol Edit -->
                                             <a href="{{ route('kelola-pengeluaran.edit', $item->id) }}" 
-                                               class="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-white bg-gradient-to-tl from-green-600 to-lime-400 rounded-lg hover:scale-102 hover:shadow-soft-xs transition-all duration-200 shadow-soft-md"
+                                               class="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-white bg-gradient-to-tl from-blue-600 to-cyan-400 rounded-lg hover:scale-102 hover:shadow-soft-xs transition-all duration-200 shadow-soft-md"
                                                title="Edit Pengeluaran">
                                                 <i class="fas fa-edit"></i>
                                             </a>
@@ -289,4 +314,35 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+function toggleFilter() {
+    const filterContent = document.getElementById('filter-content');
+    const filterIcon = document.getElementById('filter-icon');
+    
+    if (filterContent.classList.contains('hidden')) {
+        filterContent.classList.remove('hidden');
+        filterIcon.classList.add('fa-chevron-up');
+        filterIcon.classList.remove('fa-chevron-down');
+    } else {
+        filterContent.classList.add('hidden');
+        filterIcon.classList.remove('fa-chevron-up');
+        filterIcon.classList.add('fa-chevron-down');
+    }
+}
+
+// Auto hide alerts after 5 seconds
+setTimeout(function() {
+    const alerts = document.querySelectorAll('.relative.p-4.mb-4');
+    alerts.forEach(alert => {
+        if (alert.classList.contains('text-green-700') || alert.classList.contains('text-red-700')) {
+            alert.style.opacity = '0';
+            alert.style.transition = 'opacity 0.5s ease-in-out';
+            setTimeout(() => alert.remove(), 500);
+        }
+    });
+}, 5000);
+</script>
+@endpush
 @endsection

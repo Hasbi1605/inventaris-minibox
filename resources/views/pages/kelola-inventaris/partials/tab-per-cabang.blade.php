@@ -4,17 +4,17 @@
         <!-- Total Item (Always Show) -->
         <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border border border-gray-100">
             <div class="flex-auto p-4">
-                <div class="flex flex-row items-center">
-                    <div class="flex-shrink-0">
-                        <div class="inline-flex items-center justify-center w-12 h-12 text-center rounded-xl bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-md">
-                            <i class="fas fa-boxes text-lg text-white relative top-0.5"></i>
-                        </div>
-                    </div>
-                    <div class="flex-grow pl-4">
-                        <p class="mb-0 font-sans text-xs font-semibold leading-normal uppercase text-slate-500">Total Item</p>
+                <div class="flex flex-row items-center justify-between">
+                    <div class="flex-1">
+                        <p class="mb-0 font-sans text-sm font-semibold leading-normal">Total Item</p>
                         <h5 class="mb-0 font-bold text-slate-700">
                             {{ $statistics['total'] ?? 0 }}
                         </h5>
+                    </div>
+                    <div class="text-right ml-4">
+                        <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-blue-600 to-cyan-400 flex items-center justify-center shadow-soft-md">
+                            <i class="fas fa-boxes text-lg text-white"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -26,17 +26,17 @@
             <!-- Produk Retail -->
             <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border border border-gray-100">
                 <div class="flex-auto p-4">
-                    <div class="flex flex-row items-center">
-                        <div class="flex-shrink-0">
-                            <div class="inline-flex items-center justify-center w-12 h-12 text-center rounded-xl bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-md">
-                                <i class="fas fa-shopping-bag text-lg text-white relative top-0.5"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow pl-4">
-                            <p class="mb-0 font-sans text-xs font-semibold leading-normal uppercase text-slate-500">Produk Retail</p>
+                    <div class="flex flex-row items-center justify-between">
+                        <div class="flex-1">
+                            <p class="mb-0 font-sans text-sm font-semibold leading-normal">Produk Retail</p>
                             <h5 class="mb-0 font-bold text-slate-700">
                                 {{ $statistics['total_retail'] ?? 0 }}
                             </h5>
+                        </div>
+                        <div class="text-right ml-4">
+                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-blue-600 to-cyan-400 flex items-center justify-center shadow-soft-md">
+                                <i class="fas fa-shopping-bag text-lg text-white"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -45,17 +45,17 @@
             <!-- Aset Operasional -->
             <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border border border-gray-100">
                 <div class="flex-auto p-4">
-                    <div class="flex flex-row items-center">
-                        <div class="flex-shrink-0">
-                            <div class="inline-flex items-center justify-center w-12 h-12 text-center rounded-xl bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-md">
-                                <i class="fas fa-tools text-lg text-white relative top-0.5"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow pl-4">
-                            <p class="mb-0 font-sans text-xs font-semibold leading-normal uppercase text-slate-500">Aset Operasional</p>
+                    <div class="flex flex-row items-center justify-between">
+                        <div class="flex-1">
+                            <p class="mb-0 font-sans text-sm font-semibold leading-normal">Aset Operasional</p>
                             <h5 class="mb-0 font-bold text-slate-700">
                                 {{ $statistics['total_operasional'] ?? 0 }}
                             </h5>
+                        </div>
+                        <div class="text-right ml-4">
+                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-blue-600 to-cyan-400 flex items-center justify-center shadow-soft-md">
+                                <i class="fas fa-tools text-lg text-white"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -67,17 +67,17 @@
             <!-- Stok Rendah -->
             <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border border border-gray-100">
                 <div class="flex-auto p-4">
-                    <div class="flex flex-row items-center">
-                        <div class="flex-shrink-0">
-                            <div class="inline-flex items-center justify-center w-12 h-12 text-center rounded-xl bg-gradient-to-tl from-red-600 to-yellow-400 shadow-soft-md">
-                                <i class="fas fa-exclamation-triangle text-lg text-white relative top-0.5"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow pl-4">
-                            <p class="mb-0 font-sans text-xs font-semibold leading-normal uppercase text-slate-500">Stok Rendah</p>
+                    <div class="flex flex-row items-center justify-between">
+                        <div class="flex-1">
+                            <p class="mb-0 font-sans text-sm font-semibold leading-normal">Stok Rendah</p>
                             <h5 class="mb-0 font-bold text-slate-700">
                                 {{ $statistics['hampir_habis'] ?? 0 }}
                             </h5>
+                        </div>
+                        <div class="text-right ml-4">
+                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-red-600 to-yellow-400 flex items-center justify-center shadow-soft-md">
+                                <i class="fas fa-exclamation-triangle text-lg text-white"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -86,17 +86,17 @@
             <!-- Stok Habis -->
             <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border border border-gray-100">
                 <div class="flex-auto p-4">
-                    <div class="flex flex-row items-center">
-                        <div class="flex-shrink-0">
-                            <div class="inline-flex items-center justify-center w-12 h-12 text-center rounded-xl bg-gradient-to-tl from-red-600 to-rose-400 shadow-soft-md">
-                                <i class="fas fa-times-circle text-lg text-white relative top-0.5"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow pl-4">
-                            <p class="mb-0 font-sans text-xs font-semibold leading-normal uppercase text-slate-500">Stok Habis</p>
+                    <div class="flex flex-row items-center justify-between">
+                        <div class="flex-1">
+                            <p class="mb-0 font-sans text-sm font-semibold leading-normal">Stok Habis</p>
                             <h5 class="mb-0 font-bold text-slate-700">
                                 {{ $statistics['habis'] ?? 0 }}
                             </h5>
+                        </div>
+                        <div class="text-right ml-4">
+                            <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-red-600 to-rose-400 flex items-center justify-center shadow-soft-md">
+                                <i class="fas fa-times-circle text-lg text-white"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -107,19 +107,19 @@
         <!-- Total Nilai (Always Show) -->
         <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border border border-gray-100">
             <div class="flex-auto p-4">
-                <div class="flex flex-row items-center">
-                    <div class="flex-shrink-0">
-                        <div class="inline-flex items-center justify-center w-12 h-12 text-center rounded-xl bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-md">
-                            <i class="fas fa-money-bill-wave text-lg text-white relative top-0.5"></i>
-                        </div>
-                    </div>
-                    <div class="flex-grow pl-4">
-                        <p class="mb-0 font-sans text-xs font-semibold leading-normal uppercase text-slate-500">
+                <div class="flex flex-row items-center justify-between">
+                    <div class="flex-1">
+                        <p class="mb-0 font-sans text-sm font-semibold leading-normal">
                             Total Nilai{{ ($statistics['has_operasional'] ?? false) ? ' Retail' : '' }}
                         </p>
                         <h5 class="mb-0 font-bold text-slate-700">
                             Rp {{ number_format($statistics['total_nilai'] ?? 0, 0, ',', '.') }}
                         </h5>
+                    </div>
+                    <div class="text-right ml-4">
+                        <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-blue-600 to-cyan-400 flex items-center justify-center shadow-soft-md">
+                            <i class="fas fa-money-bill-wave text-lg text-white"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -202,12 +202,12 @@
                             <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
                                 <div class="flex justify-center items-center space-x-3">
                                     <a href="{{ route('kelola-inventaris.show', $item->id) }}"
-                                       class="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-white bg-gradient-to-tl from-blue-600 to-cyan-400 rounded-lg hover:scale-102 hover:shadow-soft-xs transition-all duration-200 shadow-soft-md"
+                                       class="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-white bg-gradient-to-tl from-green-600 to-lime-400 rounded-lg hover:scale-102 hover:shadow-soft-xs transition-all duration-200 shadow-soft-md"
                                        title="Lihat Detail">
                                         <i class="fas fa-eye"></i>
                                     </a>
                                     <a href="{{ route('kelola-inventaris.edit', $item->id) }}"
-                                       class="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-white bg-gradient-to-tl from-green-600 to-lime-400 rounded-lg hover:scale-102 hover:shadow-soft-xs transition-all duration-200 shadow-soft-md"
+                                       class="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-white bg-gradient-to-tl from-blue-600 to-cyan-400 rounded-lg hover:scale-102 hover:shadow-soft-xs transition-all duration-200 shadow-soft-md"
                                        title="Edit Inventaris">
                                         <i class="fas fa-edit"></i>
                                     </a>
