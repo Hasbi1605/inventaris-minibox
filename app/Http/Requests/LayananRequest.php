@@ -33,13 +33,12 @@ class LayananRequest extends FormRequest
                     : 'unique:layanans,nama_layanan,' . $layananId
             ],
             'deskripsi' => 'nullable|string|max:1000',
-            'harga' => 'required|numeric|min:0|max:999999999.99',
             'kategori_id' => 'nullable|exists:kategoris,id',
             'status' => 'required|in:aktif,tidak_aktif',
             'cabang_ids' => 'required|array|min:1',
             'cabang_ids.*' => 'required|exists:cabang,id',
-            'harga_cabang' => 'nullable|array',
-            'harga_cabang.*' => 'nullable|numeric|min:0|max:999999999.99'
+            'harga_cabang' => 'required|array|min:1',
+            'harga_cabang.*' => 'required|numeric|min:0|max:999999999.99'
         ];
 
         return $rules;
@@ -57,10 +56,6 @@ class LayananRequest extends FormRequest
             'nama_layanan.unique' => 'Nama layanan sudah ada, silakan gunakan nama lain.',
             'deskripsi.string' => 'Deskripsi harus berupa teks.',
             'deskripsi.max' => 'Deskripsi maksimal 1000 karakter.',
-            'harga.required' => 'Harga layanan wajib diisi.',
-            'harga.numeric' => 'Harga harus berupa angka.',
-            'harga.min' => 'Harga tidak boleh kurang dari 0.',
-            'harga.max' => 'Harga terlalu besar.',
             'kategori_id.exists' => 'Kategori yang dipilih tidak valid.',
             'status.required' => 'Status layanan wajib dipilih.',
             'status.in' => 'Status layanan harus aktif atau tidak_aktif.',
@@ -68,7 +63,10 @@ class LayananRequest extends FormRequest
             'cabang_ids.array' => 'Format cabang tidak valid.',
             'cabang_ids.min' => 'Minimal pilih 1 cabang.',
             'cabang_ids.*.exists' => 'Cabang yang dipilih tidak valid.',
+            'harga_cabang.required' => 'Harga untuk setiap cabang wajib diisi.',
             'harga_cabang.array' => 'Format harga cabang tidak valid.',
+            'harga_cabang.min' => 'Minimal isi harga untuk 1 cabang.',
+            'harga_cabang.*.required' => 'Harga cabang wajib diisi.',
             'harga_cabang.*.numeric' => 'Harga cabang harus berupa angka.',
             'harga_cabang.*.min' => 'Harga cabang tidak boleh kurang dari 0.',
             'harga_cabang.*.max' => 'Harga cabang terlalu besar.'
@@ -83,9 +81,10 @@ class LayananRequest extends FormRequest
         return [
             'nama_layanan' => 'nama layanan',
             'deskripsi' => 'deskripsi',
-            'harga' => 'harga',
             'kategori_id' => 'kategori',
-            'status' => 'status'
+            'status' => 'status',
+            'cabang_ids' => 'cabang',
+            'harga_cabang' => 'harga cabang'
         ];
     }
 }

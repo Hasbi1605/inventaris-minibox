@@ -39,7 +39,7 @@
                     <p class="text-sm leading-normal text-slate-400">Isi form di bawah untuk menambahkan item baru</p>
                 </div>
                 <div class="flex-auto px-6 pt-0 pb-6">
-                    <form action="{{ route('kelola-inventaris.store') }}" method="POST">
+                    <form action="{{ route('kelola-inventaris.store') }}" method="POST" id="inventaris-form">
                         @csrf
                         
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -137,18 +137,20 @@
                                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                                     <!-- Harga Satuan -->
                                     <div>
-                                        <label for="harga_satuan" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                        <label for="harga_satuan_formatted" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
                                             Harga Satuan <span class="text-red-500">*</span>
                                         </label>
-                                        <input 
-                                            type="number" 
-                                            name="harga_satuan" 
-                                            id="harga_satuan"
-                                            value="{{ old('harga_satuan') }}"
-                                            step="0.01"
-                                            class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('harga_satuan') border-red-500 @enderror"
-                                            placeholder="Masukkan harga satuan"
-                                        />
+                                        <div class="flex">
+                                            <span class="inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-r-0 border-gray-300 rounded-l-lg">Rp</span>
+                                            <input 
+                                                type="text" 
+                                                id="harga_satuan_formatted"
+                                                class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-none rounded-r-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('harga_satuan') border-red-500 @enderror"
+                                                placeholder="0"
+                                                inputmode="numeric"
+                                            />
+                                        </div>
+                                        <input type="hidden" name="harga_satuan" id="harga_satuan" value="{{ old('harga_satuan') }}">
                                         @error('harga_satuan')
                                             <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
                                         @enderror
@@ -258,7 +260,9 @@
         </div>
     </div>
 </div>
+@endsection
 
+@push('scripts')
 <script>
 function handleKategoriChange() {
     const kategoriSelect = document.getElementById('kategori_id');
@@ -290,6 +294,7 @@ function handleKategoriChange() {
         operasionalFields.classList.remove('hidden');
         
         // Remove required from retail fields and status
+        document.getElementById('harga_satuan_formatted').removeAttribute('required');
         hargaSatuan.removeAttribute('required');
         stokMinimal.removeAttribute('required');
         stokSaatIni.removeAttribute('required');
@@ -311,6 +316,7 @@ function handleKategoriChange() {
         operasionalFields.classList.add('hidden');
         
         // Add required to retail fields and status
+        document.getElementById('harga_satuan_formatted').setAttribute('required', 'required');
         hargaSatuan.setAttribute('required', 'required');
         stokMinimal.setAttribute('required', 'required');
         stokSaatIni.setAttribute('required', 'required');
@@ -332,12 +338,40 @@ document.getElementById('jumlah_aset').addEventListener('input', function() {
     stokSaatIni.value = this.value;
 });
 
-// Trigger on page load if kategori is already selected
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
+    // Kategori change handler
     const kategoriSelect = document.getElementById('kategori_id');
     if (kategoriSelect.value) {
         handleKategoriChange();
     }
+
+    // Number formatting for harga_satuan
+    const hargaSatuanFormattedInput = document.getElementById('harga_satuan_formatted');
+    const hargaSatuanInput = document.getElementById('harga_satuan');
+
+    function formatNumber(value) {
+        if (!value) return '';
+        return new Intl.NumberFormat('id-ID').format(value);
+    }
+
+    function unformatNumber(value) {
+        return value.replace(/\./g, '');
+    }
+
+    if (hargaSatuanInput.value) {
+        hargaSatuanFormattedInput.value = formatNumber(hargaSatuanInput.value);
+    }
+
+    hargaSatuanFormattedInput.addEventListener('input', function (e) {
+        const rawValue = unformatNumber(e.target.value);
+        if (isNaN(rawValue)) {
+            hargaSatuanInput.value = '';
+            e.target.value = '';
+        } else {
+            hargaSatuanInput.value = rawValue;
+            e.target.value = formatNumber(rawValue);
+        }
+    });
 });
 </script>
-@endsection
+@endpush

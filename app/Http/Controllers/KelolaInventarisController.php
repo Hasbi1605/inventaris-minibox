@@ -111,7 +111,7 @@ class KelolaInventarisController extends Controller
     {
         try {
             Log::info('Menampilkan inventaris dengan ID: ' . $id);
-            $inventaris = Inventaris::findOrFail($id);
+            $inventaris = Inventaris::with(['kategori', 'cabang'])->findOrFail($id);
             return view('pages.kelola-inventaris.show', compact('inventaris'));
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             Log::error("Error menampilkan inventaris: " . $e->getMessage(), [
@@ -132,7 +132,7 @@ class KelolaInventarisController extends Controller
     {
         try {
             Log::info('Menampilkan form edit untuk inventaris dengan ID: ' . $id);
-            $inventaris = Inventaris::findOrFail($id);
+            $inventaris = Inventaris::with(['kategori', 'cabang'])->findOrFail($id);
             $categories = $this->inventarisService->getAvailableCategories();
             $units = $this->inventarisService->getAvailableUnits();
             $cabangList = $this->cabangService->getAllCabangForDropdown();
@@ -156,8 +156,11 @@ class KelolaInventarisController extends Controller
     public function update(InventarisRequest $request, string $id)
     {
         try {
-            Log::info('Memperbarui inventaris dengan ID: ' . $id);
-            $inventaris = Inventaris::findOrFail($id);
+            Log::info('Memperbarui inventaris dengan ID: ' . $id, [
+                'request_data' => $request->all(),
+                'validated' => 'Request passed validation'
+            ]);
+            $inventaris = Inventaris::with(['kategori', 'cabang'])->findOrFail($id);
 
             // Get validated data from Form Request
             $validatedData = $request->validated();
@@ -167,6 +170,16 @@ class KelolaInventarisController extends Controller
 
             return redirect()->route('kelola-inventaris.index')
                 ->with('success', 'Item inventaris berhasil diperbarui!');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error("Validation error saat memperbarui inventaris ID {$id}: " . $e->getMessage(), [
+                'errors' => $e->errors(),
+                'request' => $request->all(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return redirect()->back()
+                ->with('error', 'Gagal memperbarui inventaris: ' . collect($e->errors())->flatten()->first())
+                ->withErrors($e->errors())
+                ->withInput();
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             Log::error("Error memperbarui inventaris: " . $e->getMessage(), [
                 'request' => $request->all(),
@@ -176,6 +189,16 @@ class KelolaInventarisController extends Controller
             ]);
             return redirect()->route('kelola-inventaris.index')
                 ->with('error', 'Item inventaris tidak ditemukan');
+        } catch (\Exception $e) {
+            Log::error("Unexpected error saat memperbarui inventaris ID {$id}: " . $e->getMessage(), [
+                'request' => $request->all(),
+                'trace' => $e->getTraceAsString(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ]);
+            return redirect()->back()
+                ->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
+                ->withInput();
         }
     }
 
@@ -186,7 +209,7 @@ class KelolaInventarisController extends Controller
     {
         try {
             Log::info('Menghapus inventaris dengan ID: ' . $id);
-            $inventaris = Inventaris::findOrFail($id);
+            $inventaris = Inventaris::with(['kategori', 'cabang'])->findOrFail($id);
 
             // Delete inventaris using service
             $this->inventarisService->deleteInventaris($inventaris);

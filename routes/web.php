@@ -21,6 +21,7 @@ Route::resource('kelola-layanan', KelolaLayananController::class);
 
 // Kelola Transaksi Routes
 Route::resource('kelola-transaksi', KelolaTransaksiController::class);
+Route::get('kelola-transaksi/{id}/cetak-struk', [KelolaTransaksiController::class, 'cetakStruk'])->name('kelola-transaksi.cetak-struk');
 
 // Kelola Pengeluaran Routes
 Route::resource('kelola-pengeluaran', KelolaPengeluaranController::class);

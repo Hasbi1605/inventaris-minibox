@@ -126,17 +126,40 @@ class InventarisService
         try {
             Log::info('Updating inventaris', ['id' => $inventaris->id, 'data' => $data]);
 
-            // Auto-update status based on stock, unless it's manually set to discontinued
+            // PENTING: Selalu auto-determine status based on stok, kecuali discontinued
+            // Ini memastikan status selalu sync dengan stok aktual
+            // FIX: Status sudah di-set di prepareForValidation() di InventarisRequest
+            // Tapi kita tetap validasi ulang di sini untuk memastikan
             if (isset($data['status']) && $data['status'] === 'discontinued') {
                 // Keep discontinued status (manual override)
+                Log::info('Keeping discontinued status');
             } else {
                 // Auto-determine status based on new stock values
+                // Ini akan mengatasi masalah ketika stok berubah dari 0 ke > 0
+                $newStatus = $this->determineStatus($data);
+                Log::info('Auto-determining status', [
+                    'old_status' => $inventaris->status,
+                    'submitted_status' => $data['status'] ?? 'unknown',
+                    'new_status' => $newStatus,
+                    'stok_saat_ini' => $data['stok_saat_ini'] ?? 0,
+                    'stok_minimal' => $data['stok_minimal'] ?? 0
+                ]);
+                $data['status'] = $newStatus;
+            }
+
+            // Ensure status is always set
+            if (!isset($data['status']) || empty($data['status'])) {
                 $data['status'] = $this->determineStatus($data);
+                Log::info('Status was empty, auto-determined to: ' . $data['status']);
             }
 
             $inventaris->update($data);
 
-            Log::info('Inventaris updated successfully', ['id' => $inventaris->id]);
+            Log::info('Inventaris updated successfully', [
+                'id' => $inventaris->id,
+                'final_status' => $inventaris->status,
+                'final_stok' => $inventaris->stok_saat_ini
+            ]);
 
             return $inventaris;
         } catch (\Exception $e) {

@@ -127,57 +127,6 @@
                                     <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
-
-                            <!-- Jam Operasional Buka -->
-                            <div>
-                                <label for="jam_operasional_buka" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Jam Buka (Opsional)
-                                </label>
-                                <input 
-                                    type="time" 
-                                    name="jam_operasional_buka" 
-                                    id="jam_operasional_buka"
-                                    value="{{ old('jam_operasional_buka', $cabang->jam_operasional_buka) }}"
-                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('jam_operasional_buka') border-red-500 @enderror"
-                                />
-                                @error('jam_operasional_buka')
-                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Jam Operasional Tutup -->
-                            <div>
-                                <label for="jam_operasional_tutup" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Jam Tutup (Opsional)
-                                </label>
-                                <input 
-                                    type="time" 
-                                    name="jam_operasional_tutup" 
-                                    id="jam_operasional_tutup"
-                                    value="{{ old('jam_operasional_tutup', $cabang->jam_operasional_tutup) }}"
-                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('jam_operasional_tutup') border-red-500 @enderror"
-                                />
-                                @error('jam_operasional_tutup')
-                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Deskripsi -->
-                            <div class="col-span-1 lg:col-span-2">
-                                <label for="deskripsi" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Deskripsi (Opsional)
-                                </label>
-                                <textarea 
-                                    name="deskripsi" 
-                                    id="deskripsi"
-                                    rows="4"
-                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('deskripsi') border-red-500 @enderror"
-                                    placeholder="Masukkan deskripsi atau catatan tambahan"
-                                >{{ old('deskripsi', $cabang->deskripsi) }}</textarea>
-                                @error('deskripsi')
-                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
                         </div>
 
                         <!-- Submit Buttons -->

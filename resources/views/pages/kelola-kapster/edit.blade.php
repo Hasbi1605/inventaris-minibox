@@ -187,7 +187,7 @@
                                         <!-- Komisi Layanan Lain -->
                                         <div>
                                             <label for="komisi_layanan_lain" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                                <i class="fas fa-spa text-purple-600 mr-1"></i>
+                                                <i class="fas fa-spa text-blue-600 mr-1"></i>
                                                 Layanan Lain
                                             </label>
                                             <div class="flex">
@@ -214,7 +214,7 @@
                                         <!-- Komisi Produk -->
                                         <div>
                                             <label for="komisi_produk" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                                <i class="fas fa-shopping-bag text-green-600 mr-1"></i>
+                                                <i class="fas fa-shopping-bag text-blue-600 mr-1"></i>
                                                 Produk
                                             </label>
                                             <div class="flex">

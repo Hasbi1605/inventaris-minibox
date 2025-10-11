@@ -92,16 +92,6 @@
                                 <p class="mb-0 text-slate-600 leading-relaxed">{{ $cabang->alamat }}</p>
                             </div>
                         </div>
-
-                        <!-- Deskripsi -->
-                        @if($cabang->deskripsi)
-                        <div class="md:col-span-2">
-                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Deskripsi</label>
-                            <div class="p-3 bg-gray-50 rounded-lg border">
-                                <p class="mb-0 text-slate-600 leading-relaxed">{{ $cabang->deskripsi }}</p>
-                            </div>
-                        </div>
-                        @endif
                     </div>
                 </div>
             </div>
@@ -123,14 +113,6 @@
                                 <div class="w-3 h-3 rounded-full {{ $cabang->status == 'aktif' ? 'bg-green-500' : 'bg-gray-500' }} mr-2"></div>
                                 <span class="text-sm font-semibold">{{ ucfirst(str_replace('_', ' ', $cabang->status)) }}</span>
                             </div>
-                        </div>
-
-                        <!-- Jam Operasional -->
-                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                            <span class="text-sm font-medium text-slate-600">Jam Operasional</span>
-                            <span class="text-sm font-semibold">
-                                {{ $cabang->jam_operasional }}
-                            </span>
                         </div>
 
                         <!-- Usia Cabang -->

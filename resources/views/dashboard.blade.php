@@ -241,8 +241,8 @@
             
             <!-- Grid 2x2 Mini Cards - Financial Summary -->
             <div class="grid grid-cols-2 gap-4 flex-1">
-                <!-- Target Bulanan (Compact) -->
-                <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border border-l-4 border-l-blue-500">
+                <!-- Target Bulanan (Compact) with Inline Edit -->
+                <div id="target-bulanan-card" class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border border-l-4 border-l-blue-500 transition-all duration-300">
                     <div class="flex-1 flex flex-col">
                         <!-- Header with Edit Button -->
                         <div class="flex items-center justify-between px-4 pt-3 pb-2 border-b border-gray-100">
@@ -250,65 +250,121 @@
                                 <i class="fas fa-bullseye text-blue-600 mr-2"></i>
                                 Target Bulanan
                             </h6>
-                            <button onclick="openEditTargetModal()" class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 transition-all duration-200">
+                            <button id="editTargetBtn" onclick="toggleEditTarget()" class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-lg bg-slate-100 text-slate-700 hover:bg-blue-100 hover:text-blue-700 transition-all duration-200">
                                 <i class="fas fa-edit mr-1"></i>
-                                Edit
+                                <span id="editBtnText">Edit</span>
                             </button>
                         </div>
                         
                         <!-- Content Body -->
                         <div class="flex-1 flex flex-col px-4 pt-3 pb-3">
-                            <!-- Stats Grid -->
-                            <div class="grid grid-cols-2 gap-2 mb-2.5">
-                                <div class="p-2 bg-gray-50 rounded-lg border border-gray-200">
-                                    <span class="text-xs font-medium text-slate-600 block mb-0.5">Tercapai</span>
-                                    <span class="text-xs font-bold text-slate-800">Rp {{ number_format($targetAchievement['tercapai'] / 1000000, 1) }}jt</span>
-                                </div>
-                                <div class="p-2 bg-gray-50 rounded-lg border border-gray-200">
-                                    <span class="text-xs font-medium text-slate-600 block mb-0.5">Target</span>
-                                    <span class="text-xs font-bold text-slate-800" id="currentTarget">Rp {{ number_format($targetAchievement['target'] / 1000000, 0) }}jt</span>
-                                </div>
-                            </div>
+                            <!-- View Mode -->
+                            <div id="viewMode" class="transition-all duration-300">
+                                <!-- Stats Grid -->
+                                <div class="grid grid-cols-2 gap-2 mb-2.5">
+                                    <div class="p-2 bg-gray-50 rounded-lg border border-gray-200">
+                                        <span class="text-xs font-medium text-slate-600 block mb-0.5">Tercapai</span>
+                                        <span class="text-xs font-bold text-slate-800">Rp {{ number_format($targetAchievement['tercapai'] / 1000000, 1) }}jt</span>
+                                    </div>
+                                    <div class="p-2 bg-gray-50 rounded-lg border border-gray-200">
+                                        <span class="text-xs font-medium text-slate-600 block mb-0.5">Target</span>
+                                        <span class="text-xs font-bold text-slate-800" id="currentTarget">Rp {{ number_format($targetAchievement['target'] / 1000000, 0) }}jt</span>
+                                    </div>
+                                    </div>
                             
-                            <!-- Progress Bar with Better Visibility -->
-                            <div class="mb-2.5">
-                                <div class="flex items-center justify-between mb-1">
-                                    <span class="text-xs font-semibold text-slate-700">Progress</span>
-                                    <span class="text-xs font-bold text-blue-600" id="targetPercentage">
-                                        {{ number_format($targetAchievement['percentage'], 1) }}%
-                                    </span>
-                                </div>
-                                <div class="relative">
-                                    <div class="w-full bg-gray-200 rounded-full h-6 overflow-hidden shadow-inner">
+                                <!-- Progress Bar (Styled seperti Visualisasi Arus Kas) -->
+                                <div class="mb-2.5">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-sm font-semibold text-slate-600">Progress</span>
+                                        <span class="text-sm font-bold text-slate-700" id="targetPercentage">
+                                            {{ number_format($targetAchievement['percentage'], 1) }}%
+                                        </span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
                                         <div id="targetProgressBar" 
-                                             class="h-6 rounded-full transition-all duration-1000 ease-out bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-end px-2" 
+                                             class="bg-gradient-to-r from-blue-600 to-cyan-400 h-4 rounded-full transition-all duration-1000 ease-out" 
                                              style="width: 0%">
-                                            @if($targetAchievement['percentage'] >= 10)
-                                            <span class="text-xs font-bold text-white drop-shadow">
-                                                {{ number_format($targetAchievement['percentage'], 1) }}%
-                                            </span>
-                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                
+                                <!-- Target Harian Info -->
+                                <div class="mt-3">
+                                    <div class="p-2 rounded-lg bg-blue-50 border border-blue-200">
+                                        <div class="flex items-center justify-between mb-1">
+                                            <div class="flex items-center">
+                                                <i class="fas fa-calendar-day text-blue-600 mr-1.5 text-xs"></i>
+                                                <span class="text-xs font-semibold text-slate-700">Target Harian</span>
+                                            </div>
+                                            <span class="text-xs font-bold text-green-600">Rp {{ number_format($targetAchievement['perlu_per_hari'] / 1000, 0) }}k</span>
+                                        </div>
+                                        <div class="flex items-center text-xs text-slate-600">
+                                            <i class="far fa-clock mr-1"></i>
+                                            <span>{{ (int) $targetAchievement['sisa_hari'] }} hari tersisa bulan ini</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <br>
-                            
-                            <!-- Target Harian Info -->
-                            <div class="mt-3">
-                                <div class="p-2 rounded-lg bg-blue-50 border border-blue-200">
-                                    <div class="flex items-center justify-between mb-1">
-                                        <div class="flex items-center">
-                                            <i class="fas fa-calendar-day text-blue-600 mr-1.5 text-xs"></i>
-                                            <span class="text-xs font-semibold text-slate-700">Target Harian</span>
+
+                            <!-- Edit Mode (Hidden by default) -->
+                            <div id="editMode" class="hidden">
+                                <form id="editTargetForm" class="space-y-3">
+                                    <!-- Input Field -->
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1.5">
+                                            <i class="fas fa-target mr-1 text-blue-500"></i>
+                                            Target Baru
+                                        </label>
+                                        <div class="relative">
+                                            <div class="absolute left-0 top-0 bottom-0 w-10 bg-blue-50 rounded-l-lg border-r border-blue-200 flex items-center justify-center">
+                                                <span class="text-blue-600 font-bold text-xs">Rp</span>
+                                            </div>
+                                            <input type="text" 
+                                                   id="targetInput" 
+                                                   class="w-full pl-12 pr-3 py-2.5 text-sm border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all font-bold text-slate-800 hover:border-blue-300"
+                                                   placeholder="50.000.000"
+                                                   value="{{ number_format($targetAchievement['target'], 0, ',', '.') }}">
                                         </div>
-                                        <span class="text-xs font-bold text-green-600">Rp {{ number_format($targetAchievement['perlu_per_hari'] / 1000, 0) }}k</span>
+                                        <p class="text-[10px] text-slate-500 mt-1 ml-1">
+                                            <i class="fas fa-info-circle mr-1"></i>
+                                            Gunakan titik sebagai pemisah ribuan
+                                        </p>
                                     </div>
-                                    <div class="flex items-center text-xs text-slate-600">
-                                        <i class="far fa-clock mr-1"></i>
-                                        <span>{{ (int) $targetAchievement['sisa_hari'] }} hari tersisa bulan ini</span>
+
+                                    <!-- Preview Card -->
+                                    <div class="p-3 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg border-2 border-blue-200">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-[10px] font-bold text-slate-600">PREVIEW</span>
+                                            <span id="previewBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-200 text-blue-700">
+                                                Target Baru
+                                            </span>
+                                        </div>
+                                        <div class="flex items-center justify-center py-2">
+                                            <span id="targetPreview" class="text-lg font-bold text-blue-600 tabular-nums">
+                                                Rp {{ number_format($targetAchievement['target'], 0, ',', '.') }}
+                                            </span>
+                                        </div>
+                                        <div id="targetDiff" class="hidden mt-2 pt-2 border-t-2 border-dashed border-blue-300 text-center">
+                                            <span id="diffText" class="text-xs font-bold"></span>
+                                        </div>
                                     </div>
-                                </div>
+
+                                    <!-- Action Buttons -->
+                                    <div class="flex gap-2 pt-1">
+                                        <button type="button" 
+                                                onclick="cancelEdit()" 
+                                                class="flex-1 px-3 py-2 text-xs font-bold text-slate-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 flex items-center justify-center gap-1.5">
+                                            <i class="fas fa-times text-xs"></i>
+                                            Batal
+                                        </button>
+                                        <button type="submit" 
+                                                class="flex-1 px-3 py-2 text-xs font-bold text-slate-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 flex items-center justify-center gap-1.5">
+                                            <i class="fas fa-check text-xs"></i>
+                                            Simpan
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -609,100 +665,33 @@
     </div>
 </div>
 
-<!-- Popup Edit Target Bulanan (Quick Actions Style) -->
-<div id="editTargetPopup" class="hidden absolute z-50">
-    <div class="w-80 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden">
-        <!-- Header -->
-        <div class="px-4 py-3 bg-gradient-to-r from-purple-50 to-indigo-50 border-b border-gray-100">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-tl from-purple-600 to-indigo-400 mr-2">
-                        <i class="fas fa-bullseye text-white text-sm"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-sm font-bold text-slate-800">Edit Target Bulanan</h3>
-                        <p class="text-xs text-slate-500">Atur target pendapatan</p>
-                    </div>
-                </div>
-                <button onclick="closeEditTargetPopup()" class="text-gray-400 hover:text-gray-600 transition-colors">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- Body -->
-        <form id="editTargetForm" class="p-4">
-            <div class="mb-4">
-                <label for="targetBulanan" class="block text-xs font-semibold text-slate-700 mb-2">
-                    Target Pendapatan Bulanan
-                </label>
-                <div class="relative">
-                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-600 text-sm font-semibold pointer-events-none">Rp</span>
-                    <input type="text" 
-                           id="targetBulanan" 
-                           name="target_bulanan" 
-                           class="w-full pl-11 pr-4 py-2.5 text-sm border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all font-semibold text-slate-800 tracking-wide"
-                           placeholder="50.000.000"
-                           value="{{ number_format($targetAchievement['target'], 0, ',', '.') }}"
-                           required>
-                </div>
-                <p class="mt-1.5 text-xs text-slate-500">
-                    <i class="fas fa-info-circle mr-1"></i>
-                    Gunakan titik (.) sebagai pemisah ribuan
-                </p>
-            </div>
-
-            <!-- Preview -->
-            <div class="mb-4 p-4 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg border border-purple-200">
-                <div class="flex justify-between items-center mb-3 pb-3 border-b border-purple-200">
-                    <div class="flex items-center">
-                        <span class="text-xs font-medium text-slate-600">
-                            <i class="fas fa-tag mr-1.5 text-slate-400"></i>
-                            Target Saat Ini
-                        </span>
-                    </div>
-                    <span class="text-base font-bold text-slate-800 tracking-wide tabular-nums">Rp {{ number_format($targetAchievement['target'], 0, ',', '.') }}</span>
-                </div>
-                <div class="flex justify-between items-center">
-                    <div class="flex items-center">
-                        <span class="text-xs font-medium text-purple-700">
-                            <i class="fas fa-arrow-right mr-1.5"></i>
-                            Target Baru
-                        </span>
-                    </div>
-                    <span id="newTargetPreview" class="text-base font-bold text-purple-600 transition-all duration-300 tracking-wide tabular-nums">Rp {{ number_format($targetAchievement['target'], 0, ',', '.') }}</span>
-                </div>
-                <div id="targetDifference" class="mt-3 pt-3 border-t border-purple-200 text-center hidden">
-                    <div class="inline-flex items-center justify-center gap-1.5">
-                        <span id="differenceLabel" class="text-xs font-medium text-slate-600"></span>
-                        <span id="differenceAmount" class="text-xs font-bold tabular-nums"></span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Actions -->
-            <div class="flex gap-2">
-                <button type="button" 
-                        onclick="closeEditTargetPopup()" 
-                        class="flex-1 px-3 py-2 text-xs font-semibold text-slate-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all duration-200">
-                    <i class="fas fa-times mr-1"></i>
-                    Batal
-                </button>
-                <button type="submit" 
-                        class="flex-1 px-3 py-2 text-xs font-semibold text-white bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl">
-                    <i class="fas fa-save mr-1"></i>
-                    Simpan
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-
 </div>
 </div>
 @endsection
 
 @push('scripts')
+<style>
+/* Smooth transition animations */
+#viewMode, #editMode {
+    transition: all 0.3s ease-in-out;
+}
+
+#target-bulanan-card {
+    transition: all 0.3s ease;
+}
+
+/* Scale animation for preview */
+.scale-110 {
+    transform: scale(1.1);
+    transition: transform 0.2s ease-out;
+}
+
+/* Smooth input focus */
+#targetInput:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+</style>
 <script src="{{ asset('assets/js/plugins/chartjs.min.js') }}"></script>
 <script>
 // Chart.js Horizontal Bar Chart Configuration for Daily Revenue
@@ -1099,29 +1088,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Quick Actions Dropdown Toggle
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM Loaded - Quick Actions Script Running');
-    
     const quickActionsBtn = document.getElementById('quickActionsBtn');
     const quickActionsMenu = document.getElementById('quickActionsMenu');
     const quickActionsChevron = document.getElementById('quickActionsChevron');
     
-    console.log('Button:', quickActionsBtn);
-    console.log('Menu:', quickActionsMenu);
-    console.log('Chevron:', quickActionsChevron);
-    
     if (quickActionsBtn && quickActionsMenu && quickActionsChevron) {
-        console.log('All elements found! Setting up event listeners...');
-        
-        // Toggle dropdown
         quickActionsBtn.addEventListener('click', function(e) {
-            console.log('Button clicked!');
             e.preventDefault();
             e.stopPropagation();
             quickActionsMenu.classList.toggle('hidden');
             quickActionsChevron.classList.toggle('rotate-180');
         });
         
-        // Close dropdown when clicking outside
         document.addEventListener('click', function(e) {
             if (!quickActionsBtn.contains(e.target) && !quickActionsMenu.contains(e.target)) {
                 quickActionsMenu.classList.add('hidden');
@@ -1129,42 +1107,29 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Close dropdown when pressing Escape
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 quickActionsMenu.classList.add('hidden');
                 quickActionsChevron.classList.remove('rotate-180');
             }
         });
-    } else {
-        console.error('Some elements not found!');
     }
 });
 
-// Popup Functions for Edit Target (Quick Actions Style)
+// Popup Functions for Edit Target
 function openEditTargetModal() {
     const popup = document.getElementById('editTargetPopup');
-    const button = event.currentTarget;
-    const rect = button.getBoundingClientRect();
+    const card = document.getElementById('target-bulanan-card');
+    if (!popup || !card) return;
+
+    const cardRect = card.getBoundingClientRect();
     
-    // Position popup below the button
-    popup.style.position = 'fixed';
-    popup.style.top = (rect.bottom + 8) + 'px';
-    popup.style.left = rect.left + 'px';
+    // Position top-right of the card, with a small offset
+    popup.style.left = `${cardRect.right - popup.offsetWidth}px`;
+    popup.style.top = `${cardRect.top + window.scrollY}px`;
+    popup.style.transform = 'none';
     
-    // Show popup
     popup.classList.remove('hidden');
-    
-    // Adjust if popup goes off screen
-    setTimeout(() => {
-        const popupRect = popup.getBoundingClientRect();
-        if (popupRect.right > window.innerWidth) {
-            popup.style.left = (window.innerWidth - popupRect.width - 16) + 'px';
-        }
-        if (popupRect.bottom > window.innerHeight) {
-            popup.style.top = (rect.top - popupRect.height - 8) + 'px';
-        }
-    }, 10);
 }
 
 function closeEditTargetPopup() {
@@ -1181,43 +1146,31 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentTarget = {{ $targetAchievement['target'] }};
     
     if (targetInput) {
-        // Format on input
         targetInput.addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\./g, ''); // Remove dots
-            value = value.replace(/\D/g, ''); // Remove non-digits
+            let value = e.target.value.replace(/\./g, '');
+            value = value.replace(/\D/g, '');
             
             if (value) {
-                // Format with thousand separator using Indonesian locale
                 const numValue = parseInt(value);
                 const formatted = numValue.toLocaleString('id-ID');
                 e.target.value = formatted;
                 
-                // Update preview with animation
                 if (newTargetPreview) {
-                    newTargetPreview.classList.add('scale-110', 'opacity-80');
-                    setTimeout(() => {
-                        newTargetPreview.textContent = 'Rp ' + formatted;
-                        newTargetPreview.classList.remove('scale-110', 'opacity-80');
-                    }, 150);
+                    newTargetPreview.textContent = 'Rp ' + formatted;
                 }
                 
-                // Calculate and show difference
                 if (targetDifference && differenceLabel && differenceAmount) {
                     const difference = numValue - currentTarget;
                     
                     if (difference !== 0) {
                         targetDifference.classList.remove('hidden');
-                        
                         const formattedDiff = Math.abs(difference).toLocaleString('id-ID');
-                        
                         if (difference > 0) {
-                            // Increase
                             differenceLabel.textContent = 'Kenaikan:';
                             differenceLabel.className = 'text-xs font-medium text-green-600';
                             differenceAmount.className = 'text-xs font-bold tabular-nums text-green-600';
                             differenceAmount.innerHTML = '<i class="fas fa-arrow-up text-[10px] mr-1"></i>Rp ' + formattedDiff;
                         } else {
-                            // Decrease
                             differenceLabel.textContent = 'Penurunan:';
                             differenceLabel.className = 'text-xs font-medium text-red-600';
                             differenceAmount.className = 'text-xs font-bold tabular-nums text-red-600';
@@ -1237,13 +1190,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Format on focus - select all for easy editing
         targetInput.addEventListener('focus', function(e) {
             e.target.select();
         });
     }
     
-    // Handle form submission
     const editTargetForm = document.getElementById('editTargetForm');
     if (editTargetForm) {
         editTargetForm.addEventListener('submit', function(e) {
@@ -1256,13 +1207,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            // Show loading
             const submitBtn = editTargetForm.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Menyimpan...';
             
-            // Send AJAX request
             fetch('{{ route("dashboard.update-target") }}', {
                 method: 'POST',
                 headers: {
@@ -1276,10 +1225,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Show success message
                     alert('Target bulanan berhasil diperbarui!');
-                    
-                    // Reload page to reflect changes
                     window.location.reload();
                 } else {
                     throw new Error(data.message || 'Gagal menyimpan target');
@@ -1299,7 +1245,7 @@ document.addEventListener('click', function(e) {
     const popup = document.getElementById('editTargetPopup');
     const editButton = document.querySelector('button[onclick="openEditTargetModal()"]');
     
-    if (popup && !popup.contains(e.target) && editButton && !editButton.contains(e.target)) {
+    if (popup && !popup.classList.contains('hidden') && !popup.contains(e.target) && editButton && !editButton.contains(e.target)) {
         popup.classList.add('hidden');
     }
 });
@@ -1307,8 +1253,177 @@ document.addEventListener('click', function(e) {
 // Close popup on ESC key
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
-        closeEditTargetPopup();
+        const editMode = document.getElementById('editMode');
+        if (editMode && !editMode.classList.contains('hidden')) {
+            cancelEdit();
+        }
     }
 });
+
+// Inline Edit Target Functions
+function toggleEditTarget() {
+    const viewMode = document.getElementById('viewMode');
+    const editMode = document.getElementById('editMode');
+    const editBtn = document.getElementById('editTargetBtn');
+    const editBtnText = document.getElementById('editBtnText');
+    const card = document.getElementById('target-bulanan-card');
+    
+    if (viewMode && editMode && editBtn) {
+        if (editMode.classList.contains('hidden')) {
+            // Switch to Edit Mode
+            viewMode.classList.add('hidden');
+            editMode.classList.remove('hidden');
+            editBtn.classList.add('bg-red-100', 'text-red-700');
+            editBtn.classList.remove('bg-slate-100', 'text-slate-700');
+            editBtnText.textContent = 'Batal';
+            card.classList.add('ring-2', 'ring-blue-400', 'shadow-xl');
+            
+            // Focus input
+            setTimeout(() => {
+                const input = document.getElementById('targetInput');
+                if (input) {
+                    input.focus();
+                    input.select();
+                }
+            }, 100);
+        } else {
+            // Cancel Edit
+            cancelEdit();
+        }
+    }
+}
+
+function cancelEdit() {
+    const viewMode = document.getElementById('viewMode');
+    const editMode = document.getElementById('editMode');
+    const editBtn = document.getElementById('editTargetBtn');
+    const editBtnText = document.getElementById('editBtnText');
+    const card = document.getElementById('target-bulanan-card');
+    const input = document.getElementById('targetInput');
+    
+    // Reset to original value
+    if (input) {
+        input.value = '{{ number_format($targetAchievement["target"], 0, ",", ".") }}';
+    }
+    
+    // Switch back to View Mode
+    if (viewMode && editMode && editBtn) {
+        editMode.classList.add('hidden');
+        viewMode.classList.remove('hidden');
+        editBtn.classList.remove('bg-red-100', 'text-red-700');
+        editBtn.classList.add('bg-slate-100', 'text-slate-700');
+        editBtnText.textContent = 'Edit';
+        card.classList.remove('ring-2', 'ring-blue-400', 'shadow-xl');
+    }
+}
+
+// Format number input and update preview for inline edit
+document.addEventListener('DOMContentLoaded', function() {
+    const targetInput = document.getElementById('targetInput');
+    const targetPreview = document.getElementById('targetPreview');
+    const targetDiff = document.getElementById('targetDiff');
+    const diffText = document.getElementById('diffText');
+    const currentTarget = {{ $targetAchievement['target'] }};
+    
+    if (targetInput) {
+        targetInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\./g, '');
+            value = value.replace(/\D/g, '');
+            
+            if (value) {
+                const numValue = parseInt(value);
+                const formatted = numValue.toLocaleString('id-ID');
+                e.target.value = formatted;
+                
+                // Update preview
+                if (targetPreview) {
+                    targetPreview.textContent = 'Rp ' + formatted;
+                    targetPreview.classList.add('scale-110');
+                    setTimeout(() => targetPreview.classList.remove('scale-110'), 200);
+                }
+                
+                // Show difference
+                if (targetDiff && diffText) {
+                    const difference = numValue - currentTarget;
+                    if (difference !== 0) {
+                        targetDiff.classList.remove('hidden');
+                        const percentage = ((Math.abs(difference) / currentTarget) * 100).toFixed(1);
+                        const icon = difference > 0 ? '↑' : '↓';
+                        const color = difference > 0 ? 'text-green-600' : 'text-red-600';
+                        const sign = difference > 0 ? '+' : '-';
+                        
+                        diffText.className = `text-xs font-bold ${color}`;
+                        diffText.innerHTML = `${icon} ${sign}Rp ${Math.abs(difference).toLocaleString('id-ID')} (${percentage}%)`;
+                    } else {
+                        targetDiff.classList.add('hidden');
+                    }
+                }
+            } else {
+                if (targetPreview) targetPreview.textContent = 'Rp 0';
+                if (targetDiff) targetDiff.classList.add('hidden');
+            }
+        });
+        
+        targetInput.addEventListener('focus', function(e) {
+            e.target.select();
+        });
+    }
+    
+    // Handle form submission
+    const editTargetForm = document.getElementById('editTargetForm');
+    if (editTargetForm) {
+        editTargetForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const targetValue = targetInput.value.replace(/\./g, '');
+            
+            if (!targetValue || parseInt(targetValue) <= 0) {
+                alert('Target harus lebih dari 0!');
+                return;
+            }
+            
+            const submitBtn = editTargetForm.querySelector('button[type="submit"]');
+            const originalHTML = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Menyimpan...';
+            
+            fetch('{{ route("dashboard.update-target") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    target_bulanan: parseInt(targetValue)
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show success message
+                    submitBtn.innerHTML = '<i class="fas fa-check mr-2"></i>Tersimpan!';
+                    submitBtn.classList.remove('from-blue-500', 'to-blue-600');
+                    submitBtn.classList.add('from-green-500', 'to-green-600');
+                    
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 800);
+                } else {
+                    alert(data.message || 'Gagal menyimpan target');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalHTML;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat menyimpan');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalHTML;
+            });
+        });
+    }
+});
+
+// Draggable functionality removed as requested.
 </script>
 @endpush

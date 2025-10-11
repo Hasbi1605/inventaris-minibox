@@ -114,7 +114,7 @@ class KelolaTransaksiController extends Controller
     {
         try {
             Log::info('Menampilkan transaksi dengan ID: ' . $id);
-            $transaksi = Transaksi::with(['layanan', 'produk'])->findOrFail($id);
+            $transaksi = Transaksi::with(['layanan', 'produk', 'kapster', 'cabang'])->findOrFail($id);
             return view('pages.kelola-transaksi.show', compact('transaksi'));
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             Log::error("Error menampilkan transaksi: " . $e->getMessage(), [
@@ -206,6 +206,35 @@ class KelolaTransaksiController extends Controller
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             Log::error("Error menghapus transaksi: " . $e->getMessage(), [
                 'request' => request()->all(),
+                'trace' => $e->getTraceAsString(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ]);
+            return redirect()->route('kelola-transaksi.index')
+                ->with('error', 'Transaksi tidak ditemukan');
+        }
+    }
+
+    /**
+     * Cetak struk transaksi
+     */
+    public function cetakStruk(string $id)
+    {
+        try {
+            Log::info('Mencetak struk transaksi dengan ID: ' . $id);
+
+            $transaksi = Transaksi::with(['layanan', 'cabang', 'kapster', 'produk'])->findOrFail($id);
+
+            // Check if transaction is completed
+            if ($transaksi->status !== 'selesai') {
+                return redirect()->back()
+                    ->with('error', 'Hanya transaksi dengan status "Selesai" yang dapat dicetak struknya.');
+            }
+
+            return view('pages.kelola-transaksi.cetak-struk', compact('transaksi'));
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error("Error mencetak struk: " . $e->getMessage(), [
+                'id' => $id,
                 'trace' => $e->getTraceAsString(),
                 'file' => $e->getFile(),
                 'line' => $e->getLine()

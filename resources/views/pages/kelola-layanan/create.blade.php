@@ -39,7 +39,7 @@
                     <p class="text-sm leading-normal text-slate-400">Isi form di bawah untuk menambahkan layanan baru</p>
                 </div>
                 <div class="flex-auto px-6 pt-0 pb-6">
-                    <form action="{{ route('kelola-layanan.store') }}" method="POST">
+                    <form action="{{ route('kelola-layanan.store') }}" method="POST" id="layanan-form">
                         @csrf
                         
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -110,44 +110,15 @@
                                 @enderror
                             </div>
 
-                            <!-- Harga Base/Default -->
-                            <div class="col-span-1 lg:col-span-2">
-                                <label for="harga" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Harga Base/Default <span class="text-red-500">*</span>
-                                </label>
-                                <div class="flex">
-                                    <span class="inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-r-0 border-gray-300 rounded-l-lg">
-                                        Rp
-                                    </span>
-                                    <input 
-                                        type="number" 
-                                        name="harga" 
-                                        id="harga"
-                                        value="{{ old('harga') }}"
-                                        class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-none rounded-r-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('harga') border-red-500 @enderror"
-                                        placeholder="0"
-                                        min="0"
-                                        step="1000"
-                                        required
-                                    />
-                                </div>
-                                <div class="text-xs text-slate-500 mt-1">
-                                    Harga default yang akan digunakan jika tidak ada harga spesifik per cabang
-                                </div>
-                                @error('harga')
-                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
                             <!-- Cabang & Harga Spesifik -->
                             <div class="col-span-1 lg:col-span-2">
                                 <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
                                     <label class="inline-block mb-3 font-bold text-sm text-slate-700">
-                                        <i class="fas fa-store mr-2"></i>Tersedia di Cabang & Harga Spesifik <span class="text-red-500">*</span>
+                                        <i class="fas fa-store mr-2"></i>Pilih Cabang & Set Harga <span class="text-red-500">*</span>
                                     </label>
-                                    <p class="text-xs text-slate-600 mb-4">Pilih cabang dan set harga spesifik (kosongkan untuk menggunakan harga base)</p>
+                                    <p class="text-xs text-slate-600 mb-4">Pilih cabang dan tentukan harga layanan untuk masing-masing cabang</p>
                                     
-                                    <div class="space-y-4">
+                                    <div class="space-y-4" id="cabang-list-container">
                                         @foreach($cabangList as $cabang)
                                         <div class="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-blue-300 transition-all">
                                             <div class="flex items-center h-5 mt-1">
@@ -167,26 +138,25 @@
                                                 </label>
                                                 <p class="text-xs text-slate-500">{{ $cabang->alamat ?? 'Alamat belum diisi' }}</p>
                                                 
-                                                <!-- Input Harga Per Cabang (Hidden by default) -->
+                                                <!-- Input Harga Per Cabang -->
                                                 <div id="harga_container_{{ $cabang->id }}" class="mt-3 hidden">
                                                     <label class="inline-block mb-1 text-xs font-semibold text-slate-600">
-                                                        Harga Khusus di {{ $cabang->nama_cabang }}
+                                                        Harga di {{ $cabang->nama_cabang }} <span class="text-red-500">*</span>
                                                     </label>
                                                     <div class="flex">
                                                         <span class="inline-flex items-center px-3 text-xs text-gray-700 bg-gray-100 border border-r-0 border-gray-300 rounded-l-lg">
                                                             Rp
                                                         </span>
                                                         <input 
-                                                            type="number" 
-                                                            name="harga_cabang[{{ $cabang->id }}]" 
-                                                            id="harga_cabang_{{ $cabang->id }}"
-                                                            value="{{ old('harga_cabang.'.$cabang->id) }}"
-                                                            class="focus:shadow-soft-primary-outline text-xs leading-5.6 ease-soft block w-full appearance-none rounded-none rounded-r-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow"
-                                                            placeholder="Kosongkan untuk pakai harga base"
-                                                            min="0"
-                                                            step="1000"
+                                                            type="text" 
+                                                            id="harga_cabang_formatted_{{ $cabang->id }}"
+                                                            class="harga-cabang-formatted focus:shadow-soft-primary-outline text-xs leading-5.6 ease-soft block w-full appearance-none rounded-none rounded-r-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow"
+                                                            placeholder="0"
+                                                            inputmode="numeric"
+                                                            data-cabang-id="{{ $cabang->id }}"
                                                         />
                                                     </div>
+                                                    <input type="hidden" name="harga_cabang[{{ $cabang->id }}]" id="harga_cabang_{{ $cabang->id }}" value="{{ old('harga_cabang.'.$cabang->id) }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -198,7 +168,7 @@
                                     @enderror
                                     <div class="text-xs text-slate-500 mt-3">
                                         <i class="fas fa-info-circle mr-1"></i>
-                                        Minimal pilih 1 cabang
+                                        Pilih minimal 1 cabang dan tentukan harga untuk setiap cabang yang dipilih
                                     </div>
                                 </div>
                             </div>
@@ -222,34 +192,77 @@
         </div>
     </div>
 </div>
+@endsection
 
+@push('scripts')
 <script>
 // Toggle visibility of harga input per cabang
 function toggleHargaCabang(cabangId) {
     const checkbox = document.getElementById('cabang_' + cabangId);
     const hargaContainer = document.getElementById('harga_container_' + cabangId);
     const hargaInput = document.getElementById('harga_cabang_' + cabangId);
+    const hargaFormattedInput = document.getElementById('harga_cabang_formatted_' + cabangId);
     
     if (checkbox.checked) {
         hargaContainer.classList.remove('hidden');
     } else {
         hargaContainer.classList.add('hidden');
         hargaInput.value = ''; // Clear value when unchecked
+        hargaFormattedInput.value = ''; // Clear formatted value
     }
 }
 
-// Initialize on page load (for old input values)
 document.addEventListener('DOMContentLoaded', function() {
+    const container = document.getElementById('cabang-list-container');
+
+    // --- Number Formatting Functions ---
+    function formatNumber(value) {
+        if (!value) return '';
+        return new Intl.NumberFormat('id-ID').format(value);
+    }
+
+    function unformatNumber(value) {
+        return value.replace(/\./g, '');
+    }
+
+    // --- Event Delegation for Formatting ---
+    container.addEventListener('input', function(e) {
+        // Check if the input is a formatted-harga field
+        if (e.target && e.target.classList.contains('harga-cabang-formatted')) {
+            const formattedInput = e.target;
+            const cabangId = formattedInput.dataset.cabangId;
+            const hiddenInput = document.getElementById('harga_cabang_' + cabangId);
+
+            const rawValue = unformatNumber(formattedInput.value);
+            if (isNaN(rawValue)) {
+                hiddenInput.value = '';
+                formattedInput.value = '';
+            } else {
+                hiddenInput.value = rawValue;
+                formattedInput.value = formatNumber(rawValue);
+            }
+        }
+    });
+
+    // --- Initialize on page load (for old input values) ---
     const checkboxes = document.querySelectorAll('.cabang-checkbox');
     checkboxes.forEach(function(checkbox) {
+        const cabangId = checkbox.value;
         if (checkbox.checked) {
-            const cabangId = checkbox.value;
+            // Show container
             const hargaContainer = document.getElementById('harga_container_' + cabangId);
             if (hargaContainer) {
                 hargaContainer.classList.remove('hidden');
+            }
+
+            // Format initial value
+            const hiddenInput = document.getElementById('harga_cabang_' + cabangId);
+            const formattedInput = document.getElementById('harga_cabang_formatted_' + cabangId);
+            if (hiddenInput && formattedInput && hiddenInput.value) {
+                formattedInput.value = formatNumber(hiddenInput.value);
             }
         }
     });
 });
 </script>
-@endsection
+@endpush

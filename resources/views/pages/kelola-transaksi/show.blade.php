@@ -74,6 +74,22 @@
                             </div>
                         </div>
 
+                        <!-- Kapster -->
+                        <div>
+                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Kapster</label>
+                            <div class="p-3 bg-gray-50 rounded-lg border">
+                                <p class="mb-0 text-slate-600 font-semibold">{{ $transaksi->kapster->nama_kapster ?? 'Kapster tidak ditemukan' }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Cabang -->
+                        <div>
+                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Cabang</label>
+                            <div class="p-3 bg-gray-50 rounded-lg border">
+                                <p class="mb-0 text-slate-600 font-semibold">{{ $transaksi->cabang->nama_cabang ?? 'Cabang tidak ditemukan' }}</p>
+                            </div>
+                        </div>
+
                         <!-- Total Harga -->
                         <div>
                             <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Total Harga</label>
@@ -244,7 +260,8 @@
 
                         @if($transaksi->status === 'selesai')
                             <!-- Print Receipt Action -->
-                            <a href="#" onclick="alert('Fitur cetak struk belum tersedia.')" 
+                            <a href="{{ route('kelola-transaksi.cetak-struk', $transaksi->id) }}" 
+                                target="_blank"
                                 class="flex items-center justify-center w-full px-4 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-600 to-cyan-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
                                 <i class="fas fa-print mr-2"></i>
                                 Cetak Struk

@@ -85,11 +85,31 @@
                             </div>
                         </div>
 
-                        <!-- Harga -->
+                        <!-- Harga Per Cabang -->
                         <div class="md:col-span-2">
-                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Harga</label>
-                            <div class="p-3 bg-gray-50 rounded-lg border">
-                                <p class="mb-0 text-slate-600 font-semibold text-lg">{{ $layanan->formatted_harga }}</p>
+                            <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                <i class="fas fa-store mr-2"></i>Harga Per Cabang
+                            </label>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                @forelse($layanan->cabangs as $cabang)
+                                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <p class="text-xs font-semibold text-slate-600 mb-1">{{ $cabang->nama_cabang }}</p>
+                                                <p class="text-sm font-bold text-blue-600">{{ number_format($cabang->pivot->harga, 0, ',', '.') != '0' ? 'Rp ' . number_format($cabang->pivot->harga, 0, ',', '.') : 'Rp 0' }}</p>
+                                            </div>
+                                            <div>
+                                                <span class="inline-block px-2 py-1 text-xs font-semibold rounded-full {{ $cabang->pivot->status == 'aktif' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-600' }}">
+                                                    {{ ucfirst($cabang->pivot->status) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @empty
+                                    <div class="col-span-2 p-3 bg-gray-50 rounded-lg border text-center">
+                                        <p class="text-sm text-slate-500">Belum tersedia di cabang manapun</p>
+                                    </div>
+                                @endforelse
                             </div>
                         </div>
 
@@ -125,17 +145,11 @@
                             </div>
                         </div>
 
-                        <!-- Price Range Indicator -->
+                        <!-- Jumlah Cabang -->
                         <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                            <span class="text-sm font-medium text-slate-600">Kategori Harga</span>
-                            <span class="text-sm font-semibold">
-                                @if($layanan->harga < 50000)
-                                    <span class="text-black-600">Ekonomis</span>
-                                @elseif($layanan->harga < 100000)
-                                    <span class="text-black-600">Standar</span>
-                                @else
-                                    <span class="text-black-600">Premium</span>
-                                @endif
+                            <span class="text-sm font-medium text-slate-600">Tersedia di</span>
+                            <span class="text-sm font-semibold text-blue-600">
+                                {{ $layanan->cabangs->count() }} Cabang
                             </span>
                         </div>
                     </div>

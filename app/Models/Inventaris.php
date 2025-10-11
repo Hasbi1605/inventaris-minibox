@@ -103,6 +103,20 @@ class Inventaris extends Model
     // Accessor untuk nama kategori
     public function getNamaKategoriAttribute()
     {
-        return $this->kategori ? $this->kategori->nama_kategori : ($this->attributes['kategori'] ?? '-');
+        // Cek apakah relasi kategori sudah dimuat dan merupakan object
+        if ($this->relationLoaded('kategori') && $this->kategori instanceof Kategori) {
+            return $this->kategori->nama_kategori;
+        }
+
+        // Jika relasi belum dimuat, coba load terlebih dahulu
+        if ($this->kategori_id) {
+            $kategori = $this->kategori()->first();
+            if ($kategori) {
+                return $kategori->nama_kategori;
+            }
+        }
+
+        // Fallback ke kolom kategori string jika ada
+        return $this->attributes['kategori'] ?? '-';
     }
 }

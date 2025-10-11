@@ -278,13 +278,13 @@
                                 </span>
                             </td>
                             <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                <span class="text-xs font-semibold leading-tight text-green-600">{{ number_format($item->komisi_potong_rambut ?? 40, 0) }}%</span>
+                                <span class="text-xs font-semibold leading-tight text-black-600">{{ number_format($item->komisi_potong_rambut ?? 40, 0) }}%</span>
                             </td>
                             <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                <span class="text-xs font-semibold leading-tight text-orange-600">{{ number_format($item->komisi_layanan_lain ?? 25, 0) }}%</span>
+                                <span class="text-xs font-semibold leading-tight text-black-600">{{ number_format($item->komisi_layanan_lain ?? 25, 0) }}%</span>
                             </td>
                             <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                <span class="text-xs font-semibold leading-tight text-purple-600">{{ number_format($item->komisi_produk ?? 25, 0) }}%</span>
+                                <span class="text-xs font-semibold leading-tight text-black-600">{{ number_format($item->komisi_produk ?? 25, 0) }}%</span>
                             </td>
                             <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
                                 <div class="flex items-center justify-center space-x-3">

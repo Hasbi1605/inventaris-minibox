@@ -70,7 +70,7 @@
                         <div>
                             <label class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">Kategori</label>
                             <div class="p-3 bg-gray-50 rounded-lg border">
-                                <p class="mb-0 text-slate-600">{{ $inventaris->kategori }}</p>
+                                <p class="mb-0 text-slate-600">{{ $inventaris->nama_kategori }}</p>
                             </div>
                         </div>
 

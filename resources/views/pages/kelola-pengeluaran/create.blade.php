@@ -39,7 +39,7 @@
                     <p class="text-sm leading-normal text-slate-400">Isi form di bawah untuk mencatat pengeluaran</p>
                 </div>
                 <div class="flex-auto px-6 pt-0 pb-6">
-                    <form action="{{ route('kelola-pengeluaran.store') }}" method="POST">
+                    <form action="{{ route('kelola-pengeluaran.store') }}" method="POST" id="pengeluaran-form">
                         @csrf
                         
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
@@ -64,7 +64,7 @@
 
                             <!-- Jumlah -->
                             <div>
-                                <label for="jumlah" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                <label for="jumlah_formatted" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
                                     Jumlah Pengeluaran <span class="text-red-500">*</span>
                                 </label>
                                 <div class="flex">
@@ -72,17 +72,15 @@
                                         Rp
                                     </span>
                                     <input 
-                                        type="number" 
-                                        name="jumlah" 
-                                        id="jumlah"
-                                        value="{{ old('jumlah') }}"
+                                        type="text" 
+                                        id="jumlah_formatted"
                                         class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-none rounded-r-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('jumlah') border-red-500 @enderror"
                                         placeholder="0"
-                                        min="0"
-                                        step="1000"
+                                        inputmode="numeric"
                                         required
                                     />
                                 </div>
+                                <input type="hidden" name="jumlah" id="jumlah" value="{{ old('jumlah') }}">
                                 @error('jumlah')
                                     <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
                                 @enderror
@@ -171,3 +169,47 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const jumlahFormattedInput = document.getElementById('jumlah_formatted');
+        const jumlahInput = document.getElementById('jumlah');
+        const form = document.getElementById('pengeluaran-form');
+
+        // Function to format number with dots
+        function formatNumber(value) {
+            if (!value) return '';
+            return new Intl.NumberFormat('id-ID').format(value);
+        }
+
+        // Function to unformat number
+        function unformatNumber(value) {
+            return value.replace(/\./g, '');
+        }
+
+        // Set initial value if any
+        if (jumlahInput.value) {
+            jumlahFormattedInput.value = formatNumber(jumlahInput.value);
+        }
+
+        // Add event listener for input
+        jumlahFormattedInput.addEventListener('input', function (e) {
+            const rawValue = unformatNumber(e.target.value);
+            if (isNaN(rawValue)) {
+                jumlahInput.value = '';
+                e.target.value = '';
+            } else {
+                jumlahInput.value = rawValue;
+                e.target.value = formatNumber(rawValue);
+            }
+        });
+
+        // Clean up formatting before form submission
+        form.addEventListener('submit', function() {
+            // The hidden 'jumlah' input already has the raw value, so no action is needed here.
+            // If we were not using a hidden field, we would unformat here.
+        });
+    });
+</script>
+@endpush

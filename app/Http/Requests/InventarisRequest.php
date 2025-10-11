@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Log;
 
 class InventarisRequest extends FormRequest
 {
@@ -19,6 +21,12 @@ class InventarisRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
+        Log::info('===== InventarisRequest prepareForValidation START =====', [
+            'method' => $this->method(),
+            'route_id' => $this->route('kelola_inventari'),
+            'all_input' => $this->all()
+        ]);
+
         // Check if this is operasional kategori
         $kategoriId = $this->input('kategori_id');
         $isOperasional = false;
@@ -32,6 +40,11 @@ class InventarisRequest extends FormRequest
             }
         }
 
+        Log::info('Kategori check', [
+            'kategori_id' => $kategoriId,
+            'is_operasional' => $isOperasional
+        ]);
+
         // If operasional, map jumlah_aset to stok fields and auto-set status
         if ($isOperasional && $this->has('jumlah_aset')) {
             $jumlah = $this->input('jumlah_aset', 1);
@@ -41,7 +54,41 @@ class InventarisRequest extends FormRequest
                 'harga_satuan' => $this->input('harga_satuan', 0),
                 'status' => 'tersedia' // Auto-set status to 'tersedia' for operasional items
             ]);
+            Log::info('Operasional item - merged fields', [
+                'stok_saat_ini' => $jumlah,
+                'status' => 'tersedia'
+            ]);
+        } else {
+            // For retail products, auto-determine status based on stock unless manually set to discontinued
+            // This is CRITICAL to fix the issue when stock is 0 and being increased
+            $currentStatus = $this->input('status');
+
+            Log::info('Retail product - determining status', [
+                'current_status' => $currentStatus,
+                'stok_saat_ini' => $this->input('stok_saat_ini'),
+                'stok_minimal' => $this->input('stok_minimal')
+            ]);
+
+            // If status is not manually set to 'discontinued', auto-determine it
+            if ($currentStatus !== 'discontinued') {
+                $stokSaatIni = (int) $this->input('stok_saat_ini', 0);
+                $stokMinimal = (int) $this->input('stok_minimal', 0);
+
+                // Auto-determine status based on stock levels
+                if ($stokSaatIni <= 0) {
+                    $this->merge(['status' => 'habis']);
+                    Log::info('Status set to: habis');
+                } elseif ($stokSaatIni <= $stokMinimal) {
+                    $this->merge(['status' => 'hampir_habis']);
+                    Log::info('Status set to: hampir_habis');
+                } else {
+                    $this->merge(['status' => 'tersedia']);
+                    Log::info('Status set to: tersedia');
+                }
+            }
         }
+
+        Log::info('===== InventarisRequest prepareForValidation END =====');
     }
 
     /**
@@ -70,7 +117,7 @@ class InventarisRequest extends FormRequest
             'kategori_id' => 'required|exists:kategoris,id',
             'cabang_id' => 'required|exists:cabang,id',
             'satuan' => 'required|string|max:50',
-            'status' => 'required|in:tersedia,habis,hampir_habis,discontinued'
+            'status' => 'nullable|in:tersedia,habis,hampir_habis,discontinued' // Made nullable since it will be auto-determined
         ];
 
         // Conditional rules based on kategori type
@@ -89,15 +136,35 @@ class InventarisRequest extends FormRequest
             $rules['jumlah_aset'] = 'nullable|integer|min:1';
         }
 
-        // Add unique rule for nama_barang per cabang (combination of nama_barang + cabang_id must be unique)
-        if ($this->isMethod('post')) {
-            // When creating: nama_barang must be unique within the same cabang
-            $rules['nama_barang'] .= '|unique:inventaris,nama_barang,NULL,id,cabang_id,' . $this->input('cabang_id');
-        } elseif ($this->isMethod('put') || $this->isMethod('patch')) {
-            // When updating: nama_barang must be unique within the same cabang, except for current record
+        // Build the unique rule for nama_barang scoped to the cabang_id
+        $uniqueRule = Rule::unique('inventaris', 'nama_barang')
+            ->where(function ($query) {
+                return $query->where('cabang_id', $this->input('cabang_id'));
+            });
+
+        // If updating, ignore the current inventaris ID
+        if ($this->isMethod('put') || $this->isMethod('patch')) {
+            // Get ID from route parameter - Laravel resource uses singular form without 's'
             $inventarisId = $this->route('kelola_inventari');
-            $rules['nama_barang'] .= '|unique:inventaris,nama_barang,' . $inventarisId . ',id,cabang_id,' . $this->input('cabang_id');
+
+            // CRITICAL FIX: Pastikan ID valid sebelum ignore
+            if ($inventarisId) {
+                $uniqueRule->ignore($inventarisId, 'id');
+                Log::info('Ignoring current record in unique validation', [
+                    'inventaris_id' => $inventarisId,
+                    'nama_barang' => $this->input('nama_barang'),
+                    'cabang_id' => $this->input('cabang_id')
+                ]);
+            }
         }
+
+        // Assign the complete rule set for nama_barang
+        $rules['nama_barang'] = [
+            'required',
+            'string',
+            'max:255',
+            $uniqueRule,
+        ];
 
         return $rules;
     }

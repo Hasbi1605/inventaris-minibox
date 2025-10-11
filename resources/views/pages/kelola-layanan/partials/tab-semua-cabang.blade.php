@@ -98,7 +98,6 @@
                         <tr>
                             <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Nama Layanan</th>
                             <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Kategori</th>
-                            <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Harga Base</th>
                             <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Tersedia di</th>
                             <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Status</th>
                             <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Aksi</th>
@@ -118,11 +117,6 @@
                             <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
                                 <span class="text-xs font-semibold leading-tight text-slate-600">
                                     {{ $item->kategori->nama_kategori ?? '-' }}
-                                </span>
-                            </td>
-                            <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                <span class="text-xs font-semibold leading-tight text-slate-600">
-                                    {{ $item->formatted_harga }}
                                 </span>
                             </td>
                             <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
@@ -173,7 +167,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="p-6 text-center">
+                            <td colspan="5" class="p-6 text-center">
                                 <p class="text-slate-400">Belum ada data layanan.</p>
                             </td>
                         </tr>

@@ -124,15 +124,15 @@
                             <p class="mb-0 text-xs text-slate-300">Rp {{ number_format($item['total_nilai_transaksi'], 0, ',', '.') }}</p>
                         </td>
                         <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                            <span class="text-xs font-semibold leading-tight text-green-600">Rp {{ number_format($item['komisi_layanan_potong_rambut'], 0, ',', '.') }}</span>
+                            <span class="text-xs font-semibold leading-tight text-black-600">Rp {{ number_format($item['komisi_layanan_potong_rambut'], 0, ',', '.') }}</span>
                             <p class="mb-0 text-xs text-slate-300">{{ $item['jumlah_transaksi_potong_rambut'] }}x ({{ number_format($item['persen_komisi_potong_rambut'], 0) }}%)</p>
                         </td>
                         <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                            <span class="text-xs font-semibold leading-tight text-orange-600">Rp {{ number_format($item['komisi_layanan_lain'], 0, ',', '.') }}</span>
+                            <span class="text-xs font-semibold leading-tight text-black-600">Rp {{ number_format($item['komisi_layanan_lain'], 0, ',', '.') }}</span>
                             <p class="mb-0 text-xs text-slate-300">{{ $item['jumlah_transaksi_layanan_lain'] }}x ({{ number_format($item['persen_komisi_layanan_lain'], 0) }}%)</p>
                         </td>
                         <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                            <span class="text-xs font-semibold leading-tight text-purple-600">Rp {{ number_format($item['komisi_produk'], 0, ',', '.') }}</span>
+                            <span class="text-xs font-semibold leading-tight text-black-600">Rp {{ number_format($item['komisi_produk'], 0, ',', '.') }}</span>
                             <p class="mb-0 text-xs text-slate-300">{{ $item['jumlah_produk_terjual'] }}x ({{ number_format($item['persen_komisi_produk'], 0) }}%)</p>
                         </td>
                         <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
@@ -169,13 +169,13 @@
                             <span class="text-xs font-bold leading-tight text-slate-700">{{ number_format($laporanGaji['summary']['total_transaksi']) }}</span>
                         </td>
                         <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                            <span class="text-xs font-bold leading-tight text-green-600">Rp {{ number_format($laporanGaji['summary']['total_komisi_potong_rambut'], 0, ',', '.') }}</span>
+                            <span class="text-xs font-bold leading-tight text-black-600">Rp {{ number_format($laporanGaji['summary']['total_komisi_potong_rambut'], 0, ',', '.') }}</span>
                         </td>
                         <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                            <span class="text-xs font-bold leading-tight text-orange-600">Rp {{ number_format($laporanGaji['summary']['total_komisi_layanan_lain'], 0, ',', '.') }}</span>
+                            <span class="text-xs font-bold leading-tight text-black-600">Rp {{ number_format($laporanGaji['summary']['total_komisi_layanan_lain'], 0, ',', '.') }}</span>
                         </td>
                         <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                            <span class="text-xs font-bold leading-tight text-purple-600">Rp {{ number_format($laporanGaji['summary']['total_komisi_produk'], 0, ',', '.') }}</span>
+                            <span class="text-xs font-bold leading-tight text-black-600">Rp {{ number_format($laporanGaji['summary']['total_komisi_produk'], 0, ',', '.') }}</span>
                         </td>
                         <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
                             <span class="text-sm font-bold leading-tight text-slate-700">Rp {{ number_format($laporanGaji['summary']['total_gaji_keseluruhan'], 0, ',', '.') }}</span>

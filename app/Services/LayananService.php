@@ -72,6 +72,9 @@ class LayananService
             // Remove cabang fields from main data
             unset($data['cabang_ids'], $data['harga_cabang']);
 
+            // Set default harga to 0 (not used anymore, harga is per cabang)
+            $data['harga'] = 0;
+
             // Create layanan
             $layanan = Layanan::create($data);
 
@@ -79,9 +82,7 @@ class LayananService
             $syncData = [];
             foreach ($cabangIds as $cabangId) {
                 $syncData[$cabangId] = [
-                    'harga' => isset($hargaCabang[$cabangId]) && !empty($hargaCabang[$cabangId])
-                        ? $hargaCabang[$cabangId]
-                        : $data['harga'], // Use base price if no specific price
+                    'harga' => $hargaCabang[$cabangId] ?? 0,
                     'status' => $data['status']
                 ];
             }
@@ -118,6 +119,9 @@ class LayananService
             // Remove cabang fields from main data
             unset($data['cabang_ids'], $data['harga_cabang']);
 
+            // Set default harga to 0 (not used anymore, harga is per cabang)
+            $data['harga'] = 0;
+
             // Update layanan
             $layanan->update($data);
 
@@ -125,9 +129,7 @@ class LayananService
             $syncData = [];
             foreach ($cabangIds as $cabangId) {
                 $syncData[$cabangId] = [
-                    'harga' => isset($hargaCabang[$cabangId]) && !empty($hargaCabang[$cabangId])
-                        ? $hargaCabang[$cabangId]
-                        : $data['harga'], // Use base price if no specific price
+                    'harga' => $hargaCabang[$cabangId] ?? 0,
                     'status' => $data['status']
                 ];
             }
