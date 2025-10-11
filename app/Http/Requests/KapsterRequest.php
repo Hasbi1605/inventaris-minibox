@@ -52,8 +52,20 @@ class KapsterRequest extends FormRequest
                 'max:15',
                 'regex:/^[0-9+\-\s()]+$/',
             ],
-            'komisi_persen' => [
-                'nullable',
+            'komisi_potong_rambut' => [
+                'required',
+                'numeric',
+                'min:0',
+                'max:100',
+            ],
+            'komisi_layanan_lain' => [
+                'required',
+                'numeric',
+                'min:0',
+                'max:100',
+            ],
+            'komisi_produk' => [
+                'required',
                 'numeric',
                 'min:0',
                 'max:100',
@@ -86,9 +98,20 @@ class KapsterRequest extends FormRequest
             'telepon.max' => 'Nomor telepon maksimal 15 karakter.',
             'telepon.regex' => 'Format nomor telepon tidak valid.',
 
-            'komisi_persen.numeric' => 'Komisi harus berupa angka.',
-            'komisi_persen.min' => 'Komisi minimal 0%.',
-            'komisi_persen.max' => 'Komisi maksimal 100%.',
+            'komisi_potong_rambut.required' => 'Komisi potong rambut wajib diisi.',
+            'komisi_potong_rambut.numeric' => 'Komisi potong rambut harus berupa angka.',
+            'komisi_potong_rambut.min' => 'Komisi potong rambut minimal 0%.',
+            'komisi_potong_rambut.max' => 'Komisi potong rambut maksimal 100%.',
+
+            'komisi_layanan_lain.required' => 'Komisi layanan lain wajib diisi.',
+            'komisi_layanan_lain.numeric' => 'Komisi layanan lain harus berupa angka.',
+            'komisi_layanan_lain.min' => 'Komisi layanan lain minimal 0%.',
+            'komisi_layanan_lain.max' => 'Komisi layanan lain maksimal 100%.',
+
+            'komisi_produk.required' => 'Komisi produk wajib diisi.',
+            'komisi_produk.numeric' => 'Komisi produk harus berupa angka.',
+            'komisi_produk.min' => 'Komisi produk minimal 0%.',
+            'komisi_produk.max' => 'Komisi produk maksimal 100%.',
         ];
     }
 
@@ -141,7 +164,9 @@ class KapsterRequest extends FormRequest
             'spesialisasi' => 'spesialisasi',
             'status' => 'status',
             'telepon' => 'nomor telepon',
-            'komisi_persen' => 'komisi',
+            'komisi_potong_rambut' => 'komisi potong rambut',
+            'komisi_layanan_lain' => 'komisi layanan lain',
+            'komisi_produk' => 'komisi produk',
         ];
     }
 }

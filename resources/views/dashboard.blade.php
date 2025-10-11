@@ -274,14 +274,20 @@
                             <div class="mb-2.5">
                                 <div class="flex items-center justify-between mb-1">
                                     <span class="text-xs font-semibold text-slate-700">Progress</span>
-                                    <span class="text-xs font-bold text-blue-600">
+                                    <span class="text-xs font-bold text-blue-600" id="targetPercentage">
                                         {{ number_format($targetAchievement['percentage'], 1) }}%
                                     </span>
                                 </div>
                                 <div class="relative">
-                                    <div class="w-full bg-gray-200 rounded-full h-6 overflow-hidden">
-                                        <div class="h-6 rounded-full transition-all duration-500 bg-gradient-to-r from-blue-500 to-blue-600" 
-                                            style="width: {{ min($targetAchievement['percentage'], 100) }}%; min-width: {{ $targetAchievement['percentage'] > 0 ? '12%' : '0%' }}">
+                                    <div class="w-full bg-gray-200 rounded-full h-6 overflow-hidden shadow-inner">
+                                        <div id="targetProgressBar" 
+                                             class="h-6 rounded-full transition-all duration-1000 ease-out bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-end px-2" 
+                                             style="width: 0%">
+                                            @if($targetAchievement['percentage'] >= 10)
+                                            <span class="text-xs font-bold text-white drop-shadow">
+                                                {{ number_format($targetAchievement['percentage'], 1) }}%
+                                            </span>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -823,7 +829,7 @@ new Chart(ctx, {
         scales: {
             x: {
                 beginAtZero: true,
-                max: 300000, // Set max to 300k
+                max: 1000000, // Set max to 1 million
                 grid: {
                     drawBorder: false,
                     display: true,
@@ -838,11 +844,11 @@ new Chart(ctx, {
                     font: {
                         size: 11
                     },
-                    stepSize: 50000, // Step every 50k: 0, 50k, 100k, 150k, 200k, 250k, 300k
+                    stepSize: 200000, // Step every 200k: 0, 200k, 400k, 600k, 800k, 1M
                     callback: function(value) {
                         if (value === 0) return 'Rp 0';
                         if (value >= 1000000) {
-                            return 'Rp ' + (value / 1000000).toFixed(1) + 'jt';
+                            return 'Rp ' + (value / 1000000).toFixed(0) + 'jt';
                         }
                         return 'Rp ' + (value / 1000).toFixed(0) + 'k';
                     }
@@ -1077,6 +1083,20 @@ new Chart(ctxDaily, {
 </script>
 
 <script>
+// Animate Progress Bar on Page Load
+document.addEventListener('DOMContentLoaded', function() {
+    const progressBar = document.getElementById('targetProgressBar');
+    if (progressBar) {
+        const targetPercentage = {{ $targetAchievement['percentage'] }};
+        const maxPercentage = Math.min(targetPercentage, 100);
+        
+        // Delay animation sedikit agar lebih smooth
+        setTimeout(() => {
+            progressBar.style.width = maxPercentage + '%';
+        }, 100);
+    }
+});
+
 // Quick Actions Dropdown Toggle
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM Loaded - Quick Actions Script Running');

@@ -63,7 +63,8 @@ class KelolaTransaksiController extends Controller
     {
         $cabangId = $request->get('cabang_id');
 
-        $layanan = $this->transaksiService->getAvailableLayanan();
+        // Get layanan with prices for the selected cabang
+        $layanan = $this->transaksiService->getAvailableLayananForCabang($cabangId);
         $inventaris = $this->transaksiService->getAvailableInventaris($cabangId);
         $kapster = Kapster::with('cabang')->where('status', 'aktif');
 
@@ -136,7 +137,8 @@ class KelolaTransaksiController extends Controller
             Log::info('Menampilkan form edit untuk transaksi dengan ID: ' . $id);
             $transaksi = Transaksi::with(['layanan', 'produk', 'cabang'])->findOrFail($id);
 
-            $layanan = $this->transaksiService->getAvailableLayanan();
+            // Get layanan with prices for the transaksi's cabang
+            $layanan = $this->transaksiService->getAvailableLayananForCabang($transaksi->cabang_id);
             $inventaris = $this->transaksiService->getAvailableInventaris($transaksi->cabang_id);
             $kapster = Kapster::with('cabang')
                 ->where('status', 'aktif')

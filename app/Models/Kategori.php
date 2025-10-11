@@ -15,6 +15,7 @@ class Kategori extends Model
         'deskripsi',
         'jenis_kategori', // inventaris, layanan, pengeluaran, cabang
         'tipe_penggunaan', // retail, operasional, both (untuk inventaris)
+        'komisi_type', // potong_rambut, layanan_lain (untuk layanan)
         'parent_id',
         'urutan',
         'status',
@@ -38,6 +39,10 @@ class Kategori extends Model
     public const TIPE_OPERASIONAL = 'operasional';
     public const TIPE_BOTH = 'both';
 
+    // Konstanta untuk komisi layanan
+    public const KOMISI_POTONG_RAMBUT = 'potong_rambut';
+    public const KOMISI_LAYANAN_LAIN = 'layanan_lain';
+
     public static function getJenisKategori()
     {
         return [
@@ -57,6 +62,14 @@ class Kategori extends Model
         ];
     }
 
+    public static function getKomisiType()
+    {
+        return [
+            self::KOMISI_POTONG_RAMBUT => 'Potong Rambut (40%)',
+            self::KOMISI_LAYANAN_LAIN => 'Layanan Lain (25%)',
+        ];
+    }
+
     /**
      * Check if kategori is for retail products
      */
@@ -71,6 +84,20 @@ class Kategori extends Model
     public function isOperasional(): bool
     {
         return in_array($this->tipe_penggunaan, [self::TIPE_OPERASIONAL, self::TIPE_BOTH]);
+    }
+
+    /**
+     * Get komisi percentage for this kategori
+     */
+    public function getKomisiPercentage(): float
+    {
+        if ($this->jenis_kategori !== self::JENIS_LAYANAN) {
+            return 0;
+        }
+
+        return $this->komisi_type === self::KOMISI_POTONG_RAMBUT
+            ? (float) Setting::get('komisi_potong_rambut', 40)
+            : (float) Setting::get('komisi_layanan_lain', 25);
     }
 
     // Relasi parent-child untuk kategori bertingkat

@@ -20,10 +20,16 @@ class Kapster extends Model
         'status',
         'telepon',
         'komisi_persen',
+        'komisi_potong_rambut',
+        'komisi_layanan_lain',
+        'komisi_produk',
     ];
 
     protected $casts = [
         'komisi_persen' => 'decimal:2',
+        'komisi_potong_rambut' => 'decimal:2',
+        'komisi_layanan_lain' => 'decimal:2',
+        'komisi_produk' => 'decimal:2',
     ];
 
     /**

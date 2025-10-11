@@ -173,6 +173,9 @@
                 </div>
                 <div class="p-4">
                     <div class="space-y-4">
+                        @php
+                            $maxValue = 20000000; // 20 juta sebagai nilai maksimal bar
+                        @endphp
                         @foreach($laporanCabang['data'] as $cabang)
                         <div>
                             <div class="flex items-center justify-between mb-2">
@@ -180,8 +183,13 @@
                                 <span class="text-sm font-bold text-slate-700">Rp {{ number_format($cabang['pendapatan'], 0, ',', '.') }}</span>
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-3">
+                                @php
+                                    $pendapatanPercent = $cabang['pendapatan'] > 0 
+                                        ? min(100, ($cabang['pendapatan'] / $maxValue * 100)) 
+                                        : 0;
+                                @endphp
                                 <div class="bg-gradient-to-r from-blue-600 to-cyan-400 h-3 rounded-full transition-all duration-500" 
-                                     style="width: {{ $laporanCabang['summary']['total_pendapatan'] > 0 ? ($cabang['pendapatan'] / $laporanCabang['summary']['total_pendapatan'] * 100) : 0 }}%">
+                                     style="width: {{ $pendapatanPercent }}%">
                                 </div>
                             </div>
                         </div>

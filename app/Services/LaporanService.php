@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\DB;
 
 class LaporanService
 {
+    protected $komisiService;
+
+    public function __construct(KomisiService $komisiService)
+    {
+        $this->komisiService = $komisiService;
+    }
+
     /**
      * Get laporan gaji dan komisi kapster
      */
@@ -26,7 +33,8 @@ class LaporanService
 
         $query = Kapster::with(['cabang', 'transaksi' => function ($q) use ($startDate, $endDate) {
             $q->whereBetween('tanggal_transaksi', [$startDate, $endDate])
-                ->where('status', 'selesai');
+                ->where('status', 'selesai')
+                ->with(['layanan.kategori', 'produk']);
         }]);
 
         if ($cabangId) {
@@ -39,28 +47,52 @@ class LaporanService
 
         $kapsters = $query->get();
 
-        $gajiData = $kapsters->map(function ($kapster) {
+        $gajiData = $kapsters->map(function ($kapster) use ($startDate, $endDate) {
+            // Gunakan KomisiService untuk perhitungan komisi
+            $komisiData = $this->komisiService->hitungKomisiKapster(
+                $kapster->id,
+                $startDate->format('Y-m-d'),
+                $endDate->format('Y-m-d')
+            );
+
             $totalTransaksi = $kapster->transaksi->count();
             $totalNilaiTransaksi = $kapster->transaksi->sum('total_harga');
-            $komisiPersen = $kapster->komisi_persen ?? 0;
-            $gajiKomisi = ($totalNilaiTransaksi * $komisiPersen) / 100;
 
             // Gaji pokok (bisa di-customize atau ambil dari database jika ada field)
             $gajiPokok = 0; // Atur sesuai kebijakan, misal dari field di tabel kapster
 
             return [
                 'id' => $kapster->id,
+                'kapster_id' => $kapster->id,
                 'nama_kapster' => $kapster->nama_kapster,
                 'cabang' => $kapster->cabang->nama_cabang ?? '-',
                 'cabang_id' => $kapster->cabang_id,
                 'total_transaksi' => $totalTransaksi,
                 'total_nilai_transaksi' => $totalNilaiTransaksi,
-                'komisi_persen' => $komisiPersen,
-                'gaji_komisi' => $gajiKomisi,
+
+                // Komisi detail menggunakan KomisiService
+                'komisi_layanan_potong_rambut' => $komisiData['breakdown']['layanan']['potong_rambut'] ?? 0,
+                'komisi_layanan_lain' => $komisiData['breakdown']['layanan']['lain'] ?? 0,
+                'komisi_produk' => $komisiData['breakdown']['produk'] ?? 0,
+                'total_komisi' => $komisiData['total_komisi'],
+
+                // Persentase komisi individual kapster
+                'persen_komisi_potong_rambut' => $kapster->komisi_potong_rambut ?? 40,
+                'persen_komisi_layanan_lain' => $kapster->komisi_layanan_lain ?? 25,
+                'persen_komisi_produk' => $kapster->komisi_produk ?? 25,
+
+                // Untuk backward compatibility
+                'komisi_persen' => 0, // Deprecated, sekarang dinamis per kategori
+                'gaji_komisi' => $komisiData['total_komisi'],
                 'gaji_pokok' => $gajiPokok,
-                'total_gaji' => $gajiPokok + $gajiKomisi,
+                'total_gaji' => $gajiPokok + $komisiData['total_komisi'],
                 'status' => $kapster->status,
                 'spesialisasi' => $kapster->spesialisasi,
+
+                // Detail transaksi untuk breakdown
+                'jumlah_transaksi_potong_rambut' => $komisiData['detail_jumlah']['layanan']['potong_rambut']['jumlah'] ?? 0,
+                'jumlah_transaksi_layanan_lain' => $komisiData['detail_jumlah']['layanan']['lain']['jumlah'] ?? 0,
+                'jumlah_produk_terjual' => $komisiData['detail_jumlah']['produk']['jumlah'] ?? 0,
             ];
         });
 
@@ -77,6 +109,9 @@ class LaporanService
                 'total_kapster' => $gajiData->count(),
                 'total_transaksi' => $gajiData->sum('total_transaksi'),
                 'total_nilai_transaksi' => $gajiData->sum('total_nilai_transaksi'),
+                'total_komisi_potong_rambut' => $gajiData->sum('komisi_layanan_potong_rambut'),
+                'total_komisi_layanan_lain' => $gajiData->sum('komisi_layanan_lain'),
+                'total_komisi_produk' => $gajiData->sum('komisi_produk'),
                 'total_gaji_komisi' => $gajiData->sum('gaji_komisi'),
                 'total_gaji_pokok' => $gajiData->sum('gaji_pokok'),
                 'total_gaji_keseluruhan' => $gajiData->sum('total_gaji'),
@@ -270,7 +305,8 @@ class LaporanService
      */
     public function getLaporanInventaris($cabangId = null)
     {
-        $query = Inventaris::with(['kategori', 'cabang']);
+        // Gunakan kategoriRelasi untuk menghindari konflik dengan field 'kategori'
+        $query = Inventaris::with(['kategoriRelasi', 'cabang']);
 
         if ($cabangId) {
             $query->where('cabang_id', $cabangId);
@@ -281,12 +317,19 @@ class LaporanService
         $inventarisData = $inventarisList->map(function ($item) {
             $stok = $item->stok_saat_ini ?? 0;
             $nilaiTotal = $item->harga_satuan * $stok;
-            $statusStok = $stok <= 10 ? 'Menipis' : ($stok <= 30 ? 'Normal' : 'Aman');
+
+            // Update threshold: stok menipis jika <= 5 (bukan 10)
+            $statusStok = $stok < 5 ? 'Menipis' : ($stok <= 30 ? 'Normal' : 'Aman');
+
+            // Gunakan kategoriRelasi untuk mendapatkan object kategori
+            $kategoriObj = $item->kategoriRelasi;
+            $namaKategori = $kategoriObj ? $kategoriObj->nama_kategori : ($item->attributes['kategori'] ?? '-');
 
             return [
                 'id' => $item->id,
                 'nama_produk' => $item->nama_barang,
-                'kategori' => $item->kategori->nama_kategori ?? ($item->kategori ?? '-'),
+                'kategori' => $namaKategori,
+                'kategori_obj' => $kategoriObj, // Simpan object untuk filtering
                 'cabang' => $item->cabang->nama_cabang ?? '-',
                 'stok' => $stok,
                 'satuan' => $item->satuan,
@@ -296,18 +339,34 @@ class LaporanService
             ];
         });
 
-        $inventarisPerKategori = $inventarisList->groupBy('kategori_id')->map(function ($items, $kategoriId) {
-            $kategori = $items->first()->kategori;
+        // Group by kategori_id dan filter yang tidak null
+        $inventarisPerKategori = $inventarisList->filter(function ($item) {
+            return $item->kategori_id !== null && $item->kategoriRelasi !== null;
+        })->groupBy('kategori_id')->map(function ($items, $kategoriId) {
+            $kategoriObj = $items->first()->kategoriRelasi;
+            $totalStok = $items->sum('stok_saat_ini');
+            $nilaiTotal = $items->sum(function ($item) {
+                return $item->harga_satuan * ($item->stok_saat_ini ?? 0);
+            });
+
             return [
                 'kategori_id' => $kategoriId,
-                'nama_kategori' => $kategori->nama_kategori ?? '-',
+                'nama_kategori' => $kategoriObj ? $kategoriObj->nama_kategori : 'Tidak Berkategori',
                 'jumlah_item' => $items->count(),
-                'total_stok' => $items->sum('stok_saat_ini'),
-                'nilai_total' => $items->sum(function ($item) {
-                    return $item->harga_satuan * ($item->stok_saat_ini ?? 0);
-                }),
+                'total_stok' => $totalStok,
+                'nilai_total' => $nilaiTotal,
             ];
         })->values();
+
+        // Hitung item menipis: exclude kategori Operasional dan hanya hitung yang < 5
+        $itemMenipis = $inventarisData->filter(function ($item) {
+            // Exclude kategori Operasional dari hitungan stok menipis
+            $isOperasional = $item['kategori_obj'] &&
+                $item['kategori_obj']->nama_kategori === 'Operasional';
+
+            // Hanya hitung yang stok < 5 dan bukan Operasional
+            return $item['status_stok'] === 'Menipis' && !$isOperasional;
+        })->count();
 
         return [
             'data' => $inventarisData,
@@ -315,7 +374,7 @@ class LaporanService
             'summary' => [
                 'total_item' => $inventarisData->count(),
                 'total_nilai_inventaris' => $inventarisData->sum('nilai_total'),
-                'item_menipis' => $inventarisData->where('status_stok', 'Menipis')->count(),
+                'item_menipis' => $itemMenipis, // Gunakan hitungan yang sudah difilter
             ]
         ];
     }
@@ -407,11 +466,21 @@ class LaporanService
         })->sortByDesc('jumlah_transaksi')->values();
 
         // Peak Days Analysis
+        $hariIndonesia = [
+            'Monday' => 'Senin',
+            'Tuesday' => 'Selasa',
+            'Wednesday' => 'Rabu',
+            'Thursday' => 'Kamis',
+            'Friday' => 'Jumat',
+            'Saturday' => 'Sabtu',
+            'Sunday' => 'Minggu'
+        ];
+
         $transaksiPerHari = $transaksiList->groupBy(function ($item) {
             return Carbon::parse($item->tanggal_transaksi)->format('l');
-        })->map(function ($items, $hari) {
+        })->map(function ($items, $hari) use ($hariIndonesia) {
             return [
-                'hari' => $hari,
+                'hari' => $hariIndonesia[$hari] ?? $hari,
                 'jumlah_transaksi' => $items->count(),
                 'total_pendapatan' => $items->sum('total_harga'),
             ];

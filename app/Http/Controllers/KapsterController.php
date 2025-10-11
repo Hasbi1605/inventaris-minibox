@@ -39,7 +39,11 @@ class KapsterController extends Controller
             'total_kapster' => Kapster::count(),
             'kapster_aktif' => Kapster::where('status', 'aktif')->count(),
             'kapster_tidak_aktif' => Kapster::where('status', 'tidak_aktif')->count(),
-            'rata_rata_komisi' => Kapster::where('status', 'aktif')->avg('komisi_persen') ?? 0,
+            'rata_rata_komisi' => [
+                'potong_rambut' => Kapster::where('status', 'aktif')->avg('komisi_potong_rambut') ?? 40,
+                'layanan_lain' => Kapster::where('status', 'aktif')->avg('komisi_layanan_lain') ?? 25,
+                'produk' => Kapster::where('status', 'aktif')->avg('komisi_produk') ?? 25,
+            ],
         ];
 
         return view('pages.kelola-kapster.index', compact('kapster', 'cabang', 'statistics'));

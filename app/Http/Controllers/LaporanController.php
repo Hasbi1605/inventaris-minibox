@@ -143,7 +143,7 @@ class LaporanController extends Controller
         $transaksi = Transaksi::where('kapster_id', $kapsterId)
             ->whereBetween('tanggal_transaksi', [$startDate, $endDate])
             ->where('status', 'selesai')
-            ->with('layanan')
+            ->with(['layanan.kategori', 'layanan.cabangs', 'produk', 'cabang'])
             ->orderBy('tanggal_transaksi', 'desc')
             ->get();
 
@@ -205,7 +205,7 @@ class LaporanController extends Controller
                 $transaksi = Transaksi::where('kapster_id', $kapster['kapster_id'])
                     ->whereBetween('tanggal_transaksi', [$startDate, $endDate])
                     ->where('status', 'selesai')
-                    ->with('layanan')
+                    ->with(['layanan.kategori', 'layanan.cabangs', 'produk', 'cabang'])
                     ->orderBy('tanggal_transaksi', 'desc')
                     ->get();
 

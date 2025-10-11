@@ -147,8 +147,14 @@
                         <span class="text-sm font-bold text-slate-700">Rp {{ number_format($laporanCashFlow['kas_masuk']['total'], 0, ',', '.') }}</span>
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+                        @php
+                            $maxValue = 20000000; // 20 juta sebagai nilai maksimal bar
+                            $kasMasukPercent = $laporanCashFlow['kas_masuk']['total'] > 0 
+                                ? min(100, ($laporanCashFlow['kas_masuk']['total'] / $maxValue * 100)) 
+                                : 0;
+                        @endphp
                         <div class="bg-gradient-to-r from-blue-600 to-cyan-400 h-4 rounded-full transition-all duration-500 ease-out" 
-                             style="width: {{ $laporanCashFlow['kas_masuk']['total'] > 0 ? min(100, ($laporanCashFlow['kas_masuk']['total'] / max($laporanCashFlow['kas_masuk']['total'], $laporanCashFlow['kas_keluar']['total']) * 100)) : 0 }}%">
+                             style="width: {{ $kasMasukPercent }}%">
                         </div>
                     </div>
                 </div>
@@ -159,8 +165,13 @@
                         <span class="text-sm font-bold text-slate-700">Rp {{ number_format($laporanCashFlow['kas_keluar']['total'], 0, ',', '.') }}</span>
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+                        @php
+                            $kasKeluarPercent = $laporanCashFlow['kas_keluar']['total'] > 0 
+                                ? min(100, ($laporanCashFlow['kas_keluar']['total'] / $maxValue * 100)) 
+                                : 0;
+                        @endphp
                         <div class="bg-gradient-to-r from-blue-600 to-cyan-400 h-4 rounded-full transition-all duration-500 ease-out" 
-                             style="width: {{ $laporanCashFlow['kas_keluar']['total'] > 0 ? min(100, ($laporanCashFlow['kas_keluar']['total'] / max($laporanCashFlow['kas_masuk']['total'], $laporanCashFlow['kas_keluar']['total']) * 100)) : 0 }}%">
+                             style="width: {{ $kasKeluarPercent }}%">
                         </div>
                     </div>
                 </div>

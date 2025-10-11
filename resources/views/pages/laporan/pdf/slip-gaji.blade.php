@@ -198,13 +198,17 @@
             <div class="summary-label">Nilai Transaksi</div>
             <div class="summary-value">Rp {{ number_format($kapster['total_nilai_transaksi'], 0, ',', '.') }}</div>
         </div>
-        <div class="summary-row">
-            <div class="summary-label">Persentase Komisi</div>
-            <div class="summary-value">{{ $kapster['komisi_persen'] }}%</div>
+        <div class="summary-row" style="border-top: 2px solid #cbd5e1; margin-top: 10px; padding-top: 10px;">
+            <div class="summary-label" style="color: #16a34a;">Komisi Potong Rambut ({{ number_format($kapster['persen_komisi_potong_rambut'], 0) }}%)</div>
+            <div class="summary-value" style="color: #16a34a;">Rp {{ number_format($kapster['komisi_layanan_potong_rambut'], 0, ',', '.') }}</div>
         </div>
         <div class="summary-row">
-            <div class="summary-label">Gaji dari Komisi</div>
-            <div class="summary-value">Rp {{ number_format($kapster['gaji_komisi'], 0, ',', '.') }}</div>
+            <div class="summary-label" style="color: #ea580c;">Komisi Layanan Lain ({{ number_format($kapster['persen_komisi_layanan_lain'], 0) }}%)</div>
+            <div class="summary-value" style="color: #ea580c;">Rp {{ number_format($kapster['komisi_layanan_lain'], 0, ',', '.') }}</div>
+        </div>
+        <div class="summary-row">
+            <div class="summary-label" style="color: #9333ea;">Komisi Produk ({{ number_format($kapster['persen_komisi_produk'], 0) }}%)</div>
+            <div class="summary-value" style="color: #9333ea;">Rp {{ number_format($kapster['komisi_produk'], 0, ',', '.') }}</div>
         </div>
         
         <div class="summary-total">
@@ -217,40 +221,106 @@
 
     <!-- Detail Transaksi -->
     @if(isset($transaksi) && $transaksi->count() > 0)
-    <div class="section-title">Detail Transaksi</div>
     
+    <!-- Detail Layanan -->
+    <div class="section-title">Detail Layanan</div>
     <table class="transaction-table">
         <thead>
             <tr>
                 <th style="width: 5%;">No</th>
-                <th style="width: 15%;">Tanggal</th>
+                <th style="width: 12%;">Tanggal</th>
                 <th style="width: 25%;">Layanan</th>
-                <th style="width: 20%;">Customer</th>
-                <th style="width: 15%;">Status</th>
-                <th style="width: 20%; text-align: right;">Total</th>
+                <th style="width: 15%;">Kategori</th>
+                <th style="width: 18%;">Customer</th>
+                <th style="width: 10%;">Status</th>
+                <th style="width: 15%; text-align: right;">Harga</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($transaksi as $index => $trx)
-            <tr>
-                <td>{{ $index + 1 }}</td>
-                <td>{{ \Carbon\Carbon::parse($trx->tanggal_transaksi)->format('d/m/Y') }}</td>
-                <td>{{ $trx->layanan->nama_layanan ?? '-' }}</td>
-                <td>{{ $trx->nama_customer ?? 'Walk-in' }}</td>
-                <td>
-                    @if($trx->status == 'selesai')
-                        Selesai
-                    @elseif($trx->status == 'sedang_proses')
-                        Proses
-                    @else
-                        {{ ucfirst($trx->status) }}
-                    @endif
-                </td>
-                <td style="text-align: right;">Rp {{ number_format($trx->total_harga, 0, ',', '.') }}</td>
-            </tr>
+            @php $no = 1; @endphp
+            @foreach($transaksi as $trx)
+                @if($trx->layanan)
+                @php
+                    // Hitung harga layanan dari total_harga dikurangi harga produk
+                    $hargaLayanan = $trx->total_harga;
+                    
+                    // Kurangi harga produk jika ada
+                    if($trx->produk && $trx->produk->count() > 0) {
+                        $totalProduk = 0;
+                        foreach($trx->produk as $prod) {
+                            $totalProduk += $prod->pivot->subtotal;
+                        }
+                        $hargaLayanan = $trx->total_harga - $totalProduk;
+                    }
+                @endphp
+                <tr>
+                    <td>{{ $no++ }}</td>
+                    <td>{{ \Carbon\Carbon::parse($trx->tanggal_transaksi)->format('d/m/Y') }}</td>
+                    <td>{{ $trx->layanan->nama_layanan }}</td>
+                    <td>{{ $trx->layanan->kategori->nama_kategori ?? '-' }}</td>
+                    <td>{{ $trx->nama_customer ?? 'Walk-in' }}</td>
+                    <td>
+                        @if($trx->status == 'selesai')
+                            Selesai
+                        @elseif($trx->status == 'sedang_proses')
+                            Proses
+                        @else
+                            {{ ucfirst($trx->status) }}
+                        @endif
+                    </td>
+                    <td style="text-align: right;">Rp {{ number_format($hargaLayanan, 0, ',', '.') }}</td>
+                </tr>
+                @endif
             @endforeach
         </tbody>
     </table>
+
+    <!-- Detail Produk -->
+    @php 
+        $hasProduk = false;
+        foreach($transaksi as $trx) {
+            if($trx->produk && $trx->produk->count() > 0) {
+                $hasProduk = true;
+                break;
+            }
+        }
+    @endphp
+    
+    @if($hasProduk)
+    <div class="section-title" style="margin-top: 30px;">Detail Produk yang Terjual</div>
+    <table class="transaction-table">
+        <thead>
+            <tr>
+                <th style="width: 5%;">No</th>
+                <th style="width: 12%;">Tanggal</th>
+                <th style="width: 30%;">Produk</th>
+                <th style="width: 10%;">Qty</th>
+                <th style="width: 15%;">Harga Satuan</th>
+                <th style="width: 18%;">Customer</th>
+                <th style="width: 10%; text-align: right;">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @php $noProduk = 1; @endphp
+            @foreach($transaksi as $trx)
+                @if($trx->produk && $trx->produk->count() > 0)
+                    @foreach($trx->produk as $produk)
+                    <tr>
+                        <td>{{ $noProduk++ }}</td>
+                        <td>{{ \Carbon\Carbon::parse($trx->tanggal_transaksi)->format('d/m/Y') }}</td>
+                        <td>{{ $produk->nama_barang }}</td>
+                        <td>{{ $produk->pivot->quantity }}</td>
+                        <td>Rp {{ number_format($produk->pivot->harga_satuan, 0, ',', '.') }}</td>
+                        <td>{{ $trx->nama_customer ?? 'Walk-in' }}</td>
+                        <td style="text-align: right;">Rp {{ number_format($produk->pivot->subtotal, 0, ',', '.') }}</td>
+                    </tr>
+                    @endforeach
+                @endif
+            @endforeach
+        </tbody>
+    </table>
+    @endif
+    
     @endif
 
     <!-- Signature Section -->

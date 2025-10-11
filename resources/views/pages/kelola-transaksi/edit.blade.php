@@ -79,8 +79,12 @@
                                 >
                                     <option value="">Pilih Layanan</option>
                                     @foreach($layanan as $service)
-                                        <option value="{{ $service->id }}" data-harga="{{ $service->harga }}" {{ old('layanan_id', $transaksi->layanan_id) == $service->id ? 'selected' : '' }}>
-                                            {{ $service->nama_layanan }} - {{ $service->formatted_harga }}
+                                        @php
+                                            $hargaToShow = isset($service->harga_cabang) ? $service->harga_cabang : $service->harga;
+                                            $formattedHarga = 'Rp ' . number_format($hargaToShow, 0, ',', '.');
+                                        @endphp
+                                        <option value="{{ $service->id }}" data-harga="{{ $hargaToShow }}" {{ old('layanan_id', $transaksi->layanan_id) == $service->id ? 'selected' : '' }}>
+                                            {{ $service->nama_layanan }} - {{ $formattedHarga }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -202,10 +206,8 @@
                                 >
                                     <option value="">Pilih Metode Pembayaran</option>
                                     <option value="tunai" {{ old('metode_pembayaran', $transaksi->metode_pembayaran) == 'tunai' ? 'selected' : '' }}>Tunai</option>
-                                    <option value="kartu_debit" {{ old('metode_pembayaran', $transaksi->metode_pembayaran) == 'kartu_debit' ? 'selected' : '' }}>Kartu Debit</option>
-                                    <option value="kartu_kredit" {{ old('metode_pembayaran', $transaksi->metode_pembayaran) == 'kartu_kredit' ? 'selected' : '' }}>Kartu Kredit</option>
                                     <option value="transfer" {{ old('metode_pembayaran', $transaksi->metode_pembayaran) == 'transfer' ? 'selected' : '' }}>Transfer Bank</option>
-                                    <option value="ewallet" {{ old('metode_pembayaran', $transaksi->metode_pembayaran) == 'ewallet' ? 'selected' : '' }}>E-Wallet</option>
+                                    <option value="qris" {{ old('metode_pembayaran', $transaksi->metode_pembayaran) == 'qris' ? 'selected' : '' }}>QRIS</option>
                                 </select>
                                 @error('metode_pembayaran')
                                     <div class="text-xs text-red-500 mt-1">{{ $message }}</div>

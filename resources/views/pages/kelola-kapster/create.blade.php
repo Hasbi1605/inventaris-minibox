@@ -142,33 +142,102 @@
                                 @enderror
                             </div>
 
-                            <!-- Komisi -->
+                            <!-- Komisi Settings -->
                             <div class="col-span-1 lg:col-span-2">
-                                <label for="komisi_persen" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                                    Komisi (%) (Opsional)
-                                </label>
-                                <div class="flex">
-                                    <input 
-                                        type="number" 
-                                        name="komisi_persen" 
-                                        id="komisi_persen"
-                                        value="{{ old('komisi_persen') }}"
-                                        class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-l-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('komisi_persen') border-red-500 @enderror"
-                                        placeholder="10"
-                                        min="0"
-                                        max="100"
-                                        step="0.01"
-                                    />
-                                    <span class="inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-l-0 border-gray-300 rounded-r-lg">
-                                        %
-                                    </span>
+                                <div class="p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg border border-blue-200">
+                                    <div class="flex items-center mb-3">
+                                        <div class="inline-block w-8 h-8 text-center rounded-lg bg-gradient-to-tl from-blue-600 to-cyan-400 flex items-center justify-center mr-2 shadow-soft-md">
+                                            <i class="fas fa-percent text-sm text-white"></i>
+                                        </div>
+                                        <h6 class="mb-0 font-bold text-slate-800">Pengaturan Komisi</h6>
+                                    </div>
+                                    <p class="text-xs text-slate-600 mb-4">
+                                        Atur persentase komisi untuk setiap jenis layanan dan produk. Default: Potong Rambut 40%, Layanan Lain 25%, Produk 25%
+                                    </p>
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <!-- Komisi Potong Rambut -->
+                                        <div>
+                                            <label for="komisi_potong_rambut" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                                <i class="fas fa-cut text-blue-600 mr-1"></i>
+                                                Potong Rambut
+                                            </label>
+                                            <div class="flex">
+                                                <input 
+                                                    type="number" 
+                                                    name="komisi_potong_rambut" 
+                                                    id="komisi_potong_rambut"
+                                                    value="{{ old('komisi_potong_rambut', 40) }}"
+                                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-l-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('komisi_potong_rambut') border-red-500 @enderror"
+                                                    placeholder="40"
+                                                    min="0"
+                                                    max="100"
+                                                    step="0.01"
+                                                />
+                                                <span class="inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-l-0 border-gray-300 rounded-r-lg">
+                                                    %
+                                                </span>
+                                            </div>
+                                            @error('komisi_potong_rambut')
+                                                <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        
+                                        <!-- Komisi Layanan Lain -->
+                                        <div>
+                                            <label for="komisi_layanan_lain" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                                <i class="fas fa-spa text-purple-600 mr-1"></i>
+                                                Layanan Lain
+                                            </label>
+                                            <div class="flex">
+                                                <input 
+                                                    type="number" 
+                                                    name="komisi_layanan_lain" 
+                                                    id="komisi_layanan_lain"
+                                                    value="{{ old('komisi_layanan_lain', 25) }}"
+                                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-l-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('komisi_layanan_lain') border-red-500 @enderror"
+                                                    placeholder="25"
+                                                    min="0"
+                                                    max="100"
+                                                    step="0.01"
+                                                />
+                                                <span class="inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-l-0 border-gray-300 rounded-r-lg">
+                                                    %
+                                                </span>
+                                            </div>
+                                            @error('komisi_layanan_lain')
+                                                <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        
+                                        <!-- Komisi Produk -->
+                                        <div>
+                                            <label for="komisi_produk" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                                <i class="fas fa-shopping-bag text-green-600 mr-1"></i>
+                                                Produk
+                                            </label>
+                                            <div class="flex">
+                                                <input 
+                                                    type="number" 
+                                                    name="komisi_produk" 
+                                                    id="komisi_produk"
+                                                    value="{{ old('komisi_produk', 25) }}"
+                                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-l-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('komisi_produk') border-red-500 @enderror"
+                                                    placeholder="25"
+                                                    min="0"
+                                                    max="100"
+                                                    step="0.01"
+                                                />
+                                                <span class="inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-l-0 border-gray-300 rounded-r-lg">
+                                                    %
+                                                </span>
+                                            </div>
+                                            @error('komisi_produk')
+                                                <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="text-xs text-slate-500 mt-1">
-                                    Persentase komisi yang diterima kapster dari setiap transaksi
-                                </div>
-                                @error('komisi_persen')
-                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
-                                @enderror
                             </div>
                         </div>
 

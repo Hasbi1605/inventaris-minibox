@@ -102,9 +102,19 @@ class Transaksi extends Model
         $month = date('m');
         $prefix = 'TRX' . $year . $month;
 
-        // Hitung jumlah transaksi yang ada saat ini
-        $count = self::count();
-        $nextNumber = $count + 1;
+        // Cari nomor transaksi terakhir untuk bulan ini
+        $lastTransaction = self::where('nomor_transaksi', 'like', $prefix . '%')
+            ->orderBy('nomor_transaksi', 'desc')
+            ->first();
+
+        if ($lastTransaction) {
+            // Ambil nomor urut terakhir dan tambahkan 1
+            $lastNumber = (int) substr($lastTransaction->nomor_transaksi, -5);
+            $nextNumber = $lastNumber + 1;
+        } else {
+            // Jika belum ada transaksi bulan ini, mulai dari 1
+            $nextNumber = 1;
+        }
 
         // Format dengan padding 5 digit
         return $prefix . str_pad($nextNumber, 5, '0', STR_PAD_LEFT);

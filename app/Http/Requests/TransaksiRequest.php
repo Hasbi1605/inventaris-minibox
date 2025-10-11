@@ -27,7 +27,7 @@ class TransaksiRequest extends FormRequest
             'kapster_id' => 'required|exists:kapster,id',
             'tanggal_transaksi' => 'required|date',
             'total_harga' => 'required|numeric|min:0|max:999999999.99',
-            'metode_pembayaran' => 'required|in:tunai,kartu_debit,kartu_kredit,transfer,ewallet',
+            'metode_pembayaran' => 'required|in:tunai,transfer,qris',
             'status' => 'required|in:pending,sedang_proses,selesai,dibatalkan',
             'catatan' => 'nullable|string|max:1000',
             'produk' => 'nullable|array',

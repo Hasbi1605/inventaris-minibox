@@ -81,15 +81,26 @@
 
                                 <div>
                                     <label class="text-xs font-bold uppercase text-slate-400">Komisi</label>
-                                    <p class="text-sm font-semibold text-slate-700">
-                                        @if($kelola_kapster->komisi_persen)
-                                            <span class="bg-gradient-to-tl from-purple-600 to-pink-400 px-2 py-1 text-xs rounded font-bold text-white">
-                                                {{ $kelola_kapster->komisi_persen }}%
+                                    <div class="flex flex-col gap-2 mt-1">
+                                        <div class="flex items-center gap-2">
+                                            <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded bg-gradient-to-tl from-blue-50 to-cyan-50 text-blue-700 border border-blue-200">
+                                                <i class="fas fa-cut text-xxs mr-1"></i>
+                                                Potong Rambut: {{ number_format($kelola_kapster->komisi_potong_rambut ?? 40, 0) }}%
                                             </span>
-                                        @else
-                                            -
-                                        @endif
-                                    </p>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded bg-gradient-to-tl from-purple-50 to-pink-50 text-purple-700 border border-purple-200">
+                                                <i class="fas fa-spa text-xxs mr-1"></i>
+                                                Layanan Lain: {{ number_format($kelola_kapster->komisi_layanan_lain ?? 25, 0) }}%
+                                            </span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded bg-gradient-to-tl from-green-50 to-emerald-50 text-green-700 border border-green-200">
+                                                <i class="fas fa-shopping-bag text-xxs mr-1"></i>
+                                                Produk: {{ number_format($kelola_kapster->komisi_produk ?? 25, 0) }}%
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div>

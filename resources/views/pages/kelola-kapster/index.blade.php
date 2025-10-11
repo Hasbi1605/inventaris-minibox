@@ -112,7 +112,12 @@
                         <div class="flex-1">
                             <div>
                                 <p class="mb-0 font-sans text-sm font-semibold leading-normal">Rata-rata Komisi</p>
-                                <h5 class="mb-0 font-bold text-lg">{{ number_format($statistics['rata_rata_komisi'], 1) }}%</h5>
+                                @php
+                                    $avgKomisi = ($statistics['rata_rata_komisi']['potong_rambut'] + 
+                                                  $statistics['rata_rata_komisi']['layanan_lain'] + 
+                                                  $statistics['rata_rata_komisi']['produk']) / 3;
+                                @endphp
+                                <h5 class="mb-0 font-bold text-lg">{{ number_format($avgKomisi, 1) }}%</h5>
                             </div>
                         </div>
                         <div class="text-right ml-4">
@@ -226,7 +231,13 @@
                                 Status
                             </th>
                             <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
-                                Komisi
+                                <span class="whitespace-nowrap">Komisi Potong Rambut</span>
+                            </th>
+                            <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                <span class="whitespace-nowrap">Komisi Layanan Lain</span>
+                            </th>
+                            <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                <span class="whitespace-nowrap">Komisi Produk</span>
                             </th>
                             <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
                                 Aksi
@@ -267,9 +278,13 @@
                                 </span>
                             </td>
                             <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                <span class="text-xs font-semibold leading-tight text-slate-600">
-                                    {{ $item->komisi_persen ? $item->komisi_persen . '%' : '-' }}
-                                </span>
+                                <span class="text-xs font-semibold leading-tight text-green-600">{{ number_format($item->komisi_potong_rambut ?? 40, 0) }}%</span>
+                            </td>
+                            <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                <span class="text-xs font-semibold leading-tight text-orange-600">{{ number_format($item->komisi_layanan_lain ?? 25, 0) }}%</span>
+                            </td>
+                            <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                <span class="text-xs font-semibold leading-tight text-purple-600">{{ number_format($item->komisi_produk ?? 25, 0) }}%</span>
                             </td>
                             <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
                                 <div class="flex items-center justify-center space-x-3">
@@ -303,7 +318,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="p-8 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                            <td colspan="8" class="p-8 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
                                 <div class="flex flex-col items-center justify-center space-y-3">
                                     <i class="fas fa-users text-4xl text-slate-300"></i>
                                     <p class="text-sm text-slate-500">Belum ada data kapster</p>

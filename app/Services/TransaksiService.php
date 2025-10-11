@@ -78,6 +78,52 @@ class TransaksiService
     }
 
     /**
+     * Get available layanan for dropdown with prices for specific cabang
+     */
+    public function getAvailableLayananForCabang($cabangId = null)
+    {
+        $query = Layanan::where('status', 'aktif');
+
+        if ($cabangId) {
+            // Get layanan with cabang-specific prices
+            $query->with(['cabangs' => function ($q) use ($cabangId) {
+                $q->where('cabang_id', $cabangId)->where('cabang_layanan.status', 'aktif');
+            }]);
+        }
+
+        $layananList = $query->get();
+
+        // Add harga_cabang attribute for each layanan
+        $layananList->each(function ($layanan) use ($cabangId) {
+            if ($cabangId) {
+                // Check if there's a specific price for this cabang
+                $cabangLayanan = $layanan->cabangs->first();
+                if ($cabangLayanan) {
+                    $layanan->harga_cabang = $cabangLayanan->pivot->harga;
+                    $layanan->status_cabang = $cabangLayanan->pivot->status;
+                } else {
+                    // Use base price if no specific price for this cabang
+                    $layanan->harga_cabang = $layanan->harga;
+                    $layanan->status_cabang = 'aktif';
+                }
+            } else {
+                // No cabang selected, use base price
+                $layanan->harga_cabang = $layanan->harga;
+                $layanan->status_cabang = $layanan->status;
+            }
+        });
+
+        // If cabang is selected, only return layanan that are active in that cabang
+        if ($cabangId) {
+            $layananList = $layananList->filter(function ($layanan) {
+                return $layanan->status_cabang === 'aktif';
+            });
+        }
+
+        return $layananList;
+    }
+
+    /**
      * Get available inventaris for product sales (filtered by cabang)
      */
     public function getAvailableInventaris($cabangId = null)
