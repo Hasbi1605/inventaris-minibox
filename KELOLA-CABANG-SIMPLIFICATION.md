@@ -181,8 +181,10 @@ Jika di masa depan perlu menambahkan kembali field ini:
 
 ✅ **Show/Detail Cabang**:
 
--   Halaman detail mungkin masih menampilkan field lama
--   Ini OK karena show page untuk view saja
+-   Halaman detail tidak menampilkan jam operasional
+-   Halaman detail tidak menampilkan deskripsi
+-   Hanya menampilkan informasi esensial
+-   Quick stats tetap informatif
 
 ---
 
