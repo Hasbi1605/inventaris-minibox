@@ -13,7 +13,12 @@ return new class extends Migration
     public function up(): void
     {
         // Update enum metode_pembayaran: hapus kartu_debit, kartu_kredit, ewallet; tambah qris
-        DB::statement("ALTER TABLE transaksis MODIFY COLUMN metode_pembayaran ENUM('tunai', 'transfer', 'qris') DEFAULT 'tunai'");
+        $driver = Schema::getConnection()->getDriverName();
+        if (in_array($driver, ['mysql', 'mariadb'])) {
+            DB::statement("ALTER TABLE transaksis MODIFY COLUMN metode_pembayaran ENUM('tunai', 'transfer', 'qris') DEFAULT 'tunai'");
+        } else {
+            // Skip for sqlite
+        }
     }
 
     /**
@@ -22,6 +27,11 @@ return new class extends Migration
     public function down(): void
     {
         // Rollback ke enum sebelumnya
-        DB::statement("ALTER TABLE transaksis MODIFY COLUMN metode_pembayaran ENUM('tunai', 'kartu_debit', 'kartu_kredit', 'transfer', 'ewallet') DEFAULT 'tunai'");
+        $driver = Schema::getConnection()->getDriverName();
+        if (in_array($driver, ['mysql', 'mariadb'])) {
+            DB::statement("ALTER TABLE transaksis MODIFY COLUMN metode_pembayaran ENUM('tunai', 'kartu_debit', 'kartu_kredit', 'transfer', 'ewallet') DEFAULT 'tunai'");
+        } else {
+            // Skip for sqlite
+        }
     }
 };

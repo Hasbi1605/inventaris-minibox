@@ -10,6 +10,7 @@ use App\Models\Layanan;
 use App\Models\Inventaris;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class DashboardService
 {
@@ -540,10 +541,19 @@ class DashboardService
         ];
 
         // Query transaksi per hari
+        $driver = Schema::getConnection()->getDriverName();
+
+        if (in_array($driver, ['mysql', 'mariadb'])) {
+            $dayExpr = "DAYOFWEEK(tanggal_transaksi) as day_number"; // 1=Sunday..7=Saturday
+        } else {
+            // SQLite: strftime('%w') returns 0=Sunday..6=Saturday, add 1 to match MySQL numbering
+            $dayExpr = "(CAST(strftime('%w', tanggal_transaksi) AS INTEGER) + 1) as day_number";
+        }
+
         $transaksiPerHari = Transaksi::whereBetween('tanggal_transaksi', [$startDate, $endDate])
             ->where('status', 'selesai')
             ->select(
-                DB::raw('DAYOFWEEK(tanggal_transaksi) as day_number'),
+                DB::raw($dayExpr),
                 DB::raw('COUNT(*) as total_transaksi'),
                 DB::raw('SUM(total_harga) as total_pendapatan'),
                 DB::raw('AVG(total_harga) as rata_rata')

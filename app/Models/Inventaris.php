@@ -12,7 +12,6 @@ class Inventaris extends Model
 
     protected $fillable = [
         'nama_barang',
-
         'kategori',
         'kategori_id',
         'jenis',

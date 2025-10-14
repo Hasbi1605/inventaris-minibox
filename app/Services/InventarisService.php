@@ -93,6 +93,14 @@ class InventarisService
         try {
             Log::info('Creating new inventaris', $data);
 
+            // Auto-set kategori based on kategori_id if not provided
+            if (isset($data['kategori_id']) && !isset($data['kategori'])) {
+                $kategori = Kategori::find($data['kategori_id']);
+                if ($kategori) {
+                    $data['kategori'] = $kategori->nama_kategori;
+                }
+            }
+
             // Auto-update status based on stock, unless it's manually set to discontinued
             if (isset($data['status']) && $data['status'] === 'discontinued') {
                 // Keep discontinued status (manual override)
@@ -125,6 +133,14 @@ class InventarisService
     {
         try {
             Log::info('Updating inventaris', ['id' => $inventaris->id, 'data' => $data]);
+
+            // Auto-set kategori based on kategori_id if kategori_id is provided and kategori is not
+            if (isset($data['kategori_id']) && !isset($data['kategori'])) {
+                $kategori = Kategori::find($data['kategori_id']);
+                if ($kategori) {
+                    $data['kategori'] = $kategori->nama_kategori;
+                }
+            }
 
             // PENTING: Selalu auto-determine status based on stok, kecuali discontinued
             // Ini memastikan status selalu sync dengan stok aktual

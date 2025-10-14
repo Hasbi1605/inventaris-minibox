@@ -51,7 +51,10 @@ class KategoriSeeder extends Seeder
         ];
 
         foreach ($inventarisParents as $parent) {
-            Kategori::create($parent);
+            Kategori::updateOrCreate(
+                ['kode_kategori' => $parent['kode_kategori']],
+                $parent
+            );
         }
 
         // Sub-kategori untuk Alat Potong
@@ -82,7 +85,10 @@ class KategoriSeeder extends Seeder
         ];
 
         foreach ($alatPotongSubs as $sub) {
-            Kategori::create($sub);
+            Kategori::updateOrCreate(
+                ['kode_kategori' => $sub['kode_kategori']],
+                $sub
+            );
         }
 
         // Sub-kategori untuk Produk Perawatan
@@ -124,7 +130,10 @@ class KategoriSeeder extends Seeder
         ];
 
         foreach ($produkPerawatanSubs as $sub) {
-            Kategori::create($sub);
+            Kategori::updateOrCreate(
+                ['kode_kategori' => $sub['kode_kategori']],
+                $sub
+            );
         }
 
         // Kategori untuk Layanan
@@ -176,7 +185,10 @@ class KategoriSeeder extends Seeder
         ];
 
         foreach ($layananCategories as $category) {
-            Kategori::create($category);
+            Kategori::updateOrCreate(
+                ['kode_kategori' => $category['kode_kategori']],
+                $category
+            );
         }
 
         // Kategori untuk Pengeluaran
@@ -228,7 +240,10 @@ class KategoriSeeder extends Seeder
         ];
 
         foreach ($pengeluaranCategories as $category) {
-            Kategori::create($category);
+            Kategori::updateOrCreate(
+                ['kode_kategori' => $category['kode_kategori']],
+                $category
+            );
         }
 
         // Kategori untuk Cabang
@@ -258,7 +273,10 @@ class KategoriSeeder extends Seeder
         ];
 
         foreach ($cabangCategories as $category) {
-            Kategori::create($category);
+            Kategori::updateOrCreate(
+                ['kode_kategori' => $category['kode_kategori']],
+                $category
+            );
         }
 
         // Kategori untuk Transaksi
@@ -299,7 +317,10 @@ class KategoriSeeder extends Seeder
         ];
 
         foreach ($transaksiCategories as $category) {
-            Kategori::create($category);
+            Kategori::updateOrCreate(
+                ['kode_kategori' => $category['kode_kategori']],
+                $category
+            );
         }
     }
 }
