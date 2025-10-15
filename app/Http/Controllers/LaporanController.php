@@ -288,6 +288,15 @@ class LaporanController extends Controller
         $laporanCabang = $this->laporanService->getLaporanPerCabang($startDate, $endDate);
         $laporanLayanan = $this->laporanService->getLaporanLayanan($startDate, $endDate, $cabangId);
 
+        // Get detailed pengeluaran data
+        $pengeluaranDetail = Pengeluaran::with(['kategori', 'cabang'])
+            ->whereBetween('tanggal_pengeluaran', [$startDate, $endDate])
+            ->when($cabangId, function ($q) use ($cabangId) {
+                $q->where('cabang_id', $cabangId);
+            })
+            ->orderBy('tanggal_pengeluaran', 'desc')
+            ->get();
+
         $periode = Carbon::create($tahun, $bulan, 1)->format('F Y');
 
         $pdf = Pdf::loadView('pages.laporan.pdf.laporan-lengkap', compact(
@@ -296,6 +305,7 @@ class LaporanController extends Controller
             'laporanKeuangan',
             'laporanCabang',
             'laporanLayanan',
+            'pengeluaranDetail',
             'periode'
         ));
 

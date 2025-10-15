@@ -144,14 +144,24 @@
         }
         
         .signature-section {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 40px;
+            position: relative;
+            margin-top: 80px;
+            height: 80px;
         }
         
         .signature-box {
-            width: 45%;
+            position: absolute;
+            width: 200px;
             text-align: center;
+            bottom: 0;
+        }
+        
+        .signature-box.kapster {
+            left: 0;
+        }
+        
+        .signature-box.manager {
+            right: 0;
         }
         
         .signature-line {
@@ -325,13 +335,13 @@
 
     <!-- Signature Section -->
     <div class="signature-section">
-        <div class="signature-box">
+        <div class="signature-box kapster">
             <p><strong>Kapster</strong></p>
             <div class="signature-line">
                 {{ $kapster['nama_kapster'] }}
             </div>
         </div>
-        <div class="signature-box">
+        <div class="signature-box manager">
             <p><strong>Pemilik/Manager</strong></p>
             <div class="signature-line">
                 (&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)

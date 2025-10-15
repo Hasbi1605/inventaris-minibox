@@ -36,7 +36,8 @@
             <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
                 <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
                     <h6 class="font-bold">Form Tambah Transaksi</h6>
-                    <p class="text-sm leading-normal text-slate-400">Isi form di bawah untuk menambahkan transaksi baru</p>
+                    <p class="text-sm leading-normal text-slate-400">Isi form di bawah untuk menambahkan transaksi baru.</p>
+                
                 </div>
                 <div class="flex-auto px-6 pt-0 pb-6">
                     <form action="{{ route('kelola-transaksi.store') }}" method="POST">
@@ -165,6 +166,34 @@
                                 @enderror
                             </div>
 
+                            <!-- Quantity Transaksi (untuk multiple transaksi) -->
+                            <div>
+                                <label for="quantity_transaksi" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
+                                    Jumlah Transaksi <span class="text-red-500">*</span>
+                                </label>
+                                <input 
+                                    type="number" 
+                                    name="quantity_transaksi" 
+                                    id="quantity_transaksi"
+                                    value="{{ old('quantity_transaksi', 1) }}"
+                                    class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('quantity_transaksi') border-red-500 @enderror"
+                                    placeholder="Masukkan jumlah transaksi"
+                                    min="1"
+                                    max="50"
+                                    required
+                                />
+                                <div class="text-xs text-slate-500 mt-1">
+                                    <i class="fas fa-info-circle mr-1"></i>
+                                    Jumlah transaksi yang akan dibuat dengan data yang sama
+                                </div>
+                                <div id="quantity-preview" class="text-xs text-black-600 mt-1 font-medium">
+                                    <!-- Preview akan ditampilkan di sini -->
+                                </div>
+                                @error('quantity_transaksi')
+                                    <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
                             <!-- Status -->
                             <div>
                                 <label for="status" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
@@ -253,7 +282,7 @@
                             <button type="submit" 
                                 class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-blue-600 to-cyan-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">
                                 <i class="fas fa-save mr-2"></i>
-                                Simpan Transaksi
+                                <span id="submit-text">Simpan Transaksi</span>
                             </button>
                         </div>
                 </form>
@@ -272,6 +301,12 @@
         // Auto calculate total when layanan is selected
         document.getElementById('layanan_id').addEventListener('change', function() {
             calculateTotal();
+        });
+
+        // Handle quantity transaksi changes
+        document.getElementById('quantity_transaksi').addEventListener('input', function() {
+            updateQuantityPreview();
+            updateSubmitButton();
         });
 
         // Add product functionality
@@ -293,8 +328,10 @@
             calculateTotal();
         });
 
-        // Initial calculation
+        // Initial calculations
         calculateTotal();
+        updateQuantityPreview();
+        updateSubmitButton();
     });
 
     function addProdukRow() {
@@ -424,6 +461,30 @@
 
     function number_format(number) {
         return new Intl.NumberFormat('id-ID').format(number);
+    }
+
+    function updateQuantityPreview() {
+        const quantityInput = document.getElementById('quantity_transaksi');
+        const previewDiv = document.getElementById('quantity-preview');
+        const quantity = parseInt(quantityInput.value) || 1;
+        
+        if (quantity > 1) {
+            previewDiv.innerHTML = `<i class="fas fa-copy mr-1"></i>Akan membuat ${quantity} transaksi dengan data yang sama`;
+        } else {
+            previewDiv.innerHTML = `<i class="fas fa-file mr-1"></i>Akan membuat 1 transaksi`;
+        }
+    }
+
+    function updateSubmitButton() {
+        const quantityInput = document.getElementById('quantity_transaksi');
+        const submitText = document.getElementById('submit-text');
+        const quantity = parseInt(quantityInput.value) || 1;
+        
+        if (quantity > 1) {
+            submitText.textContent = `Simpan ${quantity} Transaksi`;
+        } else {
+            submitText.textContent = 'Simpan Transaksi';
+        }
     }
 
     // Function to reload page with cabang parameter

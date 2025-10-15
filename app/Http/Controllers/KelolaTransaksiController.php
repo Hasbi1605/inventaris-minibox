@@ -88,13 +88,51 @@ class KelolaTransaksiController extends Controller
             // Get validated data from Form Request
             $validatedData = $request->validated();
 
-            // Create transaksi using service
-            $this->transaksiService->createTransaksi($validatedData);
+            // Get quantity of transactions to create
+            $quantity = $validatedData['quantity_transaksi'] ?? 1;
+            unset($validatedData['quantity_transaksi']); // Remove from data as it's not needed for individual transaction
 
-            return redirect()->route('kelola-transaksi.index')
-                ->with('success', 'Transaksi berhasil ditambahkan!');
+            $createdTransactions = [];
+            $errors = [];
+
+            // Create multiple transactions
+            for ($i = 0; $i < $quantity; $i++) {
+                try {
+                    // Create transaksi using service
+                    $transaksi = $this->transaksiService->createTransaksi($validatedData);
+                    $createdTransactions[] = $transaksi;
+                } catch (\Exception $e) {
+                    $errors[] = "Transaksi " . ($i + 1) . ": " . $e->getMessage();
+                    Log::error("Error creating transaksi " . ($i + 1) . ": " . $e->getMessage(), [
+                        'attempt' => $i + 1,
+                        'data' => $validatedData,
+                        'trace' => $e->getTraceAsString()
+                    ]);
+                }
+            }
+
+            // Check results
+            $successCount = count($createdTransactions);
+            $errorCount = count($errors);
+
+            if ($successCount > 0 && $errorCount == 0) {
+                // All successful
+                return redirect()->route('kelola-transaksi.index')
+                    ->with('success', "Berhasil membuat {$successCount} transaksi!");
+            } elseif ($successCount > 0 && $errorCount > 0) {
+                // Partial success
+                $errorMessages = implode("\n", $errors);
+                return redirect()->route('kelola-transaksi.index')
+                    ->with('warning', "Berhasil membuat {$successCount} transaksi, namun {$errorCount} transaksi gagal:\n{$errorMessages}");
+            } else {
+                // All failed
+                $errorMessages = implode("\n", $errors);
+                return redirect()->back()
+                    ->with('error', "Gagal membuat transaksi:\n{$errorMessages}")
+                    ->withInput();
+            }
         } catch (\Exception $e) {
-            Log::error("Error creating transaksi: " . $e->getMessage(), [
+            Log::error("Error in transaksi store: " . $e->getMessage(), [
                 'request' => $request->all(),
                 'trace' => $e->getTraceAsString(),
                 'file' => $e->getFile(),
@@ -102,7 +140,7 @@ class KelolaTransaksiController extends Controller
             ]);
 
             return redirect()->back()
-                ->with('error', 'Terjadi kesalahan saat menambahkan transaksi.')
+                ->with('error', 'Terjadi kesalahan saat menambahkan transaksi: ' . $e->getMessage())
                 ->withInput();
         }
     }
